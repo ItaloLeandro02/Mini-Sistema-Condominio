@@ -1,0 +1,70 @@
+CREATE TABLE condomino (
+  id INTEGER  NOT NULL   IDENTITY ,
+  usuario_id INTEGER  NOT NULL  ,
+  pessoa_id INTEGER  NOT NULL  ,
+  endereco VARCHAR(80)  NOT NULL    ,
+PRIMARY KEY(id));
+GO
+
+
+
+
+CREATE TABLE pessoa (
+  id INTEGER  NOT NULL   IDENTITY ,
+  nome VARCHAR(60)  NOT NULL  ,
+  cpf BIGINT  NOT NULL  ,
+  nascimento DATE  NOT NULL  ,
+  digital VARCHAR(5)  NOT NULL  ,
+  endereco_logradouro VARCHAR(120)  NOT NULL  ,
+  endereco_numero VARCHAR(120)  NOT NULL  ,
+  endereco_bairro VARCHAR(60)  NOT NULL  ,
+  endereco_cidade VARCHAR(100)  NOT NULL  ,
+  endereco_uf VARCHAR(2)  NOT NULL  ,
+  criacao DATETIME  NOT NULL    ,
+PRIMARY KEY(id));
+GO
+
+
+
+
+CREATE TABLE porteiro (
+  id INTEGER  NOT NULL   IDENTITY ,
+  pessoa_id INTEGER  NOT NULL  ,
+  usuario_id INTEGER  NOT NULL    ,
+PRIMARY KEY(id));
+GO
+
+
+
+
+CREATE TABLE usuario (
+  id INTEGER  NOT NULL   IDENTITY ,
+  email VARCHAR(80)  NOT NULL  ,
+  tipo integer  NOT NULL  ,
+  senha VARCHAR(32)  NOT NULL  ,
+  desativado tinyint  NOT NULL  ,
+  criacao DATETIME  NOT NULL    ,
+PRIMARY KEY(id));
+GO
+
+
+
+
+CREATE TABLE visita (
+  id INTEGER  NOT NULL   IDENTITY ,
+  condomino_id INTEGER    ,
+  pessoa_id INTEGER    ,
+  data_hora_reserva DATETIME    ,
+  nome_convidado VARCHAR(80)    ,
+  condomino_observacao VARCHAR(120)    ,
+  data_hora_expiracao TIMESTAMP    ,
+  situacao INT    ,
+  portaria_data_hora_chegada DATETIME    ,
+  porteiro_id INTEGER    ,
+  portaria_observacao VARCHAR(120)      ,
+PRIMARY KEY(id));
+GO
+
+
+
+
