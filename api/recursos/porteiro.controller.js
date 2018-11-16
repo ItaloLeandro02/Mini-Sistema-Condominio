@@ -58,24 +58,23 @@ function salvaPorteiro(req,res){
 	//Mesma coisa que [FromBody] no C#
     let porteiro = req.body.porteiro,
         usuario = {
-            email : porteiro.email,
-            senha : porteiro.senha,
+            email : porteiro.usuario.email,
+            senha : porteiro.usuario.senha,
             tipo  : 3,
             desativado : false,
-            criacao : Date()
+            criacao : new Date()
         },
         pessoa = {
-            nome                : porteiro.nome,
-            cpf                 : porteiro.cpf,
-            nascimento          : porteiro.nascimento,
+            nome                : porteiro.pessoa.nome,
+            cpf                 : porteiro.pessoa.cpf,
+            nascimento          : porteiro.pessoa.nascimento,
             digital             : util.criaDigital(),
-            criacao             : Date(),
-            enderecoLogradouro  : porteiro.endereco.logradouro,
-            enderecoNumero      : porteiro.endereco.endereco,
-            enderecoBairro      : porteiro.endereco.bairro,
-            enderecoCidade      : porteiro.endereco.cidade,
-            endeceroUf          : porteiro.endereco.uf,
-            criacao             : Date()
+            enderecoLogradouro  : porteiro.pessoa.enderecoLogradouro,
+            enderecoNumero      : porteiro.pessoa.enderecoNumero,
+            enderecoBairro      : porteiro.pessoa.enderecoBairro,
+            enderecoCidade      : porteiro.pessoa.enderecoCidade,
+            enderecoUf          : porteiro.pessoa.enderecoUf,
+            criacao             : new Date()
         }
         
     
@@ -100,16 +99,16 @@ function salvaPorteiro(req,res){
 		return;
 	}    
     
-    let resposta;//variavel para receber o usuario criado devido ao "Clojure"
+    //variavel para receber o usuario criado devido ao "Clojure"
+    let resposta;
 
     dataContext.Usuario.create(usuario)
-    .then(function(novoUsuario){        
+    .then(function(novoUsuario){     
         resposta.usuario = novoUsuario;
         return dataContext.Pessoa.create(pessoa)
     })
     .then(function(novaPessoa){
         resposta.pessoa = novaPessoa;
-        
         return dataContext.Porteiro.create({
             usuarioId : resposta.usuario.id,
             pessoaId  : novaPessoa.id 
@@ -124,7 +123,8 @@ function salvaPorteiro(req,res){
         })
     })
     .catch(function(e){
-        console.log(e)
+        console.log(pessoa)
+        console.log(usuario)
         res.status(409).json({ 
             sucesso: false,
             msg: "Falha ao incluir o porteiro" 
