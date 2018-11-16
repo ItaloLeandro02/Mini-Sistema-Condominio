@@ -1,5 +1,6 @@
 //Require quero o arquivo
-const dataContext = require('../dao/dao');
+const dataContext = require('../dao/dao'),
+      util        = require('../util/util');	
 
 //Orem influência o nome mão
 //Primeiro requisição
@@ -59,16 +60,22 @@ function salvaPorteiro(req,res){
         usuario = {
             email : porteiro.email,
             senha : porteiro.senha,
+            tipo  : 3,
             desativado : false,
-            criacao : new Date()
+            criacao : Date()
         },
         pessoa = {
             nome                : porteiro.nome,
             cpf                 : porteiro.cpf,
             nascimento          : porteiro.nascimento,
             digital             : util.criaDigita(),
-            criacao             : new Date(),
-            enderecoLogradouro  : porteiro.endereco.logradouro
+            criacao             : Date(),
+            enderecoLogradouro  : porteiro.endereco.logradouro,
+            enderecoNumero      : porteiro.endereco.endereco,
+            enderecoBairro      : porteiro.endereco.bairro,
+            enderecoCidade      : porteiro.endereco.cidade,
+            endeceroUf          : porteiro.endereco.uf,
+            criacao             : Date()
         }
         
     
