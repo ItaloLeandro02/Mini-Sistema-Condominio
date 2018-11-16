@@ -68,7 +68,7 @@ function salvaPorteiro(req,res){
             nome                : porteiro.nome,
             cpf                 : porteiro.cpf,
             nascimento          : porteiro.nascimento,
-            digital             : util.criaDigita(),
+            digital             : util.criaDigital(),
             criacao             : Date(),
             enderecoLogradouro  : porteiro.endereco.logradouro,
             enderecoNumero      : porteiro.endereco.endereco,
