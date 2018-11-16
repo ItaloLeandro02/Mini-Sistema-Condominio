@@ -35,8 +35,6 @@ function salvaPessoa(req,res){
 	//Mesma coisa que [FromBody] no C#
 	let pessoa = req.body.pessoa;
 
-	pessoa.criacao = new Date();
-	//pessoa.digital = Randonica; //EX UJ-48
 
 	if (!pessoa) {
 		res.status(404).json({
@@ -46,7 +44,10 @@ function salvaPessoa(req,res){
 		return;
 	}
 
-	
+	//Definindo padrão de campos
+	pessoa.criacao = new Date();
+	//pessoa.digital = Randonica; //EX UJ-48
+
 	dataContext.Pessoa.create(pessoa)
 	//.then é promise
 	.then(function(novaPessoa){
@@ -125,7 +126,7 @@ function atualizaPessoa(req,res){
 	}
 
 	//Pesquise antes de atualizar
-	dataset.Pessoa.findById(req.params.id).then(function(pessoa){
+	dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
 		
 		if (!pessoa) {
 			res.status(404).json({
