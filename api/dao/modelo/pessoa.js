@@ -90,6 +90,30 @@ module.exports = function(sequelize, DataTypes) {
 };
 
 module.exports.initRelations = function() {
-    delete module.exports.initRelations; 
+    delete module.exports.initRelations;
+    
+    var dataContext = require('../dao');
+    var Visita = dataContext.Visita;
+    var Condomino = dataContext.Condomino;
+    var Pessoa = dataContext.Pessoa;
+    var Porteiro = dataContext.Porteiro;    
+
+    Visita.belongsTo(Pessoa, {
+        foreignKey: 'pessoa_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Visita.belongsTo(Porteiro, {
+        foreignKey: 'porteiro_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Visita.belongsTo(Condomino, {
+        foreignKey: 'condomino_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
 };
 
