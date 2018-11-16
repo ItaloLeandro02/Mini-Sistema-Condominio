@@ -1,5 +1,7 @@
 //Require quero o arquivo
-let dataContext = require('../dao/dao');
+const dataContext = require('../dao/dao'),
+	  util = require('../util/util');	
+
 
 //Orem influência o nome mão
 //Primeiro requisição
@@ -46,34 +48,8 @@ function salvaPessoa(req,res){
 
 	//Definindo padrão de campos
 	pessoa.criacao = new Date();
-	//pessoa.digital = Randonica; //EX UJ-48
-
-	pessoa.digital = criaDigital();
+	pessoa.digital = util.criaDigital();
 	
-	//Cria uma digital no formato XX-55
-	function criaDigital()
-	{
-		var letras = 'ABCDEFGHIJKLMNOPQRSTUVWXTZ';
-		var numeros = '0123456789'
-		var aleatorio = '';
-		for (var i = 0; i < 5; i++) 
-		{
-			if (i < 2) 
-			{
-			var rnum = Math.floor(Math.random() * letras.length);
-			aleatorio += letras.substring(rnum, rnum + 1);
-			}
-			else if (i > 2)
-			{
-			var rnum = Math.floor(Math.random() * numeros.length);
-			aleatorio += numeros.substring(rnum, rnum + 1);
-			}
-			else {
-				aleatorio += '-';
-			}
-		}
-		return aleatorio;
-	}
 
 	dataContext.Pessoa.create(pessoa)
 	//.then é promise
@@ -204,5 +180,5 @@ module.exports = {
     carregaPorId 	: carregaPorId,
     salva 			: salvaPessoa,
     exclui 			: excluiPessoa,
-    atualiza 		: atualizaPessoa    
+	atualiza 		: atualizaPessoa,  
 }

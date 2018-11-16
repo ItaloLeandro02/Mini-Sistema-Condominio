@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
 
     }, {
         //schema: 'public',
-        tableName: 'condomino',
+       // tableName: 'condomino',
         timestamps: false,
         name:{
             singular:'condomino',

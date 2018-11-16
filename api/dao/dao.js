@@ -58,10 +58,12 @@ function init() {
 	// Modelos
     model.Pessoa = conexao.import('./modelo/pessoa.js');
     model.Usuario  = conexao.import('./modelo/usuario.js');
+    model.Porteiro = conexao.import('./modelo/porteiro.js');
     
     // Arquivos
     require('./modelo/pessoa.js').initRelations();
     require('./modelo/usuario.js').initRelations();    
+    require('./modelo/porteiro.js').initRelations();   
 
     return model;
 }

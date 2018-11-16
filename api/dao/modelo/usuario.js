@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             field: 'tipo',
             allowNull: false,
-            comment: 'Tipo de usuario'
+            comment: 'Tipo de usuario 1- Administrador, 2- Condomino, 3- Porteiro'
         },
         senha: {
             type: DataTypes.STRING(32),
@@ -48,9 +48,9 @@ module.exports = function(sequelize, DataTypes) {
         }
         
     }, {
-        schema: 'public',
+        //schema: 'public',
         tableName: 'usuario',
-        timestamps: true,
+        timestamps: false,
         name:{
             singular:'usuario',
             plural  :'usuarios'

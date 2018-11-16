@@ -75,13 +75,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(80),
             field: 'porteiro_observacao',
             allowNull: true,
-            comment: 'Observacao feita pelo porteiro'
         }
 
     }, {
-        schema: 'public',
+        //schema: 'public',
         tableName: 'visita',
-        timestamps: true,
+        timestamps: false,
         name:{
             singular:'visita',
             plural  :'visitas'
