@@ -1,3 +1,5 @@
+//Importar um módulo sequelize usando require('sequelize'). Assim Sequelize representa uma variável de referência ao Sequelize.
+//Configurações
 let express = require('express'),
  path = require('path'),
  logger = require('morgan'),
@@ -12,6 +14,7 @@ let app = express();
 
 // uncomment after placing your favicon in /public
 app.use(logger('dev'));
+//Transforma tudo que vem em JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -25,13 +28,17 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+  //Dois métodos POST executando em seguida
+  //Continua executando a API
   next();
 });
 
 
 
 
-
+/*
+Declaração de mapeamento das rotas da API
+*/
 app.use('/api', rota);
 
 

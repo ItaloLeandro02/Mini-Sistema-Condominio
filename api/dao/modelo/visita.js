@@ -7,7 +7,7 @@ Com o modo estrito, você não pode, por exemplo, usar variáveis ​​não dec
 //Sequelize = ORM banco relacional
 //Modelos são definidos com sequelize.define('name', {attributes}, {options}).
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('visita', {
+    return sequelize.define('Visita', {
         id: {
             type: DataTypes.INTEGER,
             field: 'id',
@@ -16,38 +16,38 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true,
             comment: 'Chave primaria'
         },        
-        condomino_id: {
+        condominoId: {
             type: DataTypes.INTEGER,
             field: 'condomino_id',
             allowNull: false,
             comment: 'Id do Condomino',
             
         },
-        pessoa_id: {
+        pessoaId: {
             type: DataTypes.INTEGER,
             field: 'pessoa_id',
             allowNull: false,
             comment: 'Id da pessoa que é um condomino'
         },
-        data_hora_reserva: {
+        dataHoraReserva: {
             type: DataTypes.DATE,
             field: 'data_hora_reserva',
             allowNull: false,
             comment: 'Data e hora agendados para a chegada do visitante'
         },
-        nome_convidado: {
+        nomeConvidado: {
             type: DataTypes.STRING(80),
             field: 'nome_convidado',
             allowNull: false,
             comment: 'Nome do convidado'
         },
-        condomino_observacao: {
+        condominoObservacao: {
             type: DataTypes.STRING(120),
             field: 'condomino_observacao',
             allowNull: true,
             comment: 'Observacao feita pelo condomino'
         },
-        data_hora_expiracao: {
+        dataHoraExpiracao: {
             type: DataTypes.DATE,
             field: 'data_hora_expiracao',
             allowNull: false,
@@ -59,19 +59,19 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Situacao da visita'
         },
-        portaria_data_hora_chegada: {
+        portariaDataHoraChegada: {
             type: DataTypes.DATE,
             field: 'portaria_data_hora_chegada',
             allowNull: false,
             comment: 'Data e hoario em que o visitante chegou'
         },
-        porteiro_id: {
+        porteiroId: {
             type: DataTypes.INTEGER,
             field: 'porteiro_id',
             allowNull: false,
             comment: 'Id do porteiro'
         },
-        porteiro_observacao: {
+        porteiroObservacao: {
             type: DataTypes.STRING(80),
             field: 'porteiro_observacao',
             allowNull: true,

@@ -15,6 +15,7 @@ require('./dao/dao').init();
  * Get port from environment and store in Express.
  */
 
+//Aqui posso trocar a porta
 var port = normalizePort(process.env.PORT || '3333');
 app.set('port', port);
 

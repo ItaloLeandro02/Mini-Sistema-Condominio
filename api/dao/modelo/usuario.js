@@ -7,7 +7,7 @@ Com o modo estrito, você não pode, por exemplo, usar variáveis ​​não dec
 //Sequelize = ORM banco relacional
 //Modelos são definidos com sequelize.define('name', {attributes}, {options}).
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('usuario', {
+    return sequelize.define('Usuario', {
         id: {
             type: DataTypes.INTEGER,
             field: 'id',

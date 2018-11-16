@@ -6,19 +6,23 @@ Com o modo estrito, você não pode, por exemplo, usar variáveis ​​não dec
 
 var pg = require('pg');
 
-/// Conexao do sequelize
+//Importar um módulo sequelize usando require('sequelize'). Assim Sequelize representa uma variável de referência ao Sequelize.e
 let Sequelize   = require('sequelize'),
-    conexao     = new Sequelize('aula', 'postgres', '123456789',
+//Criamos uma nova instância do Sequelize usando o seu construtor que possui a seguinte sintaxe:
+//new Sequelize(database, [username=null], [password=null], [options={}])
+    conexao     = new Sequelize('BD_SistemaCondominio', 'sa', 'IL0604#@',
+
     {
+        
         host: '127.0.0.1',
-        port:5432,
-        dialect: 'postgres',
-        logging: false,
-        isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED        
+        //port:5432,          //A porta do banco de dados relacional.
+        dialect: 'mssql',   //O dialeto do banco de dados ao qual você está se conectando. Um dos mysql, postgres, sqlite e mssql.
+        logging: false,     //Uma função que registra consultas sql ou false para nenhum log
+        isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED    //	Definir o nível de isolamento de transação padrão. Veja Sequelize.Transaction.ISOLATION_LEVELS as opções possíveis.    
+
     });
 
 
-// Configurações para o POSTGRES
 var types = {
     FLOAT4: 700,
     FLOAT8: 701,
@@ -53,11 +57,11 @@ function init() {
     
 	// Modelos
     model.Pessoa = conexao.import('./modelo/pessoa.js');
-    model.Venda  = conexao.import('./modelo/venda.js');
+    model.Usuario  = conexao.import('./modelo/usuario.js');
     
     // Arquivos
     require('./modelo/pessoa.js').initRelations();
-    require('./modelo/venda.js').initRelations();    
+    require('./modelo/usuario.js').initRelations();    
 
     return model;
 }

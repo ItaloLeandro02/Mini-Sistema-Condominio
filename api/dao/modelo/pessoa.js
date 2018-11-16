@@ -7,7 +7,7 @@ Com o modo estrito, você não pode, por exemplo, usar variáveis ​​não dec
 //Sequelize = ORM banco relacional
 //Modelos são definidos com sequelize.define('name', {attributes}, {options}).
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('pessoa', {
+    return sequelize.define('Pessoa', {
         id: {
             type: DataTypes.INTEGER,
             field: 'id',
@@ -41,31 +41,31 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Senha de 5 caracteres para permitir a entrada'
         },
-        endereco_logradouro: {
+        enderecoLogradouro: {
             type: DataTypes.STRING(120),
             field: 'endereco_logradouro',
             allowNull: false,
             comment: 'Logradouro onde a pessoa reside'
         },
-        endereco_numero: {
+        enderecoNumero: {
             type: DataTypes.STRING(3),
             field: 'endereco_numero',
             allowNull: false,
             comment: 'Número onde a pessoa reside'
         },
-        endereco_bairro: {
+        enderecoBairro: {
             type: DataTypes.STRING(120),
             field: 'endereco_bairro',
             allowNull: false,
             comment: 'Bairro onde a pessoa reside'
         },
-        endereco_cidade: {
+        enderecoCidade: {
             type: DataTypes.STRING(120),
             field: 'endereco_cidade',
             allowNull: false,
             comment: 'Cidade onde a pessoa reside'
         },
-        endereco_uf: {
+        enderecoUf: {
             type: DataTypes.STRING(2),
             field: 'endereco_uf',
             allowNull: false,
@@ -79,9 +79,9 @@ module.exports = function(sequelize, DataTypes) {
         }
 
     }, {
-        schema: 'public',
+        //schema: 'public',
         tableName: 'pessoa',
-        timestamps: true,
+        timestamps: false,
         name:{
             singular:'pessoa',
             plural  :'pessoas'
