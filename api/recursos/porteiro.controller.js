@@ -100,17 +100,17 @@ function salvaPorteiro(req,res){
 	}    
     
     //variavel para receber o usuario criado devido ao "Clojure"
-    let resposta;
+    let dadosUsuarioCriado;
 
     dataContext.Usuario.create(usuario)
     .then(function(novoUsuario){     
-        resposta = novoUsuario;
+        dadosUsuarioCriado = novoUsuario;
         return dataContext.Pessoa.create(pessoa)
     })
     .then(function(novaPessoa){
        // resposta.pessoa = novaPessoa;
         return dataContext.Porteiro.create({
-            usuarioId : resposta.id,
+            usuarioId : dadosUsuarioCriado.id,
             pessoaId  : novaPessoa.id 
         })
     })
@@ -123,8 +123,7 @@ function salvaPorteiro(req,res){
         })
     })
     .catch(function(e){
-        console.log(pessoa)
-        console.log(usuario)
+        console.log(e)
         res.status(409).json({ 
             sucesso: false,
             msg: "Falha ao incluir o porteiro" 
