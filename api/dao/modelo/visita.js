@@ -57,7 +57,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             field: 'situacao',
             allowNull: false,
-            comment: 'Situacao da visita'
+            comment: 'Situacao da visita 1- Agendado, 2- Liberado, 3- Expirado, 4-Cancelado, 5- Negado'
         },
         portariaDataHoraChegada: {
             type: DataTypes.DATE,

@@ -104,22 +104,22 @@ function salvaPorteiro(req,res){
 
     dataContext.Usuario.create(usuario)
     .then(function(novoUsuario){     
-        resposta.usuario = novoUsuario;
+        resposta = novoUsuario;
         return dataContext.Pessoa.create(pessoa)
     })
     .then(function(novaPessoa){
-        resposta.pessoa = novaPessoa;
+       // resposta.pessoa = novaPessoa;
         return dataContext.Porteiro.create({
-            usuarioId : resposta.usuario.id,
+            usuarioId : resposta.id,
             pessoaId  : novaPessoa.id 
         })
     })
     .then(function(novoPorteiro){
-        resposta.porteiro = novoPorteiro;
+       // resposta.porteiro = novoPorteiro;
         
         res.status(201).json({
             sucesso : true,
-            data : resposta
+            data : porteiro
         })
     })
     .catch(function(e){

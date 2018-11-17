@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             field: 'tipo',
             allowNull: false,
-            comment: 'Tipo de usuario 1- Administrador, 2- Condomino, 3- Porteiro'
+            comment: 'Tipo de usuario 1- Portaria, 2- Condomino, 3- Administrador'
         },
         senha: {
             type: DataTypes.STRING(32),
