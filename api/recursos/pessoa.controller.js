@@ -49,6 +49,15 @@ function salvaPessoa(req,res){
 	//Definindo padrão de campos
 	pessoa.criacao = new Date();
 	pessoa.digital = util.criaDigital();
+
+	pessoa.nome                = pessoa.nome,
+	pessoa.cpf                 = pessoa.cpf,
+	pessoa.nascimento          = pessoa.nascimento,
+	pessoa.enderecoLogradouro  = pessoa.enderecoLogradouro,
+	pessoa.enderecoNumero      = pessoa.enderecoNumero,
+	pessoa.enderecoBairro      = pessoa.enderecoBairro,
+	pessoa.enderecoCidade      = pessoa.enderecoCidade,
+	pessoa.enderecoUf          = pessoa.enderecoUf,
 	
 
 	dataContext.Pessoa.create(pessoa)
@@ -118,9 +127,10 @@ function atualizaPessoa(req,res){
 	}
 
 	//No front devo retornar um objeto pessoa com os dados
-	let pessoa = req.body.pessoa;
+	let pessoa		= req.body.pessoa;
+	let pessoaForm	= req.body.pessoa;
 
-	if (!pessoa) {
+	if (!pessoa && !pessoaForm) {
 		res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -130,7 +140,6 @@ function atualizaPessoa(req,res){
 
 	//Pesquise antes de atualizar
 	dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
-		
 		if (!pessoa) {
 			res.status(404).json({
 				sucesso: false,
@@ -142,18 +151,13 @@ function atualizaPessoa(req,res){
 		let updateFields = {
 			//Devo fazer como no C# 
 			//Retornar o JSON com vários níveis
-			nome 					: pessoa.nome,
-			nascimento 				: pessoa.nascimento,
-			enderecoLogradouro 		: pessoa.endereco.logradouro,
-			enderecoNumero 			: pessoa.endereco.numero,
-			enderecoBairro 			: pessoa.endereco.bairro,
-			enderecoCidade 			: pessoa.endereco.cidade,
-			enderecoUf 				: pessoa.endereco.uf,
+			nome 					: pessoaForm.nome
+
 		}
 
 		pessoa.update(updateFields)
 		.then(function(pessoaAtualizada){
-			res.status(200).dataContextjson({
+			res.status(200).json({
         		sucesso:true,
         		msg: "Registro atualizado com sucesso",
         		data: pessoaAtualizada

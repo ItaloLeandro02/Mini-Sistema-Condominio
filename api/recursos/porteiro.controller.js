@@ -181,9 +181,10 @@ function atualizaPorteiro(req,res){
 	}
 
 	//No front devo retornar um objeto pessoa com os dados
-	let porteiro = req.body.porteiro;
+	let porteiro	 = req.body.porteiro;
+	let porteiroForm = req.body.porteiro;
 
-	if (!porteiro) {
+	if (!porteiro && !porteiroForm) {
 		res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -192,8 +193,9 @@ function atualizaPorteiro(req,res){
 	}
 
 	//Pesquise antes de atualizar
-	dataContext.Porteiro.findById(req.params.id).then(function(porteiro){
-		
+	dataContext.Porteiro.findById(req.params.id).then(function(porteiroRetornado){
+	
+
 		if (!porteiro) {
 			res.status(404).json({
 				sucesso: false,
@@ -201,31 +203,34 @@ function atualizaPorteiro(req,res){
 			})
 			return;
 		}
-		
+
+		return dataContext.Pessoa.findById(porteiroRetornado.pessoaId)
+	}).then(function(pessoa){
+
 		let updateFields = {
 			//Devo fazer como no C# 
 			//Retornar o JSON com vários níveis
-			/*
-			nome 					: usuario.nome,
-			nascimento 				: usuario.nascimento,
-			enderecoLogradouro 		: usuario.endereco.logradouro,
-			enderecoNumero 			: usuario.endereco.numero,
-			enderecoBairro 			: usuario.endereco.bairro,
-			enderecoCidade 			: usuario.endereco.cidade,
-			enderecoUf 				: usuario.endereco.uf,
-			*/
+			
+			nome 						: porteiroForm.nome
+			//nascimento 				: usuario.nascimento,
+			//enderecoLogradouro 		: usuario.endereco.logradouro,
+			//enderecoNumero 			: usuario.endereco.numero,
+			//enderecoBairro 			: usuario.endereco.bairro,
+			//enderecoCidade 			: usuario.endereco.cidade,
+			//enderecoUf 				: usuario.endereco.uf,
+			
 		}
 
-		porteiro.update(updateFields)
+		pessoa.update(updateFields)
 		.then(function(porteiroAtualizado){
-			res.status(200).dataContext.json({
+			res.status(200).json({
         		sucesso:true,
         		msg: "Registro atualizado com sucesso",
         		data: porteiroAtualizado
         	})	
 		})
 		.catch(function(erro){
-			console.log(erro);
+			console.log(porteiro);
 			res.status(409).json({ 
 				sucesso: false,
 				msg: "Falha ao atualizar o porteiro" 
