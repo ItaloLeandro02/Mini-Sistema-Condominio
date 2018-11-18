@@ -1,0 +1,4 @@
+"usuarioId": 2,
+        "pessoaId": 2,
+
+Para excluir um porteiro, basta excluir o seu usuário ou pessoa

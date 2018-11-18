@@ -16,14 +16,14 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true,
             comment: 'Chave primaria'
         },        
-        usuario_id: {
+        usuarioId: {
             type: DataTypes.INTEGER,
             field: 'usuario_id',
             allowNull: false,
             comment: 'Chave estrangeira Usuario',
             
         },
-        pessoa_id: {
+        pessoaId: {
             type: DataTypes.INTEGER,
             field: 'pessoa_id',
             allowNull: false,
@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
 
     }, {
         //schema: 'public',
-       // tableName: 'condomino',
+        tableName: 'condomino',
         timestamps: false,
         name:{
             singular:'condomino',
@@ -53,21 +53,21 @@ module.exports = function(sequelize, DataTypes) {
 module.exports.initRelations = function() {
     delete module.exports.initRelations; 
 
-    var dataContext = require('../dao');
-    var Condomino = dataContext.Condomino;
-    var Pessoa = dataContext.Pessoa;
-    var Usuario = dataContext.Usuario;    
+    var dataContext     = require('../dao');
+    var Condomino       = dataContext.Condomino;
+    var Pessoa          = dataContext.Pessoa;
+    var Usuario         = dataContext.Usuario;    
 
     Condomino.belongsTo(Pessoa, {
         foreignKey: 'pessoa_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     });
 
     Condomino.belongsTo(Usuario, {
         foreignKey: 'usuario_id',
-        onDelete: 'NO ACTION',
-        onUpdate: 'NO ACTION'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     });
 
     /*PctUsuario.belongsToMany(EvoCliente, {

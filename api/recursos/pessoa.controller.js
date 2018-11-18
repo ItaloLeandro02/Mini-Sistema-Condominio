@@ -2,7 +2,6 @@
 const dataContext = require('../dao/dao'),
 	  util = require('../util/util');	
 
-
 //Orem influência o nome mão
 //Primeiro requisição
 function carregaTudo(req,res) {
@@ -17,7 +16,6 @@ function carregaTudo(req,res) {
         })
     })
 }    
-
 
 function carregaPorId(req,res) {
     //req.param.id porque passei na URL
@@ -174,9 +172,6 @@ function atualizaPessoa(req,res){
 	})
 	
 }
-
-
-
 
 module.exports = {
 	//Quando for consumir irá pegar os nomes da primeira tabela

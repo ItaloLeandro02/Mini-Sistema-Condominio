@@ -6,13 +6,13 @@ const dataContext = require('../dao/dao'),
 //Primeiro requisição
 function carregaTudo(req,res) {
     
-    return dataContext.Porteiro.findAll({
+    return dataContext.Condomino.findAll({
 		//Procura a Primary Key
     	order : 'id'
-    }).then(function(porteiros){
+    }).then(function(condominos){
         res.status(200).json({
         	sucesso:true,
-        	data: porteiros
+        	data: condominos
         })
     })
 }    
@@ -20,7 +20,7 @@ function carregaTudo(req,res) {
 function carregaPorId(req,res) {
 
     //req.param.id porque passei na URL
-    return dataContext.Porteiro.findById(req.params.id,{
+    return dataContext.Condomino.findById(req.params.id,{
         include : [
             {
                 model       : dataContext.Usuario,
@@ -31,58 +31,58 @@ function carregaPorId(req,res) {
             }
 		]
 		    
-    }).then(function(porteiro){
+    }).then(function(condomino){
 
-        if (!porteiro) {
+        if (!condomino) {
 			res.status(404).json({
 				sucesso: false,
-				msg: "Porteiro não encontrado."
+				msg: "Condomino não encontrado."
 			})
 			return;
 		}
 		
-        porteiro = porteiro.get({plain : true})
+        condomino = condomino.get({plain : true})
 
-        delete porteiro.pessoa_id;
-        delete porteiro.usuario_id;
+        delete condomino.pessoa_id;
+        delete condomino.usuario_id;
 
         /*
-        porteiro = {...porteiro.usuario, ...porteiro.pessoa, ...porteiro}
-        delete porteiro.pessoa;
-        delete porteiro.usuario;
+        condomino = {...condomino.usuario, ...condomino.pessoa, ...condomino}
+        delete condomino.pessoa;
+        delete condomino.usuario;
         */
 
         //Por padrão retorna o status
         res.status(200).json({
 			sucesso: true,
-			data: porteiro
+			data: condomino
 		})
     })
 
 
 } 
 
-function salvaPorteiro(req,res){
+function salvaCondomino(req,res){
 	//req.body campos do body
 	//Mesma coisa que [FromBody] no C#
-    let porteiro = req.body.porteiro,
+    let condomino = req.body.condomino,
         usuario = {
-            email : porteiro.usuario.email,
-            senha : porteiro.usuario.senha,
-            tipo  : 3,
+            email : condomino.usuario.email,
+            senha : condomino.usuario.senha,
+            tipo  : 2,
             desativado : false,
             criacao : new Date()
         },
         pessoa = {
-            nome                : porteiro.pessoa.nome,
-            cpf                 : porteiro.pessoa.cpf,
-            nascimento          : porteiro.pessoa.nascimento,
+            nome                : condomino.pessoa.nome,
+            cpf                 : condomino.pessoa.cpf,
+            nascimento          : condomino.pessoa.nascimento,
             digital             : util.criaDigital(),
-            enderecoLogradouro  : porteiro.pessoa.enderecoLogradouro,
-            enderecoNumero      : porteiro.pessoa.enderecoNumero,
-            enderecoBairro      : porteiro.pessoa.enderecoBairro,
-            enderecoCidade      : porteiro.pessoa.enderecoCidade,
-            enderecoUf          : porteiro.pessoa.enderecoUf,
+            enderecoLogradouro  : condomino.pessoa.enderecoLogradouro,
+            enderecoNumero      : condomino.pessoa.enderecoNumero,
+            enderecoBairro      : condomino.pessoa.enderecoBairro,
+            enderecoCidade      : condomino.pessoa.enderecoCidade,
+            enderecoUf          : condomino.pessoa.enderecoUf,
             criacao             : new Date()
         }
     
@@ -98,7 +98,7 @@ function salvaPorteiro(req,res){
      *  */ 
 
 
-	if (!porteiro) {
+	if (!condomino) {
 		res.status(404).json({
 			sucesso: false, 
 			msg: "Formato de entrada inválido."
@@ -116,29 +116,30 @@ function salvaPorteiro(req,res){
     })
     .then(function(novaPessoa){
        // resposta.pessoa = novaPessoa;
-        return dataContext.Porteiro.create({
+        return dataContext.Condomino.create({
             usuarioId : dadosUsuarioCriado.id,
-            pessoaId  : novaPessoa.id 
+            pessoaId  : novaPessoa.id, 
+            endereco  : 'testando'
         })
     })
-    .then(function(novoPorteiro){
+    .then(function(novoCondomino){
        // resposta.porteiro = novoPorteiro;
         
         res.status(201).json({
             sucesso : true,
-            data : porteiro
+            data : condomino
         })
     })
     .catch(function(e){
         console.log(e)
         res.status(409).json({ 
             sucesso: false,
-            msg: "Falha ao incluir o porteiro" 
+            msg: "Falha ao incluir o condomino" 
         })
     })
 }
 
-function excluiPorteiro(req,res){
+function excluiCondomino(req,res){
 	if (!req.params.id) {
 		res.status(409).json({
 			sucesso: false,
@@ -147,17 +148,17 @@ function excluiPorteiro(req,res){
 		return;
 	}
 
-	dataContext.Porteiro.findById(req.params.id).then(function(porteiro){
+	dataContext.Condomino.findById(req.params.id).then(function(condomino){
         
-		if (!porteiro) {
+		if (!condomino) {
 			res.status(404).json({
 				sucesso: false,
-				msg: "Porteiro não encontrado."
+				msg: "Condomino não encontrado."
 			})
 			return;
 		}
 
-		porteiro.destroy()
+		condomino.destroy()
 		.then(function(){
 			res.status(200).json({
         		sucesso:true,
@@ -169,7 +170,7 @@ function excluiPorteiro(req,res){
 			console.log(erro);
 			res.status(409).json({ 
 				sucesso: false,
-				msg: "Falha ao excluir o porteiro" 
+				msg: "Falha ao excluir o Condomino" 
 			});	
 		})
 
@@ -177,7 +178,7 @@ function excluiPorteiro(req,res){
 	
 }
 
-function atualizaPorteiro(req,res){
+function atualizaCondomino(req,res){
 	
 	if (!req.params.id) {
 		res.status(409).json({
@@ -188,10 +189,10 @@ function atualizaPorteiro(req,res){
 	}
 
 	//No front devo retornar um objeto pessoa com os dados
-	let porteiro	 = req.body.porteiro;
-	let porteiroForm = req.body.porteiro;
+	let condomino	 = req.body.condomino;
+	let condominoForm = req.body.condomino;
 
-	if (!porteiro && !porteiroForm) {
+	if (!condomino && !condominoForm) {
 		res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -200,25 +201,25 @@ function atualizaPorteiro(req,res){
 	}
 
 	//Pesquise antes de atualizar
-	dataContext.Porteiro.findById(req.params.id).then(function(porteiroRetornado){
+	dataContext.Condomino.findById(req.params.id).then(function(condominoRetornado){
 	
 
-		if (!porteiro) {
+		if (!condomino) {
 			res.status(404).json({
 				sucesso: false,
-				msg: "Porteiro não encontrada."
+				msg: "Condomino não encontrada."
 			})
 			return;
 		}
 
-		return dataContext.Pessoa.findById(porteiroRetornado.pessoaId)
+		return dataContext.Pessoa.findById(condominoRetornado.pessoaId)
 	}).then(function(pessoa){
 
 		let updateFields = {
 			//Devo fazer como no C# 
 			//Retornar o JSON com vários níveis
 			
-			nome 						: porteiroForm.nome
+			nome 						: condominoForm.nome
 			//nascimento 				: usuario.nascimento,
 			//enderecoLogradouro 		: usuario.endereco.logradouro,
 			//enderecoNumero 			: usuario.endereco.numero,
@@ -229,18 +230,18 @@ function atualizaPorteiro(req,res){
 		}
 
 		pessoa.update(updateFields)
-		.then(function(porteiroAtualizado){
+		.then(function(condominoAtualizado){
 			res.status(200).json({
         		sucesso:true,
         		msg: "Registro atualizado com sucesso",
-        		data: porteiroAtualizado
+        		data: condominoAtualizado
         	})	
 		})
 		.catch(function(erro){
 			console.log(erro);
 			res.status(409).json({ 
 				sucesso: false,
-				msg: "Falha ao atualizar o porteiro" 
+				msg: "Falha ao atualizar o condomino" 
 			});	
 		})
 
@@ -252,7 +253,7 @@ module.exports = {
 	//Quando for consumir irá pegar os nomes da primeira tabela
     carregaTudo  	: carregaTudo,
     carregaPorId 	: carregaPorId,
-    salva 			: salvaPorteiro,
-    exclui 			: excluiPorteiro,
-    atualiza 		: atualizaPorteiro   
+    salva 			: salvaCondomino,
+    exclui 			: excluiCondomino,
+    atualiza 		: atualizaCondomino   
 }

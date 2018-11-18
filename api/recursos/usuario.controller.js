@@ -16,18 +16,24 @@ function carregaTudo(req,res) {
     })
 }    
 
-
 function carregaPorId(req,res) {
     //req.param.id porque passei na URL
     return dataContext.Usuario.findById(req.params.id).then(function(usuario){
+
+		if (!usuario) {
+			res.status(404).json({
+				sucesso: false,
+				msg: "Usuário não encontrado."
+			})
+			return;
+		}
+
 		//Por padrão retorna o status
         res.status(200).json({
 			sucesso: true,
 			data: usuario
 		})
     })
-
-
 } 
 
 function salvaUsuario(req,res){
@@ -100,9 +106,7 @@ function excluiUsuario(req,res){
 				msg: "Falha ao excluir o usuário" 
 			});	
 		})
-
     })
-	
 }
 
 function atualizaUsuario(req,res){
@@ -170,9 +174,6 @@ function atualizaUsuario(req,res){
 	})
 	
 }
-
-
-
 
 module.exports = {
 	//Quando for consumir irá pegar os nomes da primeira tabela

@@ -13,15 +13,12 @@ let Sequelize   = require('sequelize'),
     conexao     = new Sequelize('BD_SistemaCondominio', 'sa', 'IL0604#@',
 
     {
-        
         host: '127.0.0.1',
         //port:5432,          //A porta do banco de dados relacional.
         dialect: 'mssql',   //O dialeto do banco de dados ao qual você está se conectando. Um dos mysql, postgres, sqlite e mssql.
         logging: false,     //Uma função que registra consultas sql ou false para nenhum log
         isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED    //	Definir o nível de isolamento de transação padrão. Veja Sequelize.Transaction.ISOLATION_LEVELS as opções possíveis.    
-
     });
-
 
 var types = {
     FLOAT4: 700,
@@ -42,25 +39,20 @@ pg.types.setTypeParser(types.FLOAT4, 'text', formataFloat);
 pg.types.setTypeParser(types.FLOAT8, 'text', formataFloat);
 pg.types.setTypeParser(types.NUMERIC, 'text', formataFloat);
 
-
-
-
 /// Instancias dos modelos
 var model = {};
 var initialized = false;
-
 
 function init() {
     delete module.exports.init;     
     initialized = true;
     
-    
 	// Modelos
-    model.Pessoa = conexao.import('./modelo/pessoa.js');
-    model.Usuario  = conexao.import('./modelo/usuario.js');
-    model.Porteiro = conexao.import('./modelo/porteiro.js');
-    model.Visita = conexao.import('./modelo/visita.js');
-    model.Condomino = conexao.import('./modelo/condomino.js');
+    model.Pessoa     = conexao.import('./modelo/pessoa.js');
+    model.Usuario    = conexao.import('./modelo/usuario.js');
+    model.Porteiro   = conexao.import('./modelo/porteiro.js');
+    model.Visita     = conexao.import('./modelo/visita.js');
+    model.Condomino  = conexao.import('./modelo/condomino.js');
     
     // Arquivos
     require('./modelo/pessoa.js').initRelations();

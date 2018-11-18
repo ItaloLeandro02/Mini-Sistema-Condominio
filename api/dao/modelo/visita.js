@@ -89,6 +89,37 @@ module.exports = function(sequelize, DataTypes) {
 };
 
 module.exports.initRelations = function() {
-    delete module.exports.initRelations; 
+    delete module.exports.initRelations;
+    
+    var dataContext  = require('../dao');
+    var Visita       = dataContext.Visita;
+    var Porteiro     = dataContext.Porteiro;
+    var Pessoa       = dataContext.Pessoa;
+    var Usuario      = dataContext.Usuario;
+    var Condomino    = dataContext.Condomino;    
+
+    Visita.belongsTo(Pessoa, {
+        foreignKey: 'pessoa_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
+
+    Visita.belongsTo(Usuario, {
+        foreignKey: 'usuario_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
+
+    Visita.belongsTo(Porteiro, {
+        foreignKey: 'porteiro_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
+
+    Visita.belongsTo(Condomino, {
+        foreignKey: 'condomino_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
 };
 
