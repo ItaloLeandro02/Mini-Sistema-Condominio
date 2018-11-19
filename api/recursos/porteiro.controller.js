@@ -246,13 +246,13 @@ function atualizaPorteiro(req,res){
 			//Devo fazer como no C# 
 			//Retornar o JSON com vários níveis
 			
-			nome 						: porteiroForm.pessoa.nome
-			//nascimento 				: usuario.nascimento,
-			//enderecoLogradouro 		: usuario.endereco.logradouro,
-			//enderecoNumero 			: usuario.endereco.numero,
-			//enderecoBairro 			: usuario.endereco.bairro,
-			//enderecoCidade 			: usuario.endereco.cidade,
-			//enderecoUf 				: usuario.endereco.uf,
+			nome 						: porteiroForm.pessoa.nome,
+			nascimento 					: porteiroForm.pessoa.nascimento,
+			enderecoLogradouro 			: porteiroForm.pessoa.enderecoLogradouro,
+			enderecoNumero 				: porteiroForm.pessoa.enderecoNumero,
+			enderecoBairro 				: porteiroForm.pessoa.enderecoBairro,
+			enderecoCidade 				: porteiroForm.pessoa.enderecoCidade,
+			enderecoUf 					: porteiroForm.pessoa.enderecoUf
 			
 		}
 

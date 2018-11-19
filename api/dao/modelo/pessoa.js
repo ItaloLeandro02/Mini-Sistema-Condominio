@@ -41,6 +41,13 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Senha de 5 caracteres para permitir a entrada'
         },
+        enderecoId: {
+            type: DataTypes.INTEGER,
+            field: 'endereco_id',
+            allowNull: false,
+            comment: 'Chave estrangeira Endereço',
+        },
+        /*
         enderecoLogradouro: {
             type: DataTypes.STRING(120),
             field: 'endereco_logradouro',
@@ -70,7 +77,7 @@ module.exports = function(sequelize, DataTypes) {
             field: 'endereco_uf',
             allowNull: false,
             comment: 'UF onde a pessoa reside'
-        },
+        },*/
         criacao: {
             type: DataTypes.DATE,
             field: 'criacao',
@@ -91,5 +98,17 @@ module.exports = function(sequelize, DataTypes) {
 
 module.exports.initRelations = function() {
     delete module.exports.initRelations;
+
+    
+    var dataContext     = require('../dao');
+    var Pessoa          = dataContext.Pessoa;
+    var Endereco        = dataContext.Endereco;
+ 
+
+    Pessoa.belongsTo(Endereco, {
+        foreignKey: 'endereco_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    });
 };
 

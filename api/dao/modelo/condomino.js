@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(80),
             field: 'endereco',
             allowNull: false,
-            comment: 'Endereco do Condomino'
+            comment: 'Endereco, ex. apt 101, quadra 15, etc'
         }
 
     }, {
