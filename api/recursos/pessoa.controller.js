@@ -20,6 +20,14 @@ function carregaTudo(req,res) {
 function carregaPorId(req,res) {
     //req.param.id porque passei na URL
     return dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
+
+		if (!pessoa) {
+			res.status(404).json({
+				sucesso: false,
+				msg: "Pessoa não encontrada."
+			})
+			return;
+		}
 		//Por padrão retorna o status
         res.status(200).json({
 			sucesso: true,

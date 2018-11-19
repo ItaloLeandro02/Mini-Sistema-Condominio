@@ -147,8 +147,16 @@ function excluiPorteiro(req,res){
 		return;
 	}
 
-	dataContext.Porteiro.findById(req.params.id).then(function(porteiro){
-        
+	//váriavel para receber os valores pessoaId e usuarioId 
+	let porteiroRetornado
+
+	//Procura o porteiro pelo id passado pela URL
+	dataContext.Porteiro.findById(req.params.id).then(function(porteiro) {
+		
+		//Atribui os dados do porteiro encontrado para serem usados fora das funções
+		porteiroRetornado = porteiro
+
+		//Verifica se o porteiro existe
 		if (!porteiro) {
 			res.status(404).json({
 				sucesso: false,
@@ -157,14 +165,37 @@ function excluiPorteiro(req,res){
 			return;
 		}
 
+		//Exclui somente o porteiro
 		porteiro.destroy()
-		.then(function(){
+
+		//Retorna o objeto pessoa vinculado ao porteiro
+		return dataContext.Pessoa.findById(porteiroRetornado.pessoaId)
+
+		//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
+	}).then(function(pessoa) {
+
+		//Exclui a pessoa vinculada
+		pessoa.destroy()
+
+		//Retorna o objeto usuário vinculado ao porteiro
+		return dataContext.Usuario.findById(porteiroRetornado.usuarioId)
+
+		//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
+	}).then(function(usuario) {
+
+		//Exclui o usuário vinculado ao porteiro
+		usuario.destroy()
+
+		//Chama uma promise que retorna os dados em formato JSON
+	}).then(function(){
 			res.status(200).json({
         		sucesso:true,
         		msg: "Registro excluído com sucesso",
         		data: []
         	})	        	
 		})
+
+		//Caso hja um erro durante a operação 
 		.catch(function(erro){
 			console.log(erro);
 			res.status(409).json({ 
@@ -172,9 +203,6 @@ function excluiPorteiro(req,res){
 				msg: "Falha ao excluir o porteiro" 
 			});	
 		})
-
-    })
-	
 }
 
 function atualizaPorteiro(req,res){
@@ -218,7 +246,7 @@ function atualizaPorteiro(req,res){
 			//Devo fazer como no C# 
 			//Retornar o JSON com vários níveis
 			
-			nome 						: porteiroForm.nome
+			nome 						: porteiroForm.pessoa.nome
 			//nascimento 				: usuario.nascimento,
 			//enderecoLogradouro 		: usuario.endereco.logradouro,
 			//enderecoNumero 			: usuario.endereco.numero,
