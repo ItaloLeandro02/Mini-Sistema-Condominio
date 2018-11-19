@@ -48,6 +48,7 @@ function carregaPorId(req,res) {
 		//Os dados ainda existem no banco 
 		delete pessoa.id
 		delete pessoa.enderecoId
+		delete pessoa.endereco_id
 
 		//Por padrão retorna o status
         res.status(200).json({
@@ -161,10 +162,10 @@ function atualizaPessoa(req,res){
 	}
 
 	//No front devo retornar um objeto pessoa com os dados
-	let pessoa		= req.body.pessoa;
 	let pessoaForm	= req.body.pessoa;
+	let resposta
 
-	if (!pessoa && !pessoaForm) {
+	if (!pessoaForm) {
 		res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -173,7 +174,9 @@ function atualizaPessoa(req,res){
 	}
 
 	//Pesquise antes de atualizar
-	dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
+	dataContext.Pessoa.findById(req.params.id)
+	
+	.then(function(pessoa){
 		if (!pessoa) {
 			res.status(404).json({
 				sucesso: false,
@@ -182,39 +185,51 @@ function atualizaPessoa(req,res){
 			return;
 		}
 		
+		//Campos da Pessoa que serão alterados
 		let updateFields = {
-			//Devo fazer como no C# 
-			//Retornar o JSON com vários níveis
 			nome 						: pessoaForm.nome,
-			
-			/*
-			nascimento 					: pessoaFormnascimento,
-			enderecoLogradouro 			: pessoaFormendereco.logradouro,
-			enderecoNumero 				: pessoaFormendereco.numero,
-			enderecoBairro 				: porteiroForm.pessoa.endereco.bairro,
-			enderecoCidade 				: porteiroForm.pessoa.endereco.cidade,
-			enderecoUf 					: porteiroForm.pessoa.endereco.uf
-			*/
+			nascimento					: pessoaForm.nascimento
 		}
 
+		//Atualiza somente os campos Pessoa
 		pessoa.update(updateFields)
-		.then(function(pessoaAtualizada){
-			res.status(200).json({
-        		sucesso:true,
-        		msg: "Registro atualizado com sucesso",
-        		data: pessoaAtualizada
-        	})	
-		})
-		.catch(function(erro){
-			console.log(erro);
-			res.status(409).json({ 
-				sucesso: false,
-				msg: "Falha ao atualizar a pessoa" 
-			});	
-		})
 
+		//Recebe os dados da pessoa atualizada para serem exibidos na tela
+		resposta = pessoa
+
+		//Busca o endereço vinculado a Pessoa
+		return dataContext.Endereco.findById(pessoa.enderecoId)
 	})
-	
+	.then(function(enderecoEncontrado){
+
+		//Campos do endereço que serão alterados
+		let updateFields = {
+			logradouro 			: pessoaForm.endereco.logradouro,
+			numero 				: pessoaForm.endereco.numero,
+			bairro 				: pessoaForm.endereco.bairro,
+			cidade 				: pessoaForm.endereco.cidade,
+			uf 					: pessoaForm.endereco.uf
+		}
+
+		//Atualiza somente os campos Endereço
+		return enderecoEncontrado.update(updateFields)
+
+	})	
+	.then(function(pessoaAtualizada) {	
+		res.status(200).json({
+        sucesso:true,
+        msg: "Registro atualizado com sucesso",
+        data: resposta
+        	})	
+	})
+		
+	.catch(function(erro){
+		console.log(erro);
+		res.status(409).json({ 
+			sucesso: false,
+			msg: "Falha ao atualizar a pessoa" 
+		});	
+	})
 }
 
 module.exports = {
