@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Chave estrangeira Pessoa'
         },
-        endereco: {
+        enderecoCondomino: {
             type: DataTypes.STRING(80),
             field: 'endereco',
             allowNull: false,

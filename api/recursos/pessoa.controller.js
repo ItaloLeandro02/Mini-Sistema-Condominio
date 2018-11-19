@@ -121,9 +121,13 @@ function excluiPessoa(req,res){
 		return;
 	}
 
-	dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
-        
-		if (!pessoa) {
+	//Recebe os dados da pessoa antes de ser excluida
+	let pessoa
+	//Busca a pessoa pelo id passado como parâmetro na URL
+	dataContext.Pessoa.findById(req.params.id).then(function(pessoaEncontrada){
+		
+		//Verifica se a pessoa existe
+		if (!pessoaEncontrada) {
 			res.status(404).json({
 				sucesso: false,
 				msg: "Pessoa não encontrada."
@@ -131,14 +135,31 @@ function excluiPessoa(req,res){
 			return;
 		}
 
-		pessoa.destroy()
-		.then(function(){
+		//Atribui os dados antes de ser excluida
+		pessoa = pessoaEncontrada
+
+		//Exclui o objeto pessoa, bem como os outros objetos relacionados ao seu id
+		pessoaEncontrada.destroy()
+
+		//Retorna o endereço vinculado a esta pessoa
+		return dataContext.Endereco.findById(pessoa.enderecoId)
+	})
+	//Cria uma promise passando como parâmetro o endereço retornado
+	.then(function(enderecoRetornado) {
+
+		//Exclui o endereco retornado
+		enderecoRetornado.destroy()
+	})
+	//Cria uma promise para retornar o JSON
+	.then(function(){
 			res.status(200).json({
         		sucesso:true,
         		msg: "Registro excluído com sucesso",
         		data: []
         	})	        	
 		})
+
+		//Caso haja uma excessão
 		.catch(function(erro){
 			console.log(erro);
 			res.status(409).json({ 
@@ -146,9 +167,6 @@ function excluiPessoa(req,res){
 				msg: "Falha ao excluir a pessoa" 
 			});	
 		})
-
-    })
-	
 }
 
 function atualizaPessoa(req,res){
