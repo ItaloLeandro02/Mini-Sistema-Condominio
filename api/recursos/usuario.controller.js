@@ -20,6 +20,7 @@ function carregaPorId(req,res) {
     //req.param.id porque passei na URL
     return dataContext.Usuario.findById(req.params.id).then(function(usuario){
 
+		//Verifica se o id passado como parâmetro na URL retornou algo
 		if (!usuario) {
 			res.status(404).json({
 				sucesso: false,
@@ -28,7 +29,7 @@ function carregaPorId(req,res) {
 			return;
 		}
 
-		//Por padrão retorna o status
+		//Retorna o usuário vinculado ao id passado
         res.status(200).json({
 			sucesso: true,
 			data: usuario
@@ -37,11 +38,11 @@ function carregaPorId(req,res) {
 } 
 
 function salvaUsuario(req,res){
-	//req.body campos do body
-	//Mesma coisa que [FromBody] no C#
+
+	//Variável que recebe os dados do formulário
 	let usuario = req.body.usuario;
 
-
+	//Verifica se os dados estão integros
 	if (!usuario) {
 		res.status(404).json({
 			sucesso: false, 
@@ -50,13 +51,14 @@ function salvaUsuario(req,res){
 		return;
 	}
 
-	//Definindo padrão de campos
-	usuario.criacao = new Date();
-	usuario.desativado = false;
-	//pessoa.digital = Randonica; //EX UJ-48
+	//Definindo padrões 
+	usuario.criacao 	= new Date();
+	usuario.desativado 	= false;
 
+	//Cria um objeto no banco de dados do tipo usuário com as informações passadas no formulário 
 	dataContext.Usuario.create(usuario)
-	//.then é promise
+
+	//Cria uma promise passando como parâmeetro os dados do objeto criado
 	.then(function(novoUsuario){
 		res.status(201).json({
 			sucesso: true, 
@@ -73,6 +75,8 @@ function salvaUsuario(req,res){
 }
 
 function excluiUsuario(req,res){
+
+	//Verifica se o parâmetro passado é o parâmetro id
 	if (!req.params.id) {
 		res.status(409).json({
 			sucesso: false,
@@ -81,9 +85,14 @@ function excluiUsuario(req,res){
 		return;
 	}
 
-	dataContext.Usuario.findById(req.params.id).then(function(usuario){
-        
-		if (!usuario) {
+	//Pesquisa no banco de dados o usuário correspondente ao id passado como parâmetro via URL
+	dataContext.Usuario.findById(req.params.id)
+	
+	//Cria uma promise passando como parâmetro os dados retornados da pesquisa 
+	.then(function(usuarioRetornado){
+		
+		//Verifica se retornou algo
+		if (!usuarioRetornado) {
 			res.status(404).json({
 				sucesso: false,
 				msg: "Usuário não encontrado."
@@ -91,7 +100,10 @@ function excluiUsuario(req,res){
 			return;
 		}
 
-		usuario.destroy()
+		//Exclui o usuário retornado
+		usuarioRetornado.destroy()
+
+		//Cria uma promise que retorna um JSON
 		.then(function(){
 			res.status(200).json({
         		sucesso:true,
@@ -99,6 +111,8 @@ function excluiUsuario(req,res){
         		data: []
         	})	        	
 		})
+
+		//Caso ocorra uma exceção
 		.catch(function(erro){
 			console.log(erro);
 			res.status(409).json({ 
@@ -111,6 +125,7 @@ function excluiUsuario(req,res){
 
 function atualizaUsuario(req,res){
 	
+	//Verifica se o parâmetro passado via URL é um id
 	if (!req.params.id) {
 		res.status(409).json({
 			sucesso: false,
@@ -119,10 +134,11 @@ function atualizaUsuario(req,res){
 		return;
 	}
 
-	//No front devo retornar um objeto pessoa com os dados
-	let usuario = req.body.usuario;
+	//Variável que recebe os dados vindos do formulário
+	let usuarioForm = req.body.usuario;
 
-	if (!usuario) {
+	//Verifica se retornou algo
+	if (!usuarioForm) {
 		res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -130,32 +146,31 @@ function atualizaUsuario(req,res){
 		return;
 	}
 
-	//Pesquise antes de atualizar
-	dataContext.Usuario.findById(req.params.id).then(function(usuario){
+	//Pesquisa no banco de dados o usuário corresponde ao id passado como parâmetro via URL
+	dataContext.Usuario.findById(req.params.id)
+	
+	//Cria uma promise passando como parâmetro os dados da pesquisa
+	.then(function(usuarioRetornado){
 		
-		if (!usuario) {
+		//Verifica se retornou algo
+		if (!usuarioRetornado) {
 			res.status(404).json({
 				sucesso: false,
-				msg: "Usuário não encontrada."
+				msg: "Usuário não encontrado."
 			})
 			return;
 		}
 		
+		//Campos do usuário que serão atualizados
 		let updateFields = {
-			//Devo fazer como no C# 
-			//Retornar o JSON com vários níveis
-			/*
-			nome 					: usuario.nome,
-			nascimento 				: usuario.nascimento,
-			enderecoLogradouro 		: usuario.endereco.logradouro,
-			enderecoNumero 			: usuario.endereco.numero,
-			enderecoBairro 			: usuario.endereco.bairro,
-			enderecoCidade 			: usuario.endereco.cidade,
-			enderecoUf 				: usuario.endereco.uf,
-			*/
+			email	:	usuarioForm.email,
+			senha	:	usuarioForm.senha
 		}
 
-		usuario.update(updateFields)
+		//Atualiza os campos do usuário
+		usuarioRetornado.update(updateFields)
+
+		//Cria uma promise que recebe como parâmetro o objeto usuário com os dados atualizados
 		.then(function(usuarioAtualizado){
 			res.status(200).dataContext.json({
         		sucesso:true,
@@ -163,6 +178,8 @@ function atualizaUsuario(req,res){
         		data: usuarioAtualizado
         	})	
 		})
+
+		//Caso haja uma exceção
 		.catch(function(erro){
 			console.log(erro);
 			res.status(409).json({ 
@@ -170,13 +187,10 @@ function atualizaUsuario(req,res){
 				msg: "Falha ao atualizar o usuário" 
 			});	
 		})
-
 	})
-	
 }
 
 module.exports = {
-	//Quando for consumir irá pegar os nomes da primeira tabela
     carregaTudo  	: carregaTudo,
     carregaPorId 	: carregaPorId,
     salva 			: salvaUsuario,
