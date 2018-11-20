@@ -53,7 +53,7 @@ function init() {
     model.Porteiro   = conexao.import('./modelo/porteiro.js');
     model.Visita     = conexao.import('./modelo/visita.js');
     model.Condomino  = conexao.import('./modelo/condomino.js');
-    model.Endereco  = conexao.import('./modelo/endereco.js');
+    model.Endereco   = conexao.import('./modelo/endereco.js');
     
     // Arquivos
     require('./modelo/pessoa.js').initRelations();

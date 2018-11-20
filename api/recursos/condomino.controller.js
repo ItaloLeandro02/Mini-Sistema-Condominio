@@ -10,6 +10,15 @@ function carregaTudo(req,res) {
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(condominos){
+
+		condominos = condominos.map(function(condominoRetornado) {
+			condominoRetornado = condominoRetornado.get({plain : true})
+
+			delete condominoRetornado.pessoa_id
+			delete condominoRetornado.usuario_id
+
+			return condominoRetornado
+		})
         res.status(200).json({
         	sucesso:true,
         	data: condominos
@@ -21,20 +30,24 @@ function carregaPorId(req,res) {
 
     //req.param.id porque passei na URL
     return dataContext.Condomino.findById(req.params.id,{
-        include : [
+		include : [
             {
-                model       : dataContext.Usuario,
+				model : dataContext.Usuario,
+				attributes: { exclude: ['senha'] },
+				
+				//Retorna todos os atributos menos estes
                 attributes : ['email','desativado']
             },
             {
-                model : dataContext.Pessoa
+				model : dataContext.Pessoa,
+				attributes: { exclude: ['endereco_id'] },
+
+				//Inclue o endereço associado a Pessoa
+				include : {
+
+					model : dataContext.Endereco,
+				}
 			},
-			{
-				model: dataContext.Endereco,
-				
-				//Retorna todos os atributos do objeto endereço, menos o id
-				attributes: { exclude: ['id'] }
-			}
 		]
 		    
     }).then(function(condomino){
@@ -90,11 +103,11 @@ function salvaCondomino(req,res){
 		},
 		//Variável com os campos do endereço
 		endereco = {
-			logradouro  : porteiro.endereco.lgradouro,
-            numero      : porteiro.endereco.numero,
-            bairro      : porteiro.endereco.bairro,
-            cidade      : porteiro.endereco.cidade,
-            uf          : porteiro.endereco.uf,
+			logradouro  : condomino.endereco.logradouro,
+            numero      : condomino.endereco.numero,
+            bairro      : condomino.endereco.bairro,
+            cidade      : condomino.endereco.cidade,
+            uf          : condomino.endereco.uf,
 		}
 
 	if (!condomino) {
@@ -136,9 +149,9 @@ function salvaCondomino(req,res){
 
 		//Cria um objeto condomino no banco de dados
 		return dataContext.Condomino.create({
-			usuarioId : dadosUsuarioCriado.id,
-            pessoaId  : novaPessoa.id, 
-            endereco  : condomino.enderecoCondomino
+			usuarioId 			: dadosUsuarioCriado.id,
+            pessoaId  			: novaPessoa.id, 
+            enderecoCondomino  	: condomino.enderecoCondomino
 		})
 	})
 
@@ -177,18 +190,22 @@ function excluiCondomino(req,res){
 	dataContext.Condomino.findById(req.params.id)
 	
 	//Chama uma promise com os dados retornados da pesquisa
-	.then(function(condomino){
+	.then(function(condominoRetornado){
 		
 		//Verifica se retornou algo
-		if (!condomino) {
+		if (!condominoRetornado) {
 			res.status(404).json({
 				sucesso: false,
 				msg: "Condomino não encontrado."
 			})
 			return;
 		}
+
+		//Atribui os dados antes de excluir o objeto
+		dadosCondomino = condominoRetornado;
+
 		//exclui somente os dados de condomino
-		condomino.destroy()
+		condominoRetornado.destroy()
 
 		//Pesquisa no banco dedaos o usuario associado ao condomino
 		return dataContext.Usuario.findById(dadosCondomino.usuarioId)
@@ -214,7 +231,7 @@ function excluiCondomino(req,res){
 		pessoaRetornada.destroy()
 
 		//Pesquisa no banco de dados o endereço vinculado ao condomino
-		return dataContext.Endereco.findById(pessoaRetornada.enderecoId)
+		return dataContext.Endereco.findById(dadosPessoa.enderecoId)
 	})
 
 	//Cria uma promise passando como parâmetro os dados da pesquisa
@@ -268,7 +285,6 @@ function atualizaCondomino(req,res){
 
 	//Variável que recebe os dados retornados para serem usados fora das respectivas funcões
 	let dadosCondomino
-	let dadosPessoa
 
 	//Pesquisa no banco de dados o condomino com o id associado ao id passado na URL
 	dataContext.Condomino.findById(req.params.id)
@@ -277,7 +293,7 @@ function atualizaCondomino(req,res){
 	.then(function(condominoRetornado){
 		
 		//Verifica se retornou algo
-		if (!condomino) {
+		if (!condominoRetornado) {
 			res.status(404).json({
 				sucesso: false,
 				msg: "Condomino não encontrada."

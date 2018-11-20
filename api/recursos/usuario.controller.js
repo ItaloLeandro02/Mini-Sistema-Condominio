@@ -172,7 +172,7 @@ function atualizaUsuario(req,res){
 
 		//Cria uma promise que recebe como parâmetro o objeto usuário com os dados atualizados
 		.then(function(usuarioAtualizado){
-			res.status(200).dataContext.json({
+			res.status(200).json({
         		sucesso:true,
         		msg: "Registro atualizado com sucesso",
         		data: usuarioAtualizado

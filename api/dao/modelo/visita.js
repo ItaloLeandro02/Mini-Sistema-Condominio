@@ -35,6 +35,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Data e hora agendados para a chegada do visitante'
         },
+
         nomeConvidado: {
             type: DataTypes.STRING(80),
             field: 'nome_convidado',
@@ -50,9 +51,10 @@ module.exports = function(sequelize, DataTypes) {
         dataHoraExpiracao: {
             type: DataTypes.DATE,
             field: 'data_hora_expiracao',
-            allowNull: false,
+            allowNull: true,
             comment: 'Horario limite para que o convidado chegue'
         },
+      
         situacao: {
             type: DataTypes.INTEGER,
             field: 'situacao',
@@ -62,18 +64,18 @@ module.exports = function(sequelize, DataTypes) {
         portariaDataHoraChegada: {
             type: DataTypes.DATE,
             field: 'portaria_data_hora_chegada',
-            allowNull: false,
+            allowNull: true,
             comment: 'Data e hoario em que o visitante chegou'
         },
         porteiroId: {
             type: DataTypes.INTEGER,
             field: 'porteiro_id',
-            allowNull: false,
+            allowNull: true,
             comment: 'Id do porteiro'
         },
-        porteiroObservacao: {
+        portariaObservacao: {
             type: DataTypes.STRING(80),
-            field: 'porteiro_observacao',
+            field: 'portaria_observacao',
             allowNull: true,
         }
 
@@ -95,17 +97,10 @@ module.exports.initRelations = function() {
     var Visita       = dataContext.Visita;
     var Porteiro     = dataContext.Porteiro;
     var Pessoa       = dataContext.Pessoa;
-    var Usuario      = dataContext.Usuario;
     var Condomino    = dataContext.Condomino;    
 
     Visita.belongsTo(Pessoa, {
         foreignKey: 'pessoa_id',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-    });
-
-    Visita.belongsTo(Usuario, {
-        foreignKey: 'usuario_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     });

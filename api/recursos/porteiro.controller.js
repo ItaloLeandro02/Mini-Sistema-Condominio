@@ -10,6 +10,15 @@ function carregaTudo(req,res) {
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(porteiros){
+
+		porteiros = porteiros.map(function(porteiroRetornado) {
+			porteiroRetornado = porteiroRetornado.get({plain : true})
+
+			delete porteiroRetornado.pessoa_id
+			delete porteiroRetornado.usuario_id
+
+			return porteiroRetornado
+		})
         res.status(200).json({
         	sucesso:true,
         	data: porteiros
@@ -24,19 +33,21 @@ function carregaPorId(req,res) {
         include : [
             {
 				model : dataContext.Usuario,
+				attributes: { exclude: ['senha'] },
 				
 				//Retorna todos os atributos menos estes
                 attributes : ['email','desativado']
             },
             {
-                model : dataContext.Pessoa
+				model : dataContext.Pessoa,
+				attributes: { exclude: ['endereco_id'] },
+
+				//Inclue o endereço associado a Pessoa
+				include : {
+
+					model : dataContext.Endereco,
+				}
 			},
-			{
-				model: dataContext.Endereco,
-				
-				//Retorna todos os atributos do objeto endereço, menos o id
-				attributes: { exclude: ['id'] }
-			}
 		]
 		    
     }).then(function(porteiro){
@@ -52,7 +63,7 @@ function carregaPorId(req,res) {
         porteiro = porteiro.get({plain : true})
 
         delete porteiro.pessoa_id;
-        delete porteiro.usuario_id;
+		delete porteiro.usuario_id;
 
         /*
         porteiro = {...porteiro.usuario, ...porteiro.pessoa, ...porteiro}
@@ -67,7 +78,6 @@ function carregaPorId(req,res) {
 		})
     })
 
-
 } 
 
 function salvaPorteiro(req,res){
@@ -78,7 +88,7 @@ function salvaPorteiro(req,res){
         usuario = {
             email : porteiro.usuario.email,
             senha : porteiro.usuario.senha,
-            tipo  : 3,
+            tipo  : 1,
             desativado : false,
             criacao : new Date()
 		},
@@ -92,7 +102,7 @@ function salvaPorteiro(req,res){
 		},
 		//Variável com os campos do endereço
 		endereco = {
-			logradouro  : porteiro.endereco.lgradouro,
+			logradouro  : porteiro.endereco.logradouro,
             numero      : porteiro.endereco.numero,
             bairro      : porteiro.endereco.bairro,
             cidade      : porteiro.endereco.cidade,

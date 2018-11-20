@@ -39,14 +39,14 @@ rota.get('/porteiro/:id', porteiroController.carregaPorId);
 rota.post('/porteiro', porteiroController.salva);
 rota.delete('/porteiro/:id', porteiroController.exclui);
 rota.put('/porteiro/:id', porteiroController.atualiza);
-/*
+
 //Visita
 rota.get('/visita', visitaController.carregaTudo);
 rota.get('/visita/:id', visitaController.carregaPorId);
 rota.post('/visita', visitaController.salva);
 rota.delete('/visita/:id', visitaController.exclui);
 rota.put('/visita/:id', visitaController.atualiza);
-*/
+
 //Condomino
 rota.get('/condomino', condominoController.carregaTudo);
 rota.get('/condomino/:id', condominoController.carregaPorId);

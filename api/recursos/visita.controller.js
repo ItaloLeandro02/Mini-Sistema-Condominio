@@ -1,6 +1,5 @@
 //Require quero o arquivo
-const dataContext = require('../dao/dao'),
-      util        = require('../util/util');	
+const dataContext = require('../dao/dao');
 
 //Orem influência o nome mão
 //Primeiro requisição
@@ -10,6 +9,19 @@ function carregaTudo(req,res) {
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(visitas){
+
+		visitas = visitas.map(function(visitasRetornadas) {
+			visitasRetornadas = visitasRetornadas.get({plain : true})
+
+			delete visitasRetornadas.pessoa_id
+			delete visitasRetornadas.usuario_id
+			delete visitasRetornadas.condomino_id
+			delete visitasRetornadas.condomino_id
+			delete visitasRetornadas.porteiro_id
+
+			return visitasRetornadas
+		})
+		//Percorre o array retirando os dados desnecessários
         res.status(200).json({
         	sucesso:true,
         	data: visitas
@@ -23,34 +35,36 @@ function carregaPorId(req,res) {
     return dataContext.Visita.findById(req.params.id,{
         include : [
             {
-				model : dataContext.Usuario,
-				
-				//Retorna todos os atributos menos estes
-                attributes : ['email','desativado']
-            },
-            {
                 model : dataContext.Pessoa,
-
-                //Retorna todos os atributos menos estes
-                attributes: { exclude: ['id', 'enderecoId', 'endereco_id'] }
-			},
-			{
-				model: dataContext.Endereco,
+				attributes: { exclude: [ 'endereco_id'] },
 				
-				//Retorna todos os atributos do objeto endereço, menos o id
-				attributes: { exclude: ['id'] }
-            },
+				 	//Inclue os dados do endereço vínculados a pessoa
+				 	include : {
+
+						model : dataContext.Endereco,
+				 	}
+			},
             {
 				model: dataContext.Condomino,
-				
-				//Retorna todos os atributos do objeto endereço, menos o id
-				attributes: { exclude: ['id', 'pessoaId', 'usuarioId'] }
+                attributes: { exclude: ['pessoa_id', 'usuario_id'] },
+                
+                    //Retorna os dados da pessoa vínculada ao condômino
+                    include : {
+
+                        model : dataContext.Pessoa, 
+                        attributes: { exclude: ['enderecoId'] },
+                    },
             },
             {
 				model: dataContext.Porteiro,
-				
-				//Retorna todos os atributos do objeto endereço, menos o id
-				attributes: { exclude: ['id', 'pessoaId', 'usuarioId'] }
+                attributes: { exclude: ['pessoa_id', 'usuario_id',] },
+                
+                    //Retorna os dados da pessoa vínculada ao porteiro
+                    include : {
+
+                        model : dataContext.Pessoa, 
+                        attributes: { exclude: ['senha', 'endereco_id'] },
+                 }
             },
 		]
 		    
@@ -70,11 +84,13 @@ function carregaPorId(req,res) {
 		
         visita = visita.get({plain : true})
 
-        //Exclue estes registros da view, mas os mantém no banco de dadso
+        //Exclue estes registros da view, mas os mantém no banco de dados
+        delete visita.id;
         delete visita.pessoa_id;
         delete visita.usuario_id;
         delete visita.condomino_id;
         delete visita.endereco_id;
+        delete visita.porteiro_id;
 
         /*
         visita = {...visita.usuario, ...visita.pessoa, ...visita}
@@ -93,60 +109,34 @@ function carregaPorId(req,res) {
 function salvaVisita(req,res){
     
     //Cria uma variável que recebe os dados vindos do formulário
-    let visita = req.body.visita,
+    let visitaForm = req.body.visita
 
-	if (!visita) {
+	if (!visitaForm) {
 		res.status(404).json({
 			sucesso: false, 
 			msg: "Formato de entrada inválido."
 		})
 		return;
-	}    
+    }
     
-    //Define alguns valores padrões parâmetros 
-    visita.criacao = new Date()
-
-    //variavel para receber o usuario criado devido ao "Clojure"
-    let dadosUsuarioCriado
-
-	//Cria um objeto usuario no banco de dados
-	dataContext.Usuario.create(usuario)
 	
-	//Cria uma promise passando como parâmetro o objeto criado 
-    .then(function(novoUsuario){
-		
-		//Atribui o objeto passado como parâmetro para ser usado na criação do porteiro
-		dadosUsuarioCriado = novoUsuario;
-		
-		//Cria um objeto endereco no banco de dados
-        return dataContext.Endereco.create(endereco)
-	})
+	//Define algusn padrões
+	visitaForm.situacao 					= 1
+	visitaForm.dataHoraReserva				= new Date(visitaForm.dataHoraReserva)
+	visitaForm.dataHoraExpiracao			= new Date(visitaForm.dataHoraReserva)
+    visitaForm.dataHoraExpiracao.setHours(visitaForm.dataHoraReserva.getHours() + 4)
+	visitaForm.portariaDataHoraChegada		= null
+    visitaForm.portariaObservacao			= null
+    
+	//Criar um novo objeto Visita no banco de dados com os dados passados pelo formulário
+	dataContext.Visita.create(visitaForm)
 
-	//Cria uma promise passando como parâmetro o objeto criado
-	.then(function(enderecoCriado) {
-
-		//Atribuia ao campo endereco_id o valor do id do endereco criado
-		pessoa.enderecoId = enderecoCriado.id
-		//Cria um objeto pessoa no banco de dados
-		return dataContext.Pessoa.create(pessoa)
-	})
-	
-	//Cria uma promise passando como parâmetro o objeto criado
-    .then(function(novaPessoa){
-
-		//Cria un objeto porteiro no banco de dados
-        return dataContext.Porteiro.create({
-            usuarioId : dadosUsuarioCriado.id,
-            pessoaId  : novaPessoa.id 
-        })
-	})
-	
 	//Cria uma promise que retorna o JSON
-    .then(function(novoPorteiro){
+    .then(function(novaVisita){
         
         res.status(201).json({
             sucesso : true,
-            data : porteiro
+            data : novaVisita
         })
 	})
 	
@@ -155,75 +145,42 @@ function salvaVisita(req,res){
         console.log(e)
         res.status(409).json({ 
             sucesso: false,
-            msg: "Falha ao incluir o porteiro" 
+            msg: "Falha ao incluir a visita" 
         })
     })
 }
 
-function excluiPorteiro(req,res){
+function excluiVisita(req,res){
+
+	//Verifica se os dados passados no formulário estão peenchidos de forma correta
 	if (!req.params.id) {
 		res.status(409).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
 		})
 		return;
-	}
-
-	//váriavel para receber os valores retornados
-	let porteiroRetornado
-	let pessoaRetornada
-
-	//Procura o porteiro pelo id passado pela URL
-	dataContext.Porteiro.findById(req.params.id).then(function(porteiro) {
+    }
+    
+    //Pesquisa no banco de dados a visita com o id passado como parâmetro via URL
+	dataContext.Visita.findById(req.params.id)
+	
+	//Chama uma promise com os dados retornados da pesquisa
+	.then(function(visitaRetornada){
 		
-		//Atribui os dados do porteiro encontrado para serem usados fora da função
-		porteiroRetornado = porteiro
-
-		//Verifica se o porteiro existe
-		if (!porteiro) {
+		//Verifica se retornou algo
+		if (!visitaRetornada) {
 			res.status(404).json({
 				sucesso: false,
-				msg: "Porteiro não encontrado."
+				msg: "Visita não encontrada."
 			})
 			return;
 		}
 
-		//Exclui somente o porteiro
-		porteiro.destroy()
+		//Exclui os dados da visita
+        visitaRetornada.destroy()
 
-		//Retorna o objeto pessoa vinculado ao porteiro
-		return dataContext.Pessoa.findById(porteiroRetornado.pessoaId)
-
-		//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
-	}).then(function(pessoa) {
-
-		//Atribui os dados da pessoa encontrada pare serem usados fora da função
-		pessoaRetornada = pessoa
-
-		//Exclui a pessoa vinculada
-		pessoa.destroy()
-
-		//Retorna o objeto endereço vinculado ao porteiro
-		return dataContext.Endereco.findById(pessoaRetornada.enderecoId)
-	})
-	
-	//Cria uma promise passando como parâmetro os dados retornados
-	.then(function(enderecoRetornado) {
-
-		//Exclui o objeto retornado
-		enderecoRetornado.destroy()
-
-		//Retorna o objeto usuário vinculado ao porteiro
-		return dataContext.Usuario.findById(porteiroRetornado.usuarioId)
-
-		//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
-	}).then(function(usuario) {
-
-		//Exclui o usuário vinculado ao porteiro
-		usuario.destroy()
-
-		//Chama uma promise que retorna os dados em formato JSON
-	}).then(function(){
+        //Cria uma promise que retorna um JSON
+		.then(function(){
 			res.status(200).json({
         		sucesso:true,
         		msg: "Registro excluído com sucesso",
@@ -231,18 +188,19 @@ function excluiPorteiro(req,res){
         	})	        	
 		})
 
-		//Caso hja um erro durante a operação 
+		//Caso ocorra uma exceção
 		.catch(function(erro){
 			console.log(erro);
 			res.status(409).json({ 
 				sucesso: false,
-				msg: "Falha ao excluir o porteiro" 
+				msg: "Falha ao excluir a visita" 
 			});	
 		})
+    })
 }
 
-function atualizaPorteiro(req,res){
-	
+function atualizaVisita(req,res){
+	//Verifica se o parâmetro passado via URL é um id
 	if (!req.params.id) {
 		res.status(409).json({
 			sucesso: false,
@@ -252,10 +210,10 @@ function atualizaPorteiro(req,res){
 	}
 
 	//Variável que recebe os dados vindos do formulário
-	let porteiroForm = req.body.porteiro;
+	let visitaForm = req.body.visita;
 
-	//Verifica se os dados estão preenchidos de forma correta
-	if (!porteiroForm) {
+	//Verifica se retornou algo
+	if (!visitaForm) {
 		res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -263,83 +221,38 @@ function atualizaPorteiro(req,res){
 		return;
 	}
 
-	//Variável para receber os dados retornados para serem usados fora das suas respectivas funções
-	let dadosPorteiro
-
-	//Pesquisa o porteiro pelo id passado como parâmetro na URL
-	dataContext.Porteiro.findById(req.params.id)
+	//Pesquisa no banco de dados a visita que corresponde ao id passado como parâmetro via URL
+	dataContext.Visita.findById(req.params.id)
 	
-	//Chama uma promise passando como parâmetro o porteiro retornado
-	.then(function(porteiroRetornado){
-
+	//Cria uma promise passando como parâmetro os dados da pesquisa
+	.then(function(visitaRetornada){
+		
 		//Verifica se retornou algo
-		if (!porteiroRetornado) {
+		if (!visitaRetornada) {
 			res.status(404).json({
 				sucesso: false,
-				msg: "Porteiro não encontrada."
+				msg: "Visita não encontrada."
 			})
 			return;
 		}
-
-		//Atribui a uma variável os dados retornados
-		dadosPorteiro = porteiroRetornado
-
-		//Pesquisa a pessoa vinculada ao porteiro
-		return dataContext.Pessoa.findById(porteiroRetornado.pessoaId)
-	})
-	
-	//Chama uma promise passando como parâmetro os dados da pessoa vinculada
-	.then(function(pessoaRetornada){
-
+		
+		//Campos da visita que serão atualizados
 		let updateFields = {
-			nome 						: porteiroForm.pessoa.nome,
-			nascimento 					: porteiroForm.pessoa.nascimento,
+            situacao	               : visitaForm.situacao,
+            portariaDataHoraChegada    : visitaForm.portariaDataHoraChegada,
+            portariaObservacao         : visitaForm.portariaObservacao,
+            porteiroId                 : visitaForm.porteiroId
 		}
 
-		//Atualiza os dados da pessoa vinculada
-		pessoaRetornada.update(updateFields)
+		//Atualiza os campos da visita
+		visitaRetornada.update(updateFields)
 
-		//Pesquisa o endereço vinculado ao porteiro
-		return dataContext.Endereco.findById(pessoaRetornada.enderecoId)
-	})
-
-	//Chama uma promise passando como parâmetro os dados do endereço vinculado
-	.then(function(enderecoRetornado) {
-
-		let updateFields = {
-			logradouro 			: porteiroForm.endereco.logradouro,
-			numero 				: porteiroForm.endereco.numero,
-			bairro 				: porteiroForm.endereco.bairro,
-			cidade 				: porteiroForm.endereco.cidade,
-			uf 					: porteiroForm.endereco.uf
-		}
-
-		//Atualiza os dados do endereço vinculado
-		enderecoRetornado.update(updateFields)
-
-		//Pesquisa no banco de dados o usuário vinculado ao porteiro
-		return dataContext.Usuario.findById(dadosPorteiro.usuarioId)
-	})
-
-	//Cria uma promise passando como parâmetro os dados retornados da pesquisa
-	.then(function(usuarioRetornado) {
-
-		//Campos que do usuário que serão atualizados
-		let updateFields = {
-			email	:	porteiroForm.usuario.email,
-			senha	:	porteiroForm.usuario.senha
-		}
-
-		//Atualiza os campos do usuário
-		usuarioRetornado.update(updateFields)
-	})
-
-	//Chama uma promise que retona os dados e o JSON
-	.then(function(porteiroAtualizado){
+		//Cria uma promise que recebe como parâmetro o objeto visita com os dados atualizados
+		.then(function(visitaAtualizada){
 			res.status(200).json({
         		sucesso:true,
         		msg: "Registro atualizado com sucesso",
-        		data: dadosPorteiro
+        		data: visitaAtualizada
         	})	
 		})
 
@@ -348,16 +261,17 @@ function atualizaPorteiro(req,res){
 			console.log(erro);
 			res.status(409).json({ 
 				sucesso: false,
-				msg: "Falha ao atualizar o porteiro" 
+				msg: "Falha ao atualizar a visita" 
 			});	
 		})
+	})
 }
 
 module.exports = {
 	//Quando for consumir irá pegar os nomes da primeira tabela
     carregaTudo  	: carregaTudo,
     carregaPorId 	: carregaPorId,
-    salva 			: salvaPorteiro,
-    exclui 			: excluiPorteiro,
-    atualiza 		: atualizaPorteiro   
+    salva 			: salvaVisita,
+    exclui 			: excluiVisita,
+    atualiza 		: atualizaVisita
 }

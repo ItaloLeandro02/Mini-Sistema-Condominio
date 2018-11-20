@@ -10,6 +10,14 @@ function carregaTudo(req,res) {
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(pessoas){
+
+		pessoas = pessoas.map(function(pessoasRetornadas) {
+			pessoasRetornadas = pessoasRetornadas.get({plain : true})
+
+			delete pessoasRetornadas.endereco_id
+
+			return pessoasRetornadas
+		})
         res.status(200).json({
         	sucesso:true,
         	data: pessoas
@@ -24,9 +32,6 @@ function carregaPorId(req,res) {
 		include: [
 			{
 				model: dataContext.Endereco,
-				
-				//Retorna todos os atributos do objeto endereço, menos o id
-				attributes: { exclude: ['id'] }
 			}
 		]
 
@@ -46,8 +51,6 @@ function carregaPorId(req,res) {
 
 		//Deleta as informações somente na view
 		//Os dados ainda existem no banco 
-		delete pessoa.id
-		delete pessoa.enderecoId
 		delete pessoa.endereco_id
 
 		//Por padrão retorna o status
