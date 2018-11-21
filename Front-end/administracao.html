@@ -1,0 +1,161 @@
+<html lang="en" >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+
+
+  <!-- Toast -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+  <!-- Bootstrap-->
+  <link rel="stylesheet"  type="text/css" href="lib/bootstrap/bootstrap.css">
+  
+  <link rel="stylesheet"  type="text/css" href="assets/estilo.css">
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+  
+  
+  
+</head>
+
+<body ng-app="appAdministracao" ng-cloak class="plano-fundo">  
+  
+
+  <div ng-controller="AdministradorController" layout="column" flex="" layout-fill="" >
+    
+    <!--<div layout="column" class="mydiv">
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Pessoa</a></th>
+                <th>Email</a></th> 
+                <th></th> 
+                <th></th>            
+            </tr>
+          </thead>             
+            <tr ng-repeat="porteiros in vm.porteiros.data">
+                <td>{{porteiros.id}}</td>
+                <td>{{porteiros.pessoa.nome}}</td>
+                <td>{{porteiros.usuario.email}}</td> 
+                <td style="width: 20px;">               
+                    <div layout="row">
+                      <md-button class="md-fab md-mini md-primary md-warn tam" aria-label="Excluir" 
+                        ng-click="vm.excluiPessoa($event, pessoa)">
+                      <md-icon md-svg-src="img/delete.svg"></md-icon>
+                      </md-button>
+                      
+                      <md-button class="md-fab md-mini md-primary tam" 
+                        aria-label="Editar" ng-click="vm.editarPessoa(pessoa)">
+                      <md-icon md-svg-src="img/edit.svg"></md-icon>
+                      </md-button>
+                  </div>
+                </td>  
+            </tr>
+        </table>
+        
+        <div layout="row" style="padding:20px; height: 50px; border-left: 1px;">
+          <form name="vm.pessoaForm">
+            <md-input-container>
+              <label>Nome</label>
+              <input name="nome" required ng-model="vm.pessoaNome"> 
+              <div ng-messages="pessoaForm.nome.$error">
+                  <div ng-message="required">Este campo é obrigatório</div>
+              </div>               
+            </md-input-container>
+            <md-input-container>
+              <label>Cidade</label>
+              <input name="cidade" required ng-model="vm.pessoaCidade"> 
+              <div ng-messages="pessoaForm.cidade.$error">
+                  <div ng-message="required">Este campo é obrigatório</div>
+              </div>               
+            </md-input-container>
+          </form>
+          <md-button ng-click="vm.salvaDados()" class="md-warn md-raised" ng-disabled="pessoaForm.$invalid"> Salvar</md-button>
+        </div>       
+              
+    </div>
+    -->
+    <div class="mydiv">
+      <md-card class="row-card md-whiteframe-20dp" ng-repeat="porteiro in vm.dsPorteiros.data">
+          <div layout="row">
+              <div layout="row" flex="20" layout-align="center center">
+                  <md-icon md-svg-src="img/porteiro.svg" style="width: 64px; height: 64px;"></md-icon>
+              </div>
+                <div layout="column" flex>
+                  <div layout="row">
+                    <span flex></span>
+                    
+                    <md-menu>
+                        <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                            <img src="img/pencil.png" >                      
+                        </md-button>
+                        <md-menu-content width="3">
+                          <md-menu-item>
+                            <md-button> Editar </md-button>
+                          </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    
+                    <md-menu>
+                        <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                            <img src="img/more.png" >                      
+                        </md-button>
+                        <md-menu-content width="3">
+                          <md-menu-item>
+                            <md-button> Excluir </md-button>
+                          </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+
+                  </div>
+
+                  <div layout="column" layout-align="start start">
+                      <span class="font-size-18 texto-cinza-medio negrito">{{porteiro.pessoa.nome}}</span>
+                      <span class="font-size-16 texto-cinza-claro">{{porteiro.usuario.email}}</span>
+                  </div>
+              </div>
+          </div>
+            
+      </md-card>
+    
+    </div>
+        
+  </div>  
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-resource.js"></script> 
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+  <!-- TOASTR notificador -->
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js" 
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  
+  
+
+  <!-- Nossa aplicacao  -->
+
+  <script type="text/javascript">    
+    
+    angular.module('appAdministracao', ['ngMaterial', 'ngMessages', 'ngResource']);
+
+
+  </script>
+
+  <script src="./AdministradorController.js"></script>
+
+</body>
+</html>

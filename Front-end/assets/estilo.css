@@ -1,0 +1,54 @@
+.plano-fundo {
+    background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+}
+
+.mydiv {
+    width: 600px;
+    margin-top: 20px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tam {
+    height: 10px;
+    width: 15px;
+}
+
+.row-card {
+    padding: 15px;
+    margin: 10px 0 10px 0; 
+    border-radius: 10px;
+}
+
+.font-size-12 {
+    font-size: 12px;    
+}
+
+.font-size-14 {
+    font-size: 14px;    
+}
+
+.font-size-16 {
+    font-size: 16px;    
+}
+
+.font-size-18 {
+    font-size: 18px;    
+}
+
+.font-size-20 {
+    font-size: 20px;    
+}
+
+.texto-cinza-medio {
+    color: #333;
+}
+
+.texto-cinza-claro {
+    color: #777;
+}
+
+.negrito {
+    font-weight: 500;
+}
