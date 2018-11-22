@@ -20,7 +20,7 @@
 <body ng-app="appAdministracao" ng-cloak class="plano-fundo">  
   
 
-  <div ng-controller="AdministradorController" layout="column" flex="" layout-fill="" >
+  <div ng-controller="porteiroController" layout="column" flex="" layout-fill>
     
     <!--<div layout="column" class="mydiv">
         <table class="table">
@@ -119,9 +119,15 @@
       </md-card>
     
     </div>
+
+      <div layout="row" layout-align="end start">
+        <md-button class="md-raised" aria-label="Novo Porteiro">
+          <md-icon md-svg-src="../img/add.svg"></md-icon>
+        </md-button>
+      </div>
         
   </div>  
- 
+
   <!-- Angular Material requires Angular.js Libraries -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-resource.js"></script> 
@@ -151,7 +157,7 @@
 
   </script>
 
-  <script src="./administradorController.js"></script>
+  <script src="./porteiroController.js"></script>
 
 </body>
 </html>

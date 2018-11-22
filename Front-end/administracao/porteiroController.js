@@ -1,12 +1,24 @@
 angular.module('appAdministracao')
-.controller('AdministradorController', AdministradorController)
+.controller('porteiroController', porteiroController)
 .controller('editarController', editarController)
 
 
-function AdministradorController($scope, $resource, $mdDialog){
+function porteiroController($scope, $resource, $mdDialog){
     
+
 	$scope.vm = {};
 	let vm = $scope.vm;
+
+	  vm.topDirections = ['left', 'up'];
+      vm.bottomDirections = ['down', 'right'];
+
+      vm.isOpen = true;
+
+      vm.availableModes = ['md-fling', 'md-scale'];
+      vm.selectedMode = 'md-fling';
+
+      vm.availableDirections = ['up', 'down', 'left', 'right'];
+      vm.selectedDirection = 'up';
 
 	//Cria uma variável para manipular objetos porteiro
 	let porteiroApi = $resource('http://127.0.0.1:3333/api/porteiro/:id', {id: '@id'}, {
