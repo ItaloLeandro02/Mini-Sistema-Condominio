@@ -9,15 +9,11 @@
   <!-- Toast -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-  <!-- Bootstrap-->
-  <link rel="stylesheet"  type="text/css" href="lib/bootstrap/bootstrap.css">
   
-  <link rel="stylesheet"  type="text/css" href="assets/estilo.css">
+  <link rel="stylesheet"  type="text/css" href="../assets/estilo.css">
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-  
-  
   
 </head>
 
@@ -83,7 +79,7 @@
       <md-card class="row-card md-whiteframe-20dp" ng-repeat="porteiro in vm.dsPorteiros.data">
           <div layout="row">
               <div layout="row" flex="20" layout-align="center center">
-                  <md-icon md-svg-src="img/porteiro.svg" style="width: 64px; height: 64px;"></md-icon>
+                  <md-icon md-svg-src="../img/porteiro.svg" style="width: 64px; height: 64px;"></md-icon>
               </div>
                 <div layout="column" flex>
                   <div layout="row">
@@ -91,22 +87,22 @@
                     
                     <md-menu>
                         <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
-                            <img src="img/pencil.png" >                      
+                            <img src="../img/pencil.png" >                      
                         </md-button>
                         <md-menu-content width="3">
                           <md-menu-item>
-                            <md-button> Editar </md-button>
+                              <md-button ng-click="vm.editar($event, porteiro)"> Editar </md-button>
                           </md-menu-item>
                         </md-menu-content>
                     </md-menu>
                     
                     <md-menu>
                         <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
-                            <img src="img/more.png" >                      
+                            <img src="../img/more.png" >                      
                         </md-button>
                         <md-menu-content width="3">
                           <md-menu-item>
-                            <md-button> Excluir </md-button>
+                            <md-button ng-click="vm.excluir($event, porteiro)"> Excluir </md-button>
                           </md-menu-item>
                         </md-menu-content>
                     </md-menu>
@@ -119,13 +115,13 @@
                   </div>
               </div>
           </div>
-            
+      
       </md-card>
     
     </div>
         
   </div>  
-
+ 
   <!-- Angular Material requires Angular.js Libraries -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-resource.js"></script> 
@@ -155,7 +151,7 @@
 
   </script>
 
-  <script src="./AdministradorController.js"></script>
+  <script src="./administradorController.js"></script>
 
 </body>
 </html>

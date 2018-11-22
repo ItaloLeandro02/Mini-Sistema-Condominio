@@ -1,0 +1,91 @@
+<md-dialog aria-label="Editar Porteiro">
+  <form ng-cloak  name="porteiroForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Editar Porteiro</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancelar()">
+          <md-icon md-svg-src="../img/cancel.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h2>Alteração de Dados Cadastrais</h2>
+    
+          <md-content layout-padding>
+
+                  <md-input-container class="md-block" flex-gt-xs>
+                    <label>Nome</label>
+                    <input ng-model="vm.porteiroNome">
+                  </md-input-container>
+          
+                <div layout-gt-sm="row">
+                  <md-input-container>
+                    <label>Nascimento</label>
+                    <md-datepicker ng-model="vm.porteiroNascimento" md-open-on-focus></md-datepicker>
+                  </md-input-container>
+
+                
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Email</label>
+                    <input ng-model="vm.porteiroEmail">
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Senha</label>
+                    <input ng-model="vm.porteiroSenha">
+                  </md-input-container>
+                </div>
+
+                <md-input-container class="md-block">
+                  <label>Logradouro</label>
+                  <input ng-model="vm.porteiroLogradouro">
+                </md-input-container>
+
+                <md-input-container md-no-float class="md-block">
+                  <input name="numero" ng-model="vm.porteiroNumero" placeholder="Número" required ng-pattern="/[0-9]$/">
+                    <div ng-messages="porteiroForm.numero.$error" >
+                      <div ng-message="required" class="my-message">Este campo é obrigatório.</div>
+                      <div ng-message="pattern" class="my-message">Insira somente números.</div>
+                    </div>
+                </md-input-container>
+
+                <div layout-gt-sm="row">
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Bairro</label>
+                    <input ng-model="vm.porteiroBairro">
+                  </md-input-container>
+
+                   <md-input-container class="md-block" flex-gt-sm>
+                    <label>Cidade</label>
+                    <input ng-model="vm.porteiroCidade">
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>UF</label>
+                    <md-select ng-model="vm.porteiroUf">
+                      <md-option ng-repeat="estado in vm.estados" value="{{estado.abbrev}}">
+                        {{estado.abbrev}}
+                      </md-option>
+                    </md-select>
+                  </md-input-container>
+
+                </div>
+
+                 <div>
+                  <center>
+                    <md-button type="reset" class="md-warn">Limpar</md-button>
+                    <span flex></span>
+                    <md-button type="submit" ng-click="vm.salvar()" class="md-fab md-primary" aria-label="Salvar Dados">
+                    <md-icon md-svg-src="../img/save.svg"></md-icon>
+                    </md-button>
+                  </center>
+                </div>
+
+          </md-content>
+       
+    </md-dialog-content>
+  </form>
+</md-dialog>

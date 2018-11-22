@@ -10,7 +10,7 @@ function carregaTudo(req,res) {
 		include : [
             {
 				model : dataContext.Usuario,
-				attributes: { exclude: ['senha'] },
+				//attributes: { exclude: ['senha'] },
 				
             },
             {
