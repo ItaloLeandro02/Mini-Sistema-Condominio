@@ -16,9 +16,10 @@
 }
 
 .row-card {
-    padding: 15px;
-    margin: 10px 0 10px 0; 
-    border-radius: 10px;
+    padding             : 15px;
+    margin              : 10px 0 10px 0; 
+    border-radius       : 10px;
+    background-color    : #4F4F4F 
 }
 
 .font-size-12 {
@@ -58,4 +59,31 @@
     bottom:0; 
     width:100%;
     margin-top: 10px;
+}
+
+.painel-titulo {
+    text-align      : center;
+    margin-left     : auto;
+    margin-right    : auto;
+    background      : linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
+}
+.painel-corpo {
+    text-align      : center;
+    
+}
+.texto-vermelho {
+    color      : #FFFF00;
+    font-size  : 30px;
+    font-weight: bold; 
+}
+.fundo {
+ background: rgb(2,0,36);
+ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,79,121,1) 43%, rgba(10,117,6,1) 100%);
+}
+.md-headline {
+    color       : #ffffff;
+    font-size   : 30px; 
+}
+.md-subhead {
+    color       : #CDC9C9;
 }

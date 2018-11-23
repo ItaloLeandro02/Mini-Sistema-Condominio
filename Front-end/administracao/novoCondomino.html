@@ -1,0 +1,110 @@
+<md-dialog aria-label="Novo Condomino">
+  <form ng-cloak  name="novoCondominoForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Novo Condomino</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancelar()">
+          <md-icon md-svg-src="../img/cancel.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h2>Cadastro de Condomino</h2>
+    
+          <md-content layout-padding>
+
+                  <md-input-container class="md-block" flex-gt-xs>
+                    <label>Nome</label>
+                    <input ng-model="vm.condominoNome">
+                  </md-input-container>
+          
+                <div layout-gt-sm="row">
+                  <md-input-container>
+                    <label>CPF</label>
+                    <input ng-model="vm.condominoCpf" ></input>
+                  </md-input-container>
+
+                  <md-input-container>
+                    <label>Nascimento</label>
+                    <md-datepicker ng-model="vm.condominoNascimento" md-open-on-focus></md-datepicker>
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Email</label>
+                    <input type="email" ng-model="vm.condominoEmail">
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Senha</label>
+                    <input type="password" name="senha"ng-model="vm.condominoSenha">
+                  </md-input-container>
+
+                   <md-input-container class="md-block" flex-gt-sm>
+                    <label>Comfirme a Senha</label>
+                    <input type="password" name="senha1" ng-model="vm.condominoSenha1" ng-pattern="vm.condominoSenha">
+                     <div ng-messages="novoCondominoForm.senha1.$error" >
+                      <div ng-message="required" class="my-message">Este campo é obrigatório.</div>
+                      <div ng-message="pattern" class="my-message">As Senhas diferem.</div>
+                    </div>
+                  </md-input-container>
+                </div>
+
+                <md-input-container class="md-block">
+                  <label>Logradouro</label>
+                  <input ng-model="vm.condominoLogradouro">
+                </md-input-container>
+
+                <md-input-container md-no-float class="md-block">
+                  <input name="numero" ng-model="vm.condominoNumero" placeholder="Número" required ng-pattern="/[0-9]$/">
+                    <div ng-messages="condominoForm.numero.$error" >
+                      <div ng-message="required" class="my-message">Este campo é obrigatório.</div>
+                      <div ng-message="pattern" class="my-message">Insira somente números.</div>
+                    </div>
+                </md-input-container>
+
+                <div layout-gt-sm="row">
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Bairro</label>
+                    <input ng-model="vm.condominoBairro">
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Cidade</label>
+                    <input ng-model="vm.condominoCidade">
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>UF</label>
+                    <md-select ng-model="vm.condominoUf">
+                      <md-option ng-repeat="estado in vm.estados" value="{{estado.abbrev}}">
+                        {{estado.abbrev}}
+                      </md-option>
+                    </md-select>
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-sm>
+                    <label>Endereço Condomínio</label>
+                    <input ng-model="vm.condominoEnderecoCondomino">
+                  </md-input-container>
+
+                </div>
+
+                 <div>
+                  <center>
+                    <md-button type="reset" class="md-warn">Limpar</md-button>
+                    <span flex></span>
+                    <md-button type="submit" ng-click="vm.salvar()" class="md-fab md-primary" aria-label="Salvar Dados" ng-disabled="novoCondominoForm.senha1.$invalid">
+                    <md-icon md-svg-src="../img/save.svg"></md-icon>
+                    </md-button>
+                  </center>
+                </div>
+
+          </md-content>
+       
+    </md-dialog-content>
+  </form>
+</md-dialog>
+

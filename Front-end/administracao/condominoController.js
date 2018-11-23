@@ -9,7 +9,7 @@ function condominoController($scope, $resource, $mdDialog){
 	$scope.vm = {};
 	let vm = $scope.vm;
 
-	//Cria uma variável para manipular objetos porteiro
+	//Cria uma variável para manipular objetos condomino
 	let condominoApi = $resource('http://127.0.0.1:3333/api/condomino/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
@@ -86,30 +86,29 @@ function condominoController($scope, $resource, $mdDialog){
 	
 
 	function excluirCondomino(IdCondomino){
-		let dsCondomino 	= new condominoApi();
-			dsCondomino.id 	= IdCondomino;
+			let dsCondomino 	= new condominoApi();
+				dsCondomino.id 	= IdCondomino;
 
-		let sucesso = function(resposta){
-			console.log(resposta)			
-			if (resposta.dado == null) {
-				toastr.info("SUCESSO","Condomino excluído com êxito :)");				
+			let sucesso = function(resposta){
+				console.log(resposta)			
+				if (resposta.dado == null) {
+					toastr.info("SUCESSO","Condomino excluído com êxito :)");				
+				}
+				carregaCondominos();
 			}
-			carregaCondominos();
-		}
-		let erro = function(resposta){
-			console.log(resposta);	
-		}
-		dsCondomino.$delete({id: IdCondomino},sucesso,erro);
+			let erro = function(resposta){
+				console.log(resposta);	
+			}
+			dsCondomino.$delete({id: IdCondomino},sucesso,erro);
 	}
 }
-
 
 function editarController ($scope, $resource, $mdDialog, objeto) {
 
 	$scope.vm = {};
 	let vm = $scope.vm;
 
-	//Cria uma variável para manipular objetos porteiro
+	//Cria uma variável para manipular objetos condomino
 	let condominoApi = $resource('http://127.0.0.1:3333/api/condomino/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
@@ -141,29 +140,29 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
         	}
 
         condomino.enderecoCondomino	 	= vm.condominoEndereco	
-        dsPorteiro.condomino 			= condomino
+        dsCondomino.condomino 			= condomino
 			
 		let sucesso = function(resposta){
 			console.log(resposta)
 			if (resposta.sucesso) {				
-				if (vm.porteiroId) {
-					toastr.info("Porteiro atualizado com êxito","SUCESSO")
+				if (vm.condominoId) {
+					toastr.info("Condomino atualizado com êxito","SUCESSO")
 				} else {
-					toastr.success("Porteiro incluído com êxito :)","SUCESSO")	
+					toastr.success("Condomino incluído com êxito :)","SUCESSO")	
 				}
 
 				$mdDialog.hide(true)
 			}
-			carregaPorteiros();
+			carregaCondominos();
 		}
 		let erro = function(resposta){
 			console.log(resposta)	
 		}
-		if (vm.porteiroId) {
-			dsPorteiro.id 		= vm.porteiroId ;
-			dsPorteiro.$update().then(sucesso,erro)
+		if (vm.condominoId) {
+			dsCondomino.id 		= vm.condominoId ;
+			dsCondomino.$update().then(sucesso,erro)
 		} else {
-			dsPorteiro.$save().then(sucesso,erro) 
+			dsCondomino.$save().then(sucesso,erro) 
 		}	
     };
 
@@ -178,16 +177,17 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
     return {abbrev: estado};
 	});
 	
-	vm.porteiroId 					= objeto.id
-    vm.porteiroNome			 		= objeto.pessoa.nome
-    vm.porteiroNascimento			= objeto.pessoa.nascimento
-    vm.porteiroEmail				= objeto.usuario.email
-    vm.porteiroSenha				= objeto.usuario.senha
-    vm.porteiroLogradouro			= objeto.pessoa.endereco.logradouro
-    vm.porteiroNumero				= objeto.pessoa.endereco.numero
-    vm.porteiroBairro				= objeto.pessoa.endereco.bairro
-    vm.porteiroCidade				= objeto.pessoa.endereco.cidade
-    vm.porteiroUf					= objeto.pessoa.endereco.uf
+	vm.condominoId 					= objeto.id
+	vm.condominoEnderecoCondomino	= objeto.enderecoCondomino
+    vm.condominoNome			 	= objeto.pessoa.nome
+    vm.condominoNascimento			= objeto.pessoa.nascimento
+    vm.condominoEmail				= objeto.usuario.email
+    vm.condominoSenha				= objeto.usuario.senha
+    vm.condominoLogradouro			= objeto.pessoa.endereco.logradouro
+    vm.condominoNumero				= objeto.pessoa.endereco.numero
+    vm.condominoBairro				= objeto.pessoa.endereco.bairro
+    vm.condominoCidade				= objeto.pessoa.endereco.cidade
+    vm.condominoUf					= objeto.pessoa.endereco.uf
 }
 
 function novoController ($scope, $resource, $mdDialog) {
@@ -195,8 +195,8 @@ function novoController ($scope, $resource, $mdDialog) {
 	$scope.vm = {};
 	let vm = $scope.vm;
 
-	//Cria uma variável para manipular objetos porteiro
-	let porteiroApi = $resource('http://127.0.0.1:3333/api/porteiro/:id', {id: '@id'}, {
+	//Cria uma variável para manipular objetos condomino
+	let condominoApi = $resource('http://127.0.0.1:3333/api/condomino/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
     	}
@@ -206,53 +206,43 @@ function novoController ($scope, $resource, $mdDialog) {
 	vm.cancelar = cancelar
 
 	function salvar() {
-
-	senha 	= document.novoPorteiroForm.senha.value
-	senha1 	= document.novoPorteiroForm.senha1.value
- 
-	if (senha == senha1) {
-		vm.porteiroSenha = senha
-	}
-	else {
-		alert("SENHAS DIFERENTES")
-	}
-
-    	let dsPorteiro					= new porteiroApi(),
-        	porteiro = {
+    	let dsCondomino					= new condominoApi(),
+        	condomino = {
 	        	usuario : {
-	        		email 				: vm.porteiroEmail,
-	        		senha 				: vm.porteiroSenha,
+	        		email 				: vm.condominoEmail,
+	        		senha 				: vm.condominoSenha,
 	        	},
 	        	pessoa: {
-	        		nome 				: vm.porteiroNome,
-	        		nascimento 			: vm.porteiroNascimento,
-	        		cpf					: vm.porteiroCpf
+	        		nome 				: vm.condominoNome,
+	        		nascimento 			: vm.condominoNascimento,
+	        		cpf					: vm.condominoCpf
 	        	},
 	        	endereco : {
-	        		logradouro 			: vm.porteiroLogradouro,
-	        		bairro 				: vm.porteiroBairro,
-	        		numero 				: vm.porteiroNumero,
-	        		cidade 				: vm.porteiroCidade,
-	        		uf 					: vm.porteiroUf
+	        		logradouro 			: vm.condominoLogradouro,
+	        		bairro 				: vm.condominoBairro,
+	        		numero 				: vm.condominoNumero,
+	        		cidade 				: vm.condominoCidade,
+	        		uf 					: vm.condominoUf
 	        	} 
         	}
 
-        dsPorteiro.porteiro = porteiro
+        condomino.enderecoCondomino 	= vm.condominoEnderecoCondomino
+        dsCondomino.condomino 			= condomino
 			
 		let sucesso = function(resposta){
 		 	console.log(resposta)
 			if (resposta.sucesso) {				
-				toastr.success("Porteiro incluído com êxito :)","SUCESSO")	
+				toastr.success("Condomino incluído com êxito :)","SUCESSO")	
 			}
 				$mdDialog.hide(true)
 			
-			carregaPorteiros();
+			carregaCondominos();
 		}
 		let erro = function(resposta){
 			console.log(resposta)	
 		}
 
-		dsPorteiro.$save().then(sucesso,erro)
+		dsCondomino.$save().then(sucesso,erro)
     };
 
     function cancelar() {
