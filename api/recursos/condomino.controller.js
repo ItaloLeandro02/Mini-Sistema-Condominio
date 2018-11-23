@@ -7,8 +7,23 @@ const dataContext = require('../dao/dao'),
 function carregaTudo(req,res) {
     
     return dataContext.Condomino.findAll({
-		//Procura a Primary Key
-    	order : 'id'
+		include : [
+            {
+				model : dataContext.Usuario,
+				//attributes: { exclude: ['senha'] },
+				
+            },
+            {
+				model : dataContext.Pessoa,
+				attributes: { exclude: ['endereco_id'] },
+
+				//Inclue o endereço associado a Pessoa
+				include : {
+
+					model : dataContext.Endereco,
+				}
+			},
+		]
     }).then(function(condominos){
 
 		condominos = condominos.map(function(condominoRetornado) {

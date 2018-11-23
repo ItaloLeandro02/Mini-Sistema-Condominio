@@ -17,64 +17,17 @@
   
 </head>
 
-<body ng-app="appAdministracao" ng-cloak class="plano-fundo">  
+<body ng-app="appListaPorteiro" ng-cloak class="plano-fundo">  
   
 
   <div ng-controller="porteiroController" layout="column" flex="" layout-fill>
-    
-    <!--<div layout="column" class="mydiv">
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Pessoa</a></th>
-                <th>Email</a></th> 
-                <th></th> 
-                <th></th>            
-            </tr>
-          </thead>             
-            <tr ng-repeat="porteiros in vm.porteiros.data">
-                <td>{{porteiros.id}}</td>
-                <td>{{porteiros.pessoa.nome}}</td>
-                <td>{{porteiros.usuario.email}}</td> 
-                <td style="width: 20px;">               
-                    <div layout="row">
-                      <md-button class="md-fab md-mini md-primary md-warn tam" aria-label="Excluir" 
-                        ng-click="vm.excluiPessoa($event, pessoa)">
-                      <md-icon md-svg-src="img/delete.svg"></md-icon>
-                      </md-button>
-                      
-                      <md-button class="md-fab md-mini md-primary tam" 
-                        aria-label="Editar" ng-click="vm.editarPessoa(pessoa)">
-                      <md-icon md-svg-src="img/edit.svg"></md-icon>
-                      </md-button>
-                  </div>
-                </td>  
-            </tr>
-        </table>
-        
-        <div layout="row" style="padding:20px; height: 50px; border-left: 1px;">
-          <form name="vm.pessoaForm">
-            <md-input-container>
-              <label>Nome</label>
-              <input name="nome" required ng-model="vm.pessoaNome"> 
-              <div ng-messages="pessoaForm.nome.$error">
-                  <div ng-message="required">Este campo é obrigatório</div>
-              </div>               
-            </md-input-container>
-            <md-input-container>
-              <label>Cidade</label>
-              <input name="cidade" required ng-model="vm.pessoaCidade"> 
-              <div ng-messages="pessoaForm.cidade.$error">
-                  <div ng-message="required">Este campo é obrigatório</div>
-              </div>               
-            </md-input-container>
-          </form>
-          <md-button ng-click="vm.salvaDados()" class="md-warn md-raised" ng-disabled="pessoaForm.$invalid"> Salvar</md-button>
-        </div>       
-              
-    </div>
-    -->
+
+     <div layout="row" layout-align="start">
+        <md-button class="md-raised" ng-click="vm.novo($event)" aria-label="Novo Porteiro">
+          <md-icon md-svg-src="../img/add.svg"></md-icon>
+        </md-button>
+      </div>
+
     <div class="mydiv">
       <md-card class="row-card md-whiteframe-20dp" ng-repeat="porteiro in vm.dsPorteiros.data">
           <div layout="row">
@@ -120,12 +73,6 @@
     
     </div>
 
-      <div layout="row" layout-align="end start">
-        <md-button class="md-raised" aria-label="Novo Porteiro">
-          <md-icon md-svg-src="../img/add.svg"></md-icon>
-        </md-button>
-      </div>
-        
   </div>  
 
   <!-- Angular Material requires Angular.js Libraries -->
@@ -152,7 +99,7 @@
 
   <script type="text/javascript">    
     
-    angular.module('appAdministracao', ['ngMaterial', 'ngMessages', 'ngResource']);
+    angular.module('appListaPorteiro', ['ngMaterial', 'ngMessages', 'ngResource']);
 
 
   </script>
