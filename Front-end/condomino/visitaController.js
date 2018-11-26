@@ -1,46 +1,46 @@
-angular.module('appPorteiro')
-.controller('porteiroController', porteiroController)
+angular.module('appListaVisita')
+.controller('visitaController', porteiroController)
 .controller('editarController', editarController)
 .controller('novoController', novoController)
 
-function porteiroController($scope, $resource, $mdDialog){
+function visitaController($scope, $resource, $mdDialog){
     
 
 	$scope.vm = {};
 	let vm = $scope.vm;
 
 	//Cria uma variável para manipular objetos porteiro
-	let porteiroApi = $resource('http://127.0.0.1:3333/api/porteiro/:id', {id: '@id'}, {
+	let visitaApi = $resource('http://127.0.0.1:3333/api/visita/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
     	}
       });
 
 	function init(){		
-		carregaPorteiros();
+		carregaVisitas();
 	} 
 	init()
 
-	vm.carregaPorteiros = carregaPorteiros
+	vm.carregaVisitas   = carregaVisitas
 	vm.editar 			= editar
 	vm.novo				= novo
 	vm.excluir			= excluir
-	vm.excluirPorteiro  = excluirPorteiro
+	vm.excluirVisita    = excluirVisita
   	
-    //Função para retornar todos os porteiros no banco de dados
-	function carregaPorteiros(){
-		vm.dsPorteiros = new porteiroApi();
-		vm.dsPorteiros.$get().then(function(resposta){			
-			vm.dsPorteiros.data = resposta.data;
+    //Função para retornar todas as visitas no banco de dados
+	function carregaVisitas(){
+		vm.dsVisitas = new visitaApi();
+		vm.dsVisitas.$get().then(function(resposta){			
+			vm.dsVisitas.data = resposta.data;
 		})	
     }
 
-    function editar(ev, porteiro) {
+    function editar(ev, visita) {
 
     	$mdDialog.show({
-    	 locals: { objeto: porteiro }, //here where we pass our data
+    	 locals: { objeto: visita }, //here where we pass our data
       	 controller: 'editarController',
-      	 templateUrl: 'editarPorteiro.html',
+      	 templateUrl: 'editarVisita.html',
      	 parent: angular.element(document.body),
      	 bindToController: true,
      	 targetEvent: ev,
@@ -48,7 +48,7 @@ function porteiroController($scope, $resource, $mdDialog){
 
 		.then(function(edicao) {
 			if (edicao) {
-				carregaPorteiros();
+				carregaVisitas();
 			}
 		})
   	};
@@ -57,7 +57,7 @@ function porteiroController($scope, $resource, $mdDialog){
 
     	$mdDialog.show({
       	 controller: 'novoController',
-      	 templateUrl: 'novoPorteiro.html',
+      	 templateUrl: 'novaVisita.html',
      	 parent: angular.element(document.body),
      	 bindToController: true,
      	 targetEvent: ev,
@@ -65,41 +65,41 @@ function porteiroController($scope, $resource, $mdDialog){
 
 		.then(function(edicao) {
 			if (edicao) {
-				carregaPorteiros();
+				carregaVisitas();
 			}
 		})
   	};
 
-  	function excluir(ev, porteiro) {
+  	function excluir(ev, visita) {
 
 		let confirmacao = $mdDialog.confirm()
 	        .title('A	guardando confirmação')
-			.textContent('Confirma a exclusão do porteiro ' + porteiro.pessoa.nome)
+			.textContent('Confirma a exclusão da visita da pessoa' + visita.pessoa.nome)
 	        .ariaLabel('Msg interna do botao')
 	        .targetEvent(ev)
 	        .ok('Sim')
 	        .cancel('Não');
 	    		$mdDialog.show(confirmacao).then(function() {
-	      			excluirPorteiro(porteiro.id)
+	      			excluirVisita(visita.id)
 	    		});
 	}
 	
 
-	function excluirPorteiro(IdPorteiro){
-		let dsPorteiro = new porteiroApi();
-			dsPorteiro.id = IdPorteiro;
+	function excluirVisita(IdVisita){
+		let dsVisita = new visitaApi();
+			dsVisita.id = IdVisita;
 
 		let sucesso = function(resposta){
 			console.log(resposta)			
 			if (resposta.dado == null) {
-				toastr.info("SUCESSO","Porteiro excluído com êxito :)");				
+				toastr.info("SUCESSO","Visita excluída com êxito :)");				
 			}
-			carregaPorteiros();
+			carregaVisitas();
 		}
 		let erro = function(resposta){
 			console.log(resposta);	
 		}
-		dsPorteiro.$delete({id: IdPorteiro},sucesso,erro);
+		dsVisita.$delete({id: IdVisita},sucesso,erro);
 	}
 }
 
@@ -109,7 +109,7 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
 	let vm = $scope.vm;
 
 	//Cria uma variável para manipular objetos porteiro
-	let porteiroApi = $resource('http://127.0.0.1:3333/api/porteiro/:id', {id: '@id'}, {
+	let visitaApi = $resource('http://127.0.0.1:3333/api/visita/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
     	}
@@ -120,8 +120,8 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
 
 	
 	function salvar() {
-    	let dsPorteiro					= new porteiroApi(),
-        	porteiro = {
+    	let dsVisita					= new visitaApi(),
+        	visita = {
 	        	usuario : {
 	        		email 				: vm.porteiroEmail,
 	        		senha 				: vm.porteiroSenha,
@@ -194,7 +194,7 @@ function novoController ($scope, $resource, $mdDialog) {
 	let vm = $scope.vm;
 
 	//Cria uma variável para manipular objetos porteiro
-	let porteiroApi = $resource('http://127.0.0.1:3333/api/porteiro/:id', {id: '@id'}, {
+	let visitaApi = $resource('http://127.0.0.1:3333/api/visita/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
     	}
@@ -205,17 +205,7 @@ function novoController ($scope, $resource, $mdDialog) {
 
 	function salvar() {
 
-	senha 	= document.novoPorteiroForm.senha.value
-	senha1 	= document.novoPorteiroForm.senha1.value
- 
-	if (senha == senha1) {
-		vm.porteiroSenha = senha
-	}
-	else {
-		alert("SENHAS DIFERENTES")
-	}
-
-    	let dsPorteiro					= new porteiroApi(),
+    	let dsVisita					= new visitaApi(),
         	porteiro = {
 	        	usuario : {
 	        		email 				: vm.porteiroEmail,

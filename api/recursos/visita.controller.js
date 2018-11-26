@@ -126,7 +126,9 @@ function salvaVisita(req,res){
 	visitaForm.dataHoraExpiracao			= new Date(visitaForm.dataHoraReserva)
     visitaForm.dataHoraExpiracao.setHours(visitaForm.dataHoraReserva.getHours() + 4)
 	visitaForm.portariaDataHoraChegada		= null
-    visitaForm.portariaObservacao			= null
+	visitaForm.portariaObservacao			= null
+	
+	visitaForm.
     
 	//Criar um novo objeto Visita no banco de dados com os dados passados pelo formulário
 	dataContext.Visita.create(visitaForm)
