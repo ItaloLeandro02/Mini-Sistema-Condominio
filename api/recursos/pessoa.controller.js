@@ -6,7 +6,28 @@ const dataContext = require('../dao/dao'),
 //Primeiro requisição
 function carregaTudo(req,res) {
     
-    return dataContext.Pessoa.findAll({
+	if (req.query.search) {
+
+		return dataContext.Pessoa.findAll({
+			where : {
+				nome: {
+					$like : req.query.search+'%'
+				} 
+			}
+		})
+		.then(function(pessoasFiltradas) {
+	
+			
+			res.status(200).json({
+				sucesso:true,
+				data: pessoasFiltradas
+			})
+		})
+		//Depois de filtras os nomes devo retornar isso
+		
+	}
+	
+	return dataContext.Pessoa.findAll({
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(pessoas){
@@ -22,7 +43,8 @@ function carregaTudo(req,res) {
         	sucesso:true,
         	data: pessoas
         })
-    })
+	})
+	
 }    
 
 function carregaPorId(req,res) {

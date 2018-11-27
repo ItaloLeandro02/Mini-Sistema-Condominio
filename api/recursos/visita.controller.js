@@ -125,8 +125,6 @@ function salvaVisita(req,res){
 	visitaForm.dataHoraReserva				= new Date(visitaForm.dataHoraReserva)
 	visitaForm.dataHoraExpiracao			= new Date(visitaForm.dataHoraReserva)
     visitaForm.dataHoraExpiracao.setHours(visitaForm.dataHoraReserva.getHours() + 4)
-	visitaForm.portariaDataHoraChegada		= null
-    visitaForm.portariaObservacao			= null
     
 	//Criar um novo objeto Visita no banco de dados com os dados passados pelo formulário
 	dataContext.Visita.create(visitaForm)
@@ -235,13 +233,20 @@ function atualizaVisita(req,res){
 			})
 			return;
 		}
+
+
 		
 		//Campos da visita que serão atualizados
 		let updateFields = {
+			dataHoraReserva			   : visitaForm.dataHoraReserva,
+			nomeConvidado			   : visitaForm.nomeConvidado,
+			condominoObservacao		   : visitaForm.condominoObservacao,
             situacao	               : visitaForm.situacao,
             portariaDataHoraChegada    : visitaForm.portariaDataHoraChegada,
             portariaObservacao         : visitaForm.portariaObservacao,
-            porteiroId                 : visitaForm.porteiroId
+			porteiroId	         	   : visitaForm.porteiroId,
+			dataHoraExpiracao		   : visitaForm.dataHoraExpiracao
+
 		}
 
 		//Atualiza os campos da visita

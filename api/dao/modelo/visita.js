@@ -19,27 +19,27 @@ module.exports = function(sequelize, DataTypes) {
         condominoId: {
             type: DataTypes.INTEGER,
             field: 'condomino_id',
-            allowNull: false,
+            allowNull: true,
             comment: 'Id do Condomino',
             
         },
         pessoaId: {
             type: DataTypes.INTEGER,
             field: 'pessoa_id',
-            allowNull: false,
+            allowNull: true,
             comment: 'Id da pessoa que é um condomino'
         },
         dataHoraReserva: {
             type: DataTypes.DATE,
             field: 'data_hora_reserva',
-            allowNull: false,
+            allowNull: true,
             comment: 'Data e hora agendados para a chegada do visitante'
         },
 
         nomeConvidado: {
             type: DataTypes.STRING(80),
             field: 'nome_convidado',
-            allowNull: false,
+            allowNull: true,
             comment: 'Nome do convidado'
         },
         condominoObservacao: {
@@ -58,7 +58,7 @@ module.exports = function(sequelize, DataTypes) {
         situacao: {
             type: DataTypes.INTEGER,
             field: 'situacao',
-            allowNull: false,
+            allowNull: true,
             comment: 'Situacao da visita 1- Agendado, 2- Liberado, 3- Expirado, 4-Cancelado, 5- Negado'
         },
         portariaDataHoraChegada: {

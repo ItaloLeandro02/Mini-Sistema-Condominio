@@ -1,0 +1,67 @@
+<md-dialog aria-label="Nova Visita">
+  <form ng-cloak  name="novaVisitaForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Nova Visita</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancelar()">
+          <md-icon md-svg-src="../img/cancel.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h2>agendamento de Visita</h2>
+    
+          <md-content layout-padding>
+                  <md-input-container class="md-block" flex-gt-xs>
+                    <label>Nome</label>
+
+                       <md-autocomplete                      
+                        md-selected-item="selectedItem" 
+                        md-search-text-change="searchTextChange(selectedItem)"
+                        md-search-text="searchText"
+                        md-selected-item-change="vm.dados(pessoa)"
+                        md-items="pessoa in vm.carregaPessoas(searchText)"
+                        md-item-text="pessoa.nome"
+                        placeholder="Visitantes Cadastrados">
+                         <md-item-template>
+                          <span md-highlight-text="searchText" md-highlight-flags="^i">{{pessoa.nome}}</span>
+                          <span >{{pessoa.nome}}</span>
+                        </md-item-template>
+                      </md-autocomplete>
+
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex>
+                    <label>Hora</label>
+                    <input type="time" ng-model="vm.visitaReservaHora">
+                  </md-input-container>
+          
+                  <md-input-container>
+                    <label>Data da Reserva</label>
+                    <md-datepicker ng-model="vm.visitaReserva" md-open-on-focus required></md-datepicker>
+                  </md-input-container>
+
+                <md-input-container class="md-block">
+                  <label>Obeservação</label>
+                  <textarea ng-model="vm.visitaCondominoObservacao"></textarea>
+                </md-input-container>
+
+                 <div>
+                  <center>
+                    <md-button type="reset" class="md-warn">Limpar</md-button>
+                    <span flex></span>
+                    <md-button type="submit" ng-click="novaVisitaForm.$valid && vm.salvar()" class="md-fab md-primary" aria-label="Salvar Dados">
+                    <md-icon md-svg-src="../img/save.svg"></md-icon>
+                    </md-button>
+                  </center>
+                </div>
+
+          </md-content>
+       
+    </md-dialog-content>
+  </form>
+</md-dialog>
+

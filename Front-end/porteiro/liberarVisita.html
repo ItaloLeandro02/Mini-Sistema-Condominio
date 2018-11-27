@@ -1,0 +1,57 @@
+<md-dialog aria-label="Liberar Visita">
+  <form ng-cloak  name="liberarVisitaForm">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Liberar Visita</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancelar()">
+          <md-icon md-svg-src="../img/cancel.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h2>Liberar visita</h2>
+    
+          <md-content layout-padding>
+
+                  <md-input-container class="md-block" flex-gt-xs>
+                    <label>Nome</label>
+                    <input ng-model="vm.visitaConvidado" disabled>
+                  </md-input-container>
+
+                  <md-input-container class="md-block" flex-gt-xs>
+                    <label>Hora</label>
+                    <input type="time" ng-model="vm.visitaValidadeHora" disabled>
+                  </md-input-container>
+          
+                  <md-input-container>
+                    <label>Data da Reserva</label>
+                    <md-datepicker ng-model="vm.visitaValidade" md-open-on-focus required disabled></md-datepicker>
+                  </md-input-container>
+
+                <md-input-container class="md-block" flex>
+                  <label>Obeservação Condomino</label>
+                  <input ng-model="vm.visitaCondominoObservacao" disabled>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex>
+                  <label>Obeservação</label>
+                  <input ng-model="vm.visitaPortariaObeservacao">
+                </md-input-container>
+
+                 <div>
+                  <center>
+                    <span flex></span>
+                    <md-button type="submit" ng-click="liberarVisitaForm.$valid && vm.salvar()" class="md-fab md-primary" aria-label="Salvar Dados">
+                    <md-icon md-svg-src="../img/save.svg"></md-icon>
+                    </md-button>
+                  </center>
+                </div>
+
+          </md-content>
+       
+    </md-dialog-content>
+  </form>
+</md-dialog>
