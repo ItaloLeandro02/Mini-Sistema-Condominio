@@ -168,8 +168,6 @@ function liberarController ($scope, $resource, $mdDialog, objeto) {
 
 	function salvar() {
 		
-
-
     	let dsVisita					= new visitaApi(),
     		visita = {
 				condominoId 			: vm.visitaCondominoId,
@@ -197,7 +195,6 @@ function liberarController ($scope, $resource, $mdDialog, objeto) {
 		*/
 
         dsVisita.visita 			= visita
-        console.log(dsVisita)
 			
 		let sucesso = function(resposta){
 			console.log(resposta)
@@ -254,7 +251,6 @@ function novoController ($scope, $resource, $mdDialog) {
 	vm.salvar 			= salvar
 	vm.cancelar 		= cancelar
 	vm.carregaPessoas 	= carregaPessoas
-	vm.dados = dados
 
 	function init(){		
 		carregaPessoas();

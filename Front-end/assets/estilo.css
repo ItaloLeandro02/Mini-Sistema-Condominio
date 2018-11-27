@@ -86,3 +86,8 @@
 .md-subhead {
     color       : #CDC9C9;
 }
+.usuario {
+    width: 42;
+    height: 45;
+    position: inherit;
+}

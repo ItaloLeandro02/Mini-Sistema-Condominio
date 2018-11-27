@@ -18,6 +18,9 @@ let visitaController = require('../recursos/visita.controller');
 //Condomino
 let condominoController = require('../recursos/condomino.controller');
 
+//Condomino
+let convidadoController = require('../recursos/condomino_convidado.controller');
+
 //Definindo as rotas 
 //Pessoa
 rota.get('/pessoa', pessoaController.carregaTudo);
@@ -53,6 +56,12 @@ rota.get('/condomino/:id', condominoController.carregaPorId);
 rota.post('/condomino', condominoController.salva);
 rota.delete('/condomino/:id', condominoController.exclui);
 rota.put('/condomino/:id', condominoController.atualiza);
+
+//Convidado
+rota.get('/convidado', convidadoController.carregaTudo);
+rota.get('/convidado/:id', convidadoController.carregaPorId);
+rota.post('/convidado', convidadoController.salva);
+rota.delete('/convidado/:id', convidadoController.exclui);
 
 //Torna todas as rotas públicas
 module.exports = rota;

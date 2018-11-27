@@ -17,7 +17,7 @@
       rel="stylesheet">
 	<title>Painel Administrativo</title>
 </head>
-<body class="fundo">
+<body ng-app="appPorteiro" ng-cloak class="fundo">
 	 <div class="mydiv">
 	  <div class="painel-titulo texto-vermelho">
 	   Paínel Administrativo
@@ -44,7 +44,7 @@
 	         </md-card-title>
 	         <md-card-actions layout="row" layout-align="end center">
 	          <md-button>
-	          	 <img src="../img/add.svg" style="width: 64px; height: 64px;"> 
+	          	 <img src="../img/add.svg" ng-click="vm.novo($event)" style="width: 64px; height: 64px;"> 
 	          </md-button>
 	          <md-button>Action 2</md-button>
 	         </md-card-actions>
@@ -85,6 +85,17 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <!-- Nossa aplicacao  -->
+
+  <script type="text/javascript">    
+    
+    angular.module('appPorteiro', ['ngMaterial', 'ngMessages', 'ngResource']);
+
+
+  </script>
+
+  <script src="./porteiroController.js"></script>
 
 
 </body>

@@ -50,9 +50,10 @@ function visitaController($scope, $resource, $mdDialog){
 						break
 				}
 			})
-		})	
-    }
+		})
+	}			
 
+	
     function editar(ev, visita) {
 
     	$mdDialog.show({
@@ -98,16 +99,18 @@ function visitaController($scope, $resource, $mdDialog){
 	        .ok('Sim')
 	        .cancel('Não');
 	    		$mdDialog.show(confirmacao).then(function() {
-	      			cancelarVisita(visita.id)
+	      			recusarVisita(visita.id)
 	    		});
 	}
 	
 
 	function cancelarVisita(IdVisita){
 		let dsVisita 		= new visitaApi(),
+		 		
 		 		visita = {
 		 			situacao 	: 4
 		 		}
+
 			dsVisita.id 	= IdVisita;
 			dsVisita.visita = visita
 
@@ -132,6 +135,8 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
 	let vm = $scope.vm;
 
 	//Cria uma variável para manipular objetos visita
+
+	//Cria uma variável para manipular objetos porteiro
 	let visitaApi = $resource('http://127.0.0.1:3333/api/visita/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
@@ -184,30 +189,21 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
 		*/
 
         dsVisita.visita 			= visita
-        console.log(dsVisita)
 			
 		let sucesso = function(resposta){
 			console.log(resposta)
 			if (resposta.sucesso) {				
-				if (vm.visitaId) {
-					toastr.info("Visita atualizada com êxito","SUCESSO")
-				} else {
-					toastr.success("Visita incluída com êxito :)","SUCESSO")	
-				}
-
-				$mdDialog.hide(true)
+					toastr.success("Visita cancelada com êxito :)","SUCESSO")	
+						$mdDialog.hide(true)
 			}
 			carregaVisitas();
 		}
+
 		let erro = function(resposta){
 			console.log(resposta)	
 		}
-		if (vm.visitaId) {
-			dsVisita.id 		= vm.visitaId ;
-			dsVisita.$update().then(sucesso,erro)
-		} else {
-			dsvisita.$save().then(sucesso,erro) 
-		}	
+
+		dsVisita.$update().then(sucesso,erro)
     };
 
     function cancelar() {
@@ -222,6 +218,14 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
     vm.visitaPessoaId				= objeto.pessoaId
     vm.visitaSituacao				= objeto.situacao
     vm.visitaReservaHora			= new Date(vm.visitaReserva)
+
+
+	vm.estados = ('AC AL AM AP BA CE DF ES GO MA' +
+	' MT MS MG PA PB PR PE PI RJ RN RO RS RR SC SE SP TO')
+	.split(' ')
+	.map(function(estado) {
+    return {abbrev: estado};
+	});
 }
 
 function novoController ($scope, $resource, $mdDialog) {
@@ -229,7 +233,6 @@ function novoController ($scope, $resource, $mdDialog) {
 	$scope.vm = {};
 	let vm = $scope.vm;
 
-	//Cria uma variável para manipular objetos visita
 	let visitaApi = $resource('http://127.0.0.1:3333/api/visita/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
@@ -246,10 +249,12 @@ function novoController ($scope, $resource, $mdDialog) {
 	vm.salvar 			= salvar
 	vm.cancelar 		= cancelar
 	vm.carregaPessoas 	= carregaPessoas
-	vm.dados = dados
+	vm.dados			= dados
+	vm.buscaPessoas		= buscaPessoas
 
 	function init(){		
 		carregaPessoas();
+		buscaPessoas();
 	} 
 	init()
 
@@ -263,6 +268,13 @@ function novoController ($scope, $resource, $mdDialog) {
 		vm.dsPessoas = new pessoaApi();
 		return vm.dsPessoas.$get({search : nomeBuscado}).then(function(resposta){			
 			return resposta.data
+		})	
+	}
+	
+	function buscaPessoas(){
+		vm.pessoas = new pessoaApi();
+		vm.pessoas.$get().then(function(resposta){			
+			vm.pessoas.data = resposta.data;
 		})	
     }
 
@@ -298,17 +310,25 @@ function novoController ($scope, $resource, $mdDialog) {
 				$mdDialog.hide(true)
 			
 			carregaVisitas();
-		}
-		let erro = function(resposta){
-			console.log(resposta)	
-		}
 
-		dsVisita.$save().then(sucesso,erro)
-    };
+			dsVisita.$save().then(sucesso,erro)
+    	};
 
-    function cancelar() {
-    	$mdDialog.cancel();
-    };
+    	function cancelar() {
+    		$mdDialog.cancel();
+    	};
+
+		vm.estados = ('AC AL AM AP BA CE DF ES GO MA' +
+		' MT MS MG PA PB PR PE PI RJ RN RO RS RR SC SE SP TO')
+		.split(' ')
+		.map(function(estado) {
+    	return {abbrev: estado};
+		});
+	}
+
+	function cancelar() {
+		$mdDialog.cancel();
+	};
 }
 
 

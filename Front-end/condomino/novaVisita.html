@@ -11,38 +11,75 @@
     </md-toolbar>
 
     <md-dialog-content>
+
       <div class="md-dialog-content">
-        <h2>agendamento de Visita</h2>
-    
+
           <md-content layout-padding>
+
+              <div layout-gt-sm="row">
+                <md-input-container style="margin-right: 150px;">
+                  <label>Data</label>
+                    <md-datepicker ng-model="vm.visitaReserva" md-open-on-focus required></md-datepicker>
+                </md-input-container>
+             
+                <md-input-container>
+                  <md-icon md-svg-src="../img/clock.svg" aria-label="Close dialog" style="margin-right: 50px;"></md-icon>
+                    <label>Hora</label>
+                      <input type="time" ng-model="vm.visitaReservaHora" value="13:50">
+                </md-input-container>
+              </div>
+
+              <div layout-gt-sm="row" style="margin-left: 1px;">
+                <img src="../img/user.svg"class="usuario" >
                   <md-input-container class="md-block" flex-gt-xs>
                     <label>Nome</label>
-
-                       <md-autocomplete                      
+                       <md-autocomplete flex                   
                         md-selected-item="selectedItem" 
                         md-search-text-change="searchTextChange(selectedItem)"
                         md-search-text="searchText"
                         md-selected-item-change="vm.dados(pessoa)"
                         md-items="pessoa in vm.carregaPessoas(searchText)"
-                        md-item-text="pessoa.nome"
-                        placeholder="Visitantes Cadastrados">
-                         <md-item-template>
-                          <span md-highlight-text="searchText" md-highlight-flags="^i">{{pessoa.nome}}</span>
-                          <span >{{pessoa.nome}}</span>
+                        md-item-text="pessoa.nome">
+                          <md-item-template>
+                            <span md-highlight-text="searchText">{{pessoa.nome}}</span>
+                            <span >{{pessoa.nome}}</span>
                         </md-item-template>
                       </md-autocomplete>
 
                   </md-input-container>
+                  </div>
 
-                  <md-input-container class="md-block" flex>
-                    <label>Hora</label>
-                    <input type="time" ng-model="vm.visitaReservaHora">
-                  </md-input-container>
-          
-                  <md-input-container>
-                    <label>Data da Reserva</label>
-                    <md-datepicker ng-model="vm.visitaReserva" md-open-on-focus required></md-datepicker>
-                  </md-input-container>
+
+                  <md-content class="md-padding">
+                      <md-tabs class="md-accent" md-selected="data.selectedIndex">
+                        <md-tab id="tab1">
+                          <md-tab-label><md-icon md-svg-icon="../img/star.svg" ></md-icon></md-tab-label>
+                            <md-tab-body>
+                              <div ng-repeat="pessoa in vm.pessoas.data">  
+                                <md-content class="md-padding" layout-xs="column" layout="column">
+                                  <div flex-xs flex-gt-xs="10" layout="column">
+                                    <md-card>
+                                      <img ng-src="../img/star.svg" class="md-card-image" alt="Washed Out">
+                                        <md-card-title>
+                                          <md-card-title-text>
+                                            <span class="md-headline">{{pessoa.nome}}</span>
+                                          </md-card-title-text>
+                                        </md-card-title>
+                                    </md-card>
+                                  </div>
+                                </md-content>
+                              </div>
+
+                          </md-tab-body>
+                        </md-tab>
+                        <md-tab id="tab2" ng-disabled="data.secondLocked">
+                          <md-tab-label>TODOS</md-tab-label>
+                          <md-tab-body>
+                            Todos os contatos vinculados 
+                          </md-tab-body>
+                        </md-tab>
+                      </md-tabs>
+                  </md-content>    
 
                 <md-input-container class="md-block">
                   <label>Obeservação</label>

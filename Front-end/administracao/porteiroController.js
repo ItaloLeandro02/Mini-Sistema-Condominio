@@ -1,4 +1,4 @@
-angular.module('appListaPorteiro')
+angular.module('appPorteiro')
 .controller('porteiroController', porteiroController)
 .controller('editarController', editarController)
 .controller('novoController', novoController)

@@ -48,12 +48,13 @@ function init() {
     initialized = true;
     
 	// Modelos
-    model.Pessoa     = conexao.import('./modelo/pessoa.js');
-    model.Usuario    = conexao.import('./modelo/usuario.js');
-    model.Porteiro   = conexao.import('./modelo/porteiro.js');
-    model.Visita     = conexao.import('./modelo/visita.js');
-    model.Condomino  = conexao.import('./modelo/condomino.js');
-    model.Endereco   = conexao.import('./modelo/endereco.js');
+    model.Pessoa                = conexao.import('./modelo/pessoa.js');
+    model.Usuario               = conexao.import('./modelo/usuario.js');
+    model.Porteiro              = conexao.import('./modelo/porteiro.js');
+    model.Visita                = conexao.import('./modelo/visita.js');
+    model.Condomino             = conexao.import('./modelo/condomino.js');
+    model.Endereco              = conexao.import('./modelo/endereco.js');
+    model.Condomino_Convidado   = conexao.import('./modelo/condomino_convidado.js');
     
     // Arquivos
     require('./modelo/pessoa.js').initRelations();
@@ -62,6 +63,7 @@ function init() {
     require('./modelo/visita.js').initRelations();    
     require('./modelo/condomino.js').initRelations(); 
     require('./modelo/endereco.js').initRelations();   
+    require('./modelo/condomino_convidado.js').initRelations(); 
 
     return model;
 }

@@ -15,12 +15,8 @@ CREATE TABLE pessoa (
   cpf BIGINT  NOT NULL  ,
   nascimento DATE  NOT NULL  ,
   digital VARCHAR(5)  NOT NULL  ,
-  endereco_logradouro VARCHAR(120)  NOT NULL  ,
-  endereco_numero VARCHAR(120)  NOT NULL  ,
-  endereco_bairro VARCHAR(60)  NOT NULL  ,
-  endereco_cidade VARCHAR(100)  NOT NULL  ,
-  endereco_uf VARCHAR(2)  NOT NULL  ,
-  criacao DATETIME  NOT NULL    ,
+  endereco_id int NOT NULL, 
+  criacao DATE NOT NULL    ,
 PRIMARY KEY(id));
 GO
 
@@ -43,7 +39,7 @@ CREATE TABLE usuario (
   tipo integer  NOT NULL  ,
   senha VARCHAR(32)  NOT NULL  ,
   desativado tinyint  NOT NULL  ,
-  criacao DATETIME  NOT NULL    ,
+  criacao DATE NOT NULL    ,
 PRIMARY KEY(id));
 GO
 
@@ -65,6 +61,49 @@ CREATE TABLE visita (
 PRIMARY KEY(id));
 GO
 
+CREATE TABLE endereco(
+  id INTEGER  NOT NULL   IDENTITY ,
+  logradouro VARCHAR(120)  NOT NULL  ,
+  numero INT  NOT NULL  ,
+  bairro VARCHAR(60)  NOT NULL  ,
+  cidade VARCHAR(50)  NOT NULL  ,
+  uf VARCHAR(2)  NOT NULL  ,
+PRIMARY KEY(id));
+GO
+
+ALTER TABLE condomino ADD CONSTRAINT FK_Condomino_Pessoa FOREIGN KEY (pessoa_id) REFERENCES pessoa (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+ALTER TABLE condomino ADD CONSTRAINT FK_Condomino_Usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+ALTER TABLE porteiro ADD CONSTRAINT FK_Porteiro_Pessoa FOREIGN KEY (pessoa_id) REFERENCES pessoa (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+ALTER TABLE porteiro ADD CONSTRAINT FK_Porteiro_Usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+ALTER TABLE visita ADD CONSTRAINT FK_Visita_Pessoa FOREIGN KEY (pessoa_id) REFERENCES pessoa (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+ALTER TABLE visita ADD CONSTRAINT FK_Visita_Condomino FOREIGN KEY (condomino_id) REFERENCES condomino (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+ALTER TABLE pessoa ADD CONSTRAINT FK_Pessoa_Endereco FOREIGN KEY (endereco_id) REFERENCES endereco (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+GO
 
 
 
