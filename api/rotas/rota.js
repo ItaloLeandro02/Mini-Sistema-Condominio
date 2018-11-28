@@ -60,6 +60,7 @@ rota.put('/condomino/:id', condominoController.atualiza);
 //Convidado
 rota.get('/convidado', convidadoController.carregaTudo);
 rota.get('/convidado/:id', convidadoController.carregaPorId);
+rota.get('/convidado/:id', convidadoController.atualiza);
 rota.post('/convidado', convidadoController.salva);
 rota.delete('/convidado/:id', convidadoController.exclui);
 

@@ -28,6 +28,12 @@ module.exports = function(sequelize, DataTypes) {
             field: 'pessoa_id',
             allowNull: false,
             comment: 'Chave estrangeira Pessoa'
+        },
+        favorito: {
+            type: DataTypes.BOOLEAN,
+            field: 'favorito',
+            allowNull: false,
+            comment: 'Define se o convidado é um favorito'
         }
     }, {
         //schema: 'public',

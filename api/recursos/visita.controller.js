@@ -4,8 +4,13 @@ const dataContext = require('../dao/dao');
 //Orem influência o nome mão
 //Primeiro requisição
 function carregaTudo(req,res) {
-    
+	
+	if (req.query.condomino) {
+
     return dataContext.Visita.findAll({
+		where :{
+			condominoId : req.query.condomino
+		},
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(visitas){
@@ -26,7 +31,9 @@ function carregaTudo(req,res) {
         	sucesso:true,
         	data: visitas
         })
-    })
+	})
+
+	}
 }    
 
 function carregaPorId(req,res) {
@@ -109,9 +116,9 @@ function carregaPorId(req,res) {
 function salvaVisita(req,res){
     
     //Cria uma variável que recebe os dados vindos do formulário
-    let visitaForm = req.body.visita
+    let visita = req.body.visita
 
-	if (!visitaForm) {
+	if (!visita) {
 		res.status(404).json({
 			sucesso: false, 
 			msg: "Formato de entrada inválido."
@@ -121,17 +128,16 @@ function salvaVisita(req,res){
     
 	
 	//Define algusn padrões
-	visitaForm.situacao 					= 1
-	visitaForm.dataHoraReserva				= new Date(visitaForm.dataHoraReserva)
-	visitaForm.dataHoraExpiracao			= new Date(visitaForm.dataHoraReserva)
-    visitaForm.dataHoraExpiracao.setHours(visitaForm.dataHoraReserva.getHours() + 4)
-	visitaForm.portariaDataHoraChegada		= null
-	visitaForm.portariaObservacao			= null
+	visita.situacao 					= 1
+	visita.dataHoraReserva				= new Date(visita.dataHoraReserva)
+	visita.dataHoraExpiracao			= new Date(visita.dataHoraReserva)
+    visita.dataHoraExpiracao.setHours(visita.dataHoraReserva.getHours() + 4)
+	visita.portariaDataHoraChegada		= null
+	visita.portariaObservacao			= null
 	
-	visitaForm.
     
 	//Criar um novo objeto Visita no banco de dados com os dados passados pelo formulário
-	dataContext.Visita.create(visitaForm)
+	dataContext.Visita.create(visita)
 
 	//Cria uma promise que retorna o JSON
     .then(function(novaVisita){

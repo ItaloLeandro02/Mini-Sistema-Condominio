@@ -91,21 +91,26 @@
     height: 45;
     position: inherit;
 }
-* {
+.card-favorito {
+    padding             : 1px;
+    border-radius       : 5px;
+    background-color    : rgb(247, 243, 243);
+    width:90px;
+    height:90px;
+    background-color:#FF0;
+}
+
+.layout-row {
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+.layout-column, .layout-row {
+    -webkit-box-direction: normal;
+}
+.layout, .layout-row {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-.content {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-}
-
-.box {
-  background-color: lightblue;
-  height: 100px;
-  width: 30%;
-  margin: 8px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: inline-flex;
 }

@@ -3,7 +3,7 @@ angular.module('appListaVisita')
 .controller('editarController', editarController)
 .controller('novoController', novoController)
 
-function visitaController($scope, $resource, $mdDialog){
+function visitaController($scope, $resource, $mdDialog, $localStorage){
     
 
 	$scope.vm = {};
@@ -17,7 +17,12 @@ function visitaController($scope, $resource, $mdDialog){
       });
 
 	function init(){		
-		carregaVisitas();
+		carregaVisitas($localStorage.condomino.id);
+
+		$localStorage.condomino = {
+            id : 1015,
+            nome : 'Jose Mayer'
+        }
 	} 
 	init()
 
@@ -28,14 +33,18 @@ function visitaController($scope, $resource, $mdDialog){
 	vm.cancelarVisita	= cancelarVisita
 
     //Função para retornar todos as visitas no banco de dados
-	function carregaVisitas(){
+	function carregaVisitas(concominoId){
 		vm.dsVisitas = new visitaApi();
-		vm.dsVisitas.$get().then(function(resposta){			
-		vm.dsVisitas.data = resposta.data;
-
+		 return vm.dsVisitas.$get({condomino : concominoId}).then(function(resposta){			
+		  return vm.dsVisitas.data = resposta.data;
+/*
 		resposta = vm.dsVisitas.data 
 
 			resposta = resposta.map(function(resp) {
+
+				if (new Date() >= new Date(resp.dataHoraExpiracao)){
+                    resp.situacao = "Expirada";
+                } 
 
 				switch(resp.situacao) {
 					case 1: resp.situacao = "Agendada"
@@ -50,6 +59,7 @@ function visitaController($scope, $resource, $mdDialog){
 						break
 				}
 			})
+*/
 		})
 	}			
 
@@ -67,7 +77,7 @@ function visitaController($scope, $resource, $mdDialog){
 
 		.then(function(edicao) {
 			if (edicao) {
-				carregaVisitas();
+				location.reload();
 			}
 		})
   	};
@@ -84,7 +94,7 @@ function visitaController($scope, $resource, $mdDialog){
 
 		.then(function(edicao) {
 			if (edicao) {
-				carregaVisitas();
+				location.reload();
 			}
 		})
   	};
@@ -99,10 +109,9 @@ function visitaController($scope, $resource, $mdDialog){
 	        .ok('Sim')
 	        .cancel('Não');
 	    		$mdDialog.show(confirmacao).then(function() {
-	      			recusarVisita(visita.id)
+					cancelarVisita(visita.id)
 	    		});
 	}
-	
 
 	function cancelarVisita(IdVisita){
 		let dsVisita 		= new visitaApi(),
@@ -119,7 +128,7 @@ function visitaController($scope, $resource, $mdDialog){
 			if (resposta.dado == null) {
 				toastr.info("SUCESSO","Visita cancelada com êxito :)");				
 			}
-			carregaVisitas();
+			location.reload();
 		}
 		let erro = function(resposta){
 			console.log(resposta);	
@@ -228,7 +237,7 @@ function editarController ($scope, $resource, $mdDialog, objeto) {
 	});
 }
 
-function novoController ($scope, $resource, $mdDialog) {
+function novoController ($scope, $resource, $mdDialog, $localStorage) {
 
 	$scope.vm = {};
 	let vm = $scope.vm;
@@ -237,46 +246,78 @@ function novoController ($scope, $resource, $mdDialog) {
     	update: {
     		method: 'PUT'
     	}
-      });
-
+	  });
+	  
 	let pessoaApi = $resource('http://127.0.0.1:3333/api/pessoa/:id', {id: '@id'}, {
+	update: {
+		method: 'PUT'
+	}
+	});
+
+	let convidadosApi = $resource('http://127.0.0.1:3333/api/convidado/:id', {id: '@id'}, {
     	update: {
     		method: 'PUT'
     	}
       });
 
 
-	vm.salvar 			= salvar
-	vm.cancelar 		= cancelar
-	vm.carregaPessoas 	= carregaPessoas
-	vm.dados			= dados
-	vm.buscaPessoas		= buscaPessoas
+	vm.salvar 				= salvar
+	vm.cancelar 			= cancelar
+	vm.carregaPessoas 		= carregaPessoas
+	vm.dados				= dados
+	vm.buscaConvidados		= buscaConvidados
+	vm.favoritar			= favoritar
 
 	function init(){		
 		carregaPessoas();
-		buscaPessoas();
+		buscaConvidados($localStorage.condomino.id);
+		vm.visitaReserva 		= new Date();
 	} 
 	init()
 
-	//Função paa pegar os dados do autocomplete
+	//Função para pegar os dados do autocomplete
 	function dados(pessoa) {
-		vm.visitaConvidado = pessoa.nome;
-		vm.visitaPessoaId  = pessoa.id;
+		vm.visitaConvidado = pessoa.pessoa.nome;
+		vm.visitaPessoaId  = pessoa.pessoa.id;
 	}
-	
-	function carregaPessoas(nomeBuscado){
+
+	function carregaPessoas(){
 		vm.dsPessoas = new pessoaApi();
-		return vm.dsPessoas.$get({search : nomeBuscado}).then(function(resposta){			
-			return resposta.data
+		vm.dsPessoas.$get().then(function(resposta){		
+		vm.dsPessoas.data = resposta.data;
 		})	
 	}
 	
-	function buscaPessoas(){
-		vm.pessoas = new pessoaApi();
-		vm.pessoas.$get().then(function(resposta){			
-			vm.pessoas.data = resposta.data;
+	function buscaConvidados(condominoId){
+		vm.dsConvidados = new convidadosApi();
+		return vm.dsConvidados.$get({search : condominoId}).then(function(resposta){	
+			return vm.dsConvidados.data = resposta.data;
 		})	
-    }
+	}
+
+	function favoritar(pessoa) {
+		let dsFavorito = new convidadosApi(),
+			convidado = {
+				id 			: pessoa.id,
+				condominoId : $localStorage.condomino.id,
+				favorito	: true
+			}
+		dsFavorito.convidado = convidado;
+
+		let sucesso = function(resposta){
+			console.log(resposta)
+		   if (resposta.sucesso) {				
+			   toastr.success("Favorito incluído com êxito :)","SUCESSO")	
+		   }
+		   
+	   }
+	   let erro = function(resposta){
+		   console.log(resposta)	
+	   }
+
+	   dsFavorito.$update().then(sucesso,erro)
+
+	}
 
 	function salvar() {
 
@@ -289,10 +330,11 @@ function novoController ($scope, $resource, $mdDialog) {
     	validade = new Date(vm.visitaReserva)
 		validade.setHours(vm.visitaReservaHora.getHours() + 4)
 		validade.setMinutes(vm.visitaReservaHora.getMinutes())
+		
 
     	let dsVisita					= new visitaApi(),
     		visita = {
-				condominoId 			: vm.visitaCondominoId,
+				condominoId 			: $localStorage.condomino.id,
 				pessoaId    			: vm.visitaPessoaId,
 				dataHoraReserva			: vm.visitaReserva,
 				dataHoraExpiracao		: validade, 			
@@ -303,27 +345,19 @@ function novoController ($scope, $resource, $mdDialog) {
     	dsVisita.visita = visita;
 
 		let sucesso = function(resposta){
-		 	console.log(resposta)
-			if (resposta.sucesso) {				
-				toastr.success("Visita incluída com êxito :)","SUCESSO")	
-			}
-				$mdDialog.hide(true)
-			
-			carregaVisitas();
+			console.log(resposta)
+		   if (resposta.sucesso) {				
+			   toastr.success("Visita incluída com êxito :)","SUCESSO")	
+		   }
+			   $mdDialog.hide(true)
+		   
+		   carregaVisitas();
+	   }
+	   let erro = function(resposta){
+		   console.log(resposta)	
+	   }
 
-			dsVisita.$save().then(sucesso,erro)
-    	};
-
-    	function cancelar() {
-    		$mdDialog.cancel();
-    	};
-
-		vm.estados = ('AC AL AM AP BA CE DF ES GO MA' +
-		' MT MS MG PA PB PR PE PI RJ RN RO RS RR SC SE SP TO')
-		.split(' ')
-		.map(function(estado) {
-    	return {abbrev: estado};
-		});
+	   dsVisita.$save().then(sucesso,erro)
 	}
 
 	function cancelar() {

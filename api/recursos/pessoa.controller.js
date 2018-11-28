@@ -6,12 +6,12 @@ const dataContext = require('../dao/dao'),
 //Primeiro requisição
 function carregaTudo(req,res) {
     
-	if (req.query.search) {
+	if (req.query.nome) {
 
 		return dataContext.Pessoa.findAll({
 			where : {
 				nome: {
-					$like : req.query.search+'%'
+					$like : req.query.nome+'%'
 				} 
 			}
 		})
@@ -44,7 +44,6 @@ function carregaTudo(req,res) {
         	data: pessoas
         })
 	})
-	
 }    
 
 function carregaPorId(req,res) {

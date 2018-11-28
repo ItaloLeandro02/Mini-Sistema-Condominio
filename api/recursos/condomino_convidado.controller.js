@@ -5,8 +5,13 @@ const dataContext = require('../dao/dao'),
 //Ordem influência o nome mão
 //Primeiro requisição
 function carregaTudo(req,res) {
+
+	if (req.query.search) {
     
     return dataContext.Condomino_Convidado.findAll({
+		where :{
+			condominoId : req.query.search
+		},
 		include : [
             {
 				model : dataContext.Condomino,
@@ -15,7 +20,7 @@ function carregaTudo(req,res) {
             },
             {
 				model : dataContext.Pessoa,
-				attributes: { exclude: ['endereco_id'] }
+				attributes: { exclude: ['endereco_id'] },
 			},
 		]
     }).then(function(convidados){
@@ -25,6 +30,7 @@ function carregaTudo(req,res) {
 
 			delete convidadosRetornados.pessoa_id
 			delete convidadosRetornados.condomino_id
+			delete convidadosRetornados.condomino;
 
 			return convidadosRetornados
 		})
@@ -32,7 +38,40 @@ function carregaTudo(req,res) {
         	sucesso:true,
         	data: convidados
         })
-    })
+	})
+
+	}
+
+	//Para retornar todos para os testes
+	return dataContext.Condomino_Convidado.findAll({
+		include : [
+            {
+				model : dataContext.Condomino,
+				//attributes: { exclude: ['senha'] },
+				
+            },
+            {
+				model : dataContext.Pessoa,
+				attributes: { exclude: ['endereco_id'] },
+			},
+		]
+    }).then(function(convidados){
+
+		convidados = convidados.map(function(convidadosRetornados) {
+			convidadosRetornados = convidadosRetornados.get({plain : true})
+
+			delete convidadosRetornados.pessoa_id
+			delete convidadosRetornados.condomino_id
+			delete convidadosRetornados.condomino;
+
+			return convidadosRetornados
+		})
+        res.status(200).json({
+        	sucesso:true,
+        	data: convidados
+        })
+	})
+	
 }    
 
 function carregaPorId(req,res) {
@@ -44,8 +83,6 @@ function carregaPorId(req,res) {
 				model : dataContext.Condomino,
 				attributes: { exclude: ['senha'] },
 				
-				//Retorna todos os atributos menos estes
-                attributes : ['email','desativado']
             },
             {
 				model : dataContext.Pessoa,
@@ -67,6 +104,7 @@ function carregaPorId(req,res) {
 
         delete convidado.pessoa_id;
 		delete convidado.condomino_id;
+		delete convidado.condomino;
 
         res.status(200).json({
 			sucesso: true,
@@ -160,10 +198,77 @@ function excluiConvidado(req,res){
     })
 }
 
+function atualizaConvidado(req,res){
+	
+	//Verifica se o parâmetro passado via URL é um id
+	if (!req.params.id) {
+		res.status(409).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Variável que recebe os dados vindos do formulário
+	let convidadoForm = req.body.usuario;
+
+	//Verifica se retornou algo
+	if (!convidadoForm) {
+		res.status(404).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Pesquisa no banco de dados o usuário corresponde ao id passado como parâmetro via URL
+	dataContext.Condomino_Convidado.findById(req.params.id)
+	
+	//Cria uma promise passando como parâmetro os dados da pesquisa
+	.then(function(convidadoRetornado){
+		
+		//Verifica se retornou algo
+		if (!convidadoRetornado) {
+			res.status(404).json({
+				sucesso: false,
+				msg: "Convidado não encontrado."
+			})
+			return;
+		}
+		
+		//Campos do usuário que serão atualizados
+		let updateFields = {
+			favorito	:	convidadoForm.favorito
+		}
+
+		//Atualiza os campos do usuário
+		convidadoRetornado.update(updateFields)
+
+		//Cria uma promise que recebe como parâmetro o objeto usuário com os dados atualizados
+		.then(function(condominoAtualizado){
+			res.status(200).json({
+        		sucesso:true,
+        		msg: "Registro atualizado com sucesso",
+        		data: condominoAtualizado
+        	})	
+		})
+
+		//Caso haja uma exceção
+		.catch(function(erro){
+			console.log(erro);
+			res.status(409).json({ 
+				sucesso: false,
+				msg: "Falha ao atualizar o convidado" 
+			});	
+		})
+	})
+}
+
 module.exports = {
 	//Quando for consumir irá pegar os nomes da primeira tabela
     carregaTudo  	: carregaTudo,
     carregaPorId 	: carregaPorId,
     salva 			: salvaConvidado,
-    exclui 			: excluiConvidado,
+	exclui 			: excluiConvidado,
+	atualiza 		: atualizaConvidado
 }
