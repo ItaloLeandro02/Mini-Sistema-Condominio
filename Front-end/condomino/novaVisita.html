@@ -30,7 +30,7 @@
               </div>
 
               <div layout-gt-sm="row" style="margin-left: 1px;">
-                <img src="../img/user.svg"class="usuario" >
+                <md-icon md-svg-src="../img/user.svg" class="usuario"></md-icon>
                   <md-input-container class="md-block" flex-gt-xs>
                     <label>Nome</label>
                        <md-autocomplete flex                   
@@ -53,18 +53,20 @@
                   <md-content class="md-padding">
                       <md-tabs class="md-accent" md-selected="data.selectedIndex">
                         <md-tab id="tab1">
-                          <md-tab-label><md-icon md-svg-icon="../img/star.svg" ></md-icon></md-tab-label>
+                          <md-tab-label><md-icon md-svg-icon="../img/star.svg"></md-icon></md-tab-label>
                             <md-tab-body>
                               <div ng-repeat="pessoa in vm.pessoas.data">  
-                                <md-content class="md-padding" layout-xs="column" layout="column">
-                                  <div flex-xs flex-gt-xs="10" layout="column">
-                                    <md-card>
-                                      <img ng-src="../img/star.svg" class="md-card-image" alt="Washed Out">
-                                        <md-card-title>
+                                <md-content class="md-padding" layout-xs="column" layout="row" flex>
+                                  <div flex layout="column">
+                                    <md-card class="content">
                                           <md-card-title-text>
-                                            <span class="md-headline">{{pessoa.nome}}</span>
+                                            <span>{{pessoa.nome}}</span>
                                           </md-card-title-text>
-                                        </md-card-title>
+                                        <md-card-actions layout="row" layout-align="end center">
+                                          <md-button>
+                                            <md-icon md-svg-icon="../img/success.svg"></md-icon>
+                                          </md-button>
+                                        </md-card-actions>
                                     </md-card>
                                   </div>
                                 </md-content>

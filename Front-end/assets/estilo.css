@@ -91,3 +91,21 @@
     height: 45;
     position: inherit;
 }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.box {
+  background-color: lightblue;
+  height: 100px;
+  width: 30%;
+  margin: 8px;
+}
