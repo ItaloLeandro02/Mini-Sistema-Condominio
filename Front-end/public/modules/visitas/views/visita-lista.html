@@ -1,0 +1,51 @@
+<div layout="column" flex layout-fill>
+  <div layout="row" layout-align="start">
+    <md-button class="md-raised" ng-click="vm.novaVisita()" aria-label="Nova Visita">
+      <md-icon md-svg-src="../../../assets/img/add.svg"></md-icon>
+    </md-button>
+  </div>
+    <div >
+      <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset">
+         <div layout="row">
+           <div layout="row" flex="20" layout-align="center center">
+             <md-icon md-svg-src="../../../assets/img/agendamento.svg" style="width: 64px; height: 64px;"></md-icon>
+               </div>
+                 <div layout="column" flex>
+                   <div layout="row">
+                     <span flex></span>
+                       <md-menu>
+                         <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                           <md-icon md-svg-src="../../../assets/img/edit.svg"></md-icon>                       
+                         </md-button>
+                           <md-menu-content width="3">
+                             <md-menu-item>
+                               <md-button ng-click="vm.editar(visita.id)"> Editar </md-button>
+                             </md-menu-item>
+                          </md-menu-content>
+                       </md-menu>
+                         <md-menu>
+                           <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                             <md-icon md-svg-src="../../../assets/img/more-geen.svg"></md-icon>                      
+                           </md-button>
+                             <md-menu-content width="3">
+                               <md-menu-item>
+                                 <md-button ng-click="vm.cancelar($event, visita)"> Cancelar </md-button>
+                                   </md-menu-item>
+                             </md-menu-content>
+                         </md-menu>
+                   </div>
+                     <div layout="column" layout-align="start start">
+                       <span class="font-size-18 texto-marcador negrito">Convidado: {{visita.nomeConvidado}}</span>
+                       <span class="font-size-16 texto-branco">Agendamento: {{visita.dataHoraReserva | date : 'dd/MM/yyyy'}}</span>
+                       <span class="font-size-16 texto-branco">Horário: {{visita.dataHoraReserva | date : 'HH:mm'}}</span>
+                       <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'dd/MM/yyyy'}}</span>
+                       <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'HH:mm'}}</span>
+                       <span class="font-size-16 texto-branco">Observação: {{visita.condominoObservacao}}</span>
+                       <span class="font-size-16 texto-branco">Situação: {{visita.situacao}}</span>
+                     </div>
+                </div>
+         </div>
+       </md-card>
+    </div>
+</div> 
+    

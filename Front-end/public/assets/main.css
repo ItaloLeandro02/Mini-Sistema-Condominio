@@ -1,0 +1,126 @@
+h1,h2,h3,h4,h5,h6,p,span  {
+    font-family: "Open Sans", Helvetica;
+    color: rgb(90,90,90);
+}
+h1,h2,h3,h4,h5,h6 {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+.padding-inner {
+    padding: 30px 5%;        
+}
+/* Overwrite Defaults */
+md-toolbar.toolbar h1, md-toolbar.md-toolbar-tools h3, md-tabs md-tabs-wrapper md-tab-item span, md-tabs md-tabs-wrapper md-icon, .md-primary span {
+    color: white;
+}
+.md-icon-button {
+    font-size: 20px;
+}
+md-tabs md-tabs-wrapper {
+    background: #2196F3;
+}
+.md-button {
+    padding: 0 12px;
+}
+
+.background {
+    background-image: linear-gradient( 178deg,  rgba(201,234,252,0.51) 14.9%, rgba(139,192,216,0.73) 80% );
+}
+
+.card-central {
+    margin-top: 60px;
+}
+
+.mt-5 {
+    margin-top: 5px; 
+}
+.mt-10 {
+    margin-top: 10px; 
+}
+.mt-15 {
+    margin-top: 15px; 
+}
+.mt-20 {
+    margin-top: 20px; 
+}
+.mt-25 {
+    margin-top: 25px; 
+}
+
+
+.negrito {
+    font-weight: 600;
+}
+
+
+/*Estilo copiado da aplicacao anterior*/
+
+.row-card {
+    padding             : 15px;
+    margin              : 10px 0 10px 0; 
+    border-radius       : 10px;
+    background-color    : #696969 
+}
+
+.font-size-12 {
+    font-size: 12px;    
+}
+
+.font-size-14 {
+    font-size: 14px;    
+}
+
+.font-size-16 {
+    font-size: 16px;    
+}
+
+.font-size-18 {
+    font-size: 18px;    
+}
+
+.font-size-20 {
+    font-size: 20px;    
+}
+
+.texto-marcador {
+    color: #C0FF3E;
+}
+
+.texto-branco {
+    color: #FFFFFF
+}
+
+.painel-titulo {
+    text-align      : center;
+    margin-left     : auto;
+    margin-right    : auto;
+    background      : linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
+}
+.painel-corpo {
+    text-align      : center;
+}
+.texto-vermelho {
+    color      : #FFFF00;
+    font-size  : 30px;
+    font-weight: bold; 
+}
+.fundo {
+ background: rgb(2,0,36);
+ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,79,121,1) 43%, rgba(10,117,6,1) 100%);
+}
+.md-headline {
+    color       : #ffffff;
+    font-size   : 30px; 
+}
+.md-subhead {
+    color       : #CDC9C9;
+}
+
+.card-favorito {
+    padding             : 1px;
+    border-radius       : 5px;
+    background-color    : rgb(247, 243, 243);
+    width:90px;
+    height:90px;
+    background-color:#FF0;
+}
