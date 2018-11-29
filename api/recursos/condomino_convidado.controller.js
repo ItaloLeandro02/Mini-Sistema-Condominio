@@ -210,7 +210,7 @@ function atualizaConvidado(req,res){
 	}
 
 	//Variável que recebe os dados vindos do formulário
-	let convidadoForm = req.body.usuario;
+	let convidadoForm = req.body.convidado;
 
 	//Verifica se retornou algo
 	if (!convidadoForm) {

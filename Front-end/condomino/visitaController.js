@@ -17,12 +17,12 @@ function visitaController($scope, $resource, $mdDialog, $localStorage){
       });
 
 	function init(){		
-		carregaVisitas($localStorage.condomino.id);
-
+		
 		$localStorage.condomino = {
-            id : 1015,
+            id : 1002,
             nome : 'Jose Mayer'
-        }
+		}
+		carregaVisitas($localStorage.condomino.id);
 	} 
 	init()
 
@@ -298,10 +298,9 @@ function novoController ($scope, $resource, $mdDialog, $localStorage) {
 	function favoritar(pessoa) {
 		let dsFavorito = new convidadosApi(),
 			convidado = {
-				id 			: pessoa.id,
-				condominoId : $localStorage.condomino.id,
 				favorito	: true
 			}
+		dsFavorito.id 		 = pessoa.id,
 		dsFavorito.convidado = convidado;
 
 		let sucesso = function(resposta){
