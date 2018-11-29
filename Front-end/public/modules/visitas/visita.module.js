@@ -24,10 +24,16 @@
     .state('nova-visita', {
         url: '/visitas/nova-visita',
         templateUrl: '/modules/visitas/views/visita-nova.html',
-        controller: 'VisitaListaController',
+        controller: 'VisitaController',
         controllerAs: 'vm',
         params: {
             title: "Novo Agendamento"
+        },
+        resolve : {
+            visitaId : function($stateParams){
+                console.log('Modulo: ' + $stateParams.id)
+                return $stateParams.id;
+            }    
         }
     })
 

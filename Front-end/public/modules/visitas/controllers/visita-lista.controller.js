@@ -15,7 +15,7 @@ function visitaListaController(visitaService, $state, $stateParams) {
 	init()
 
 	function carregaVisitas(){
-		visitaService.getAll(1015).then(function(visitas){			
+		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
 			vm.dataset = visitas.data
 		})
 	}
@@ -27,4 +27,5 @@ function visitaListaController(visitaService, $state, $stateParams) {
 	function editar(visitaId) {
 		$state.go('editar-visita', {id : visitaId})		
 	}
+	
 }

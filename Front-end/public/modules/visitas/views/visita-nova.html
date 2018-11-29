@@ -17,7 +17,7 @@
                <md-input-container>
                  <md-icon md-svg-src="../../../assets/img/clock.svg" aria-label="Close dialog" style="margin-right: 50px;"></md-icon>
                    <label>Hora</label>
-                     <input type="time" ng-model="vm.visitaReservaHora">
+                     <input type="time" ng-model="vm.visitaReservaHora" ng-value="vm.visitaReserva | date: 'HH:mm'">
                </md-input-container>
              </div>
              <div layout-gt-sm="row" style="margin-left: 1px;">
@@ -29,10 +29,10 @@
                        md-search-text-change="searchTextChange(vm.visitaConvidado)"
                        md-search-text="vm.visitaConvidado"
                        md-selected-item-change="vm.dados(pessoa)"
-                       md-items="pessoa in vm.dsConvidados.data | filter: vm.visitaConvidado"
-                       md-item-text="pessoa.nome">
+                       md-items="convidado in vm.carregaConvidados(vm.visitaConvidado)"
+                       md-item-text="convidado.pessoa.nome">
                          <md-item-template>
-                           <span md-highlight-text="vm.visitaConvidado">{{pessoa.pessoa.nome}}</span>
+                           <span md-highlight-text="vm.visitaConvidado">{{convidado.pessoa.nome}}</span>
                          </md-item-template>
                      </md-autocomplete>
                  </md-input-container>
@@ -43,7 +43,7 @@
                  <md-tab id="favoritos">
                    <md-tab-label><md-icon md-svg-src="../../../assets/img/star.svg"></md-icon></md-tab-label>
                      <md-tab-body>
-                       <div ng-repeat="favorito in vm.dataset " layout="row" layout-xs="column">  
+                       <div ng-repeat="favorito in vm.carregaConvidados" layout="row" layout-xs="column">  
                          <md-content class="md-padding">
                            <div flex>
                              <md-card ng-if="favorito.favorito">
@@ -52,7 +52,7 @@
                                    <md-icon md-svg-src="../../../assets/img/user.svg"></md-icon>
                                </md-card-avatar>
                                  <md-card-header-text>
-                                   <span class="md-title">{{favorito.nomeConvidado}}</span>
+                                   <span class="md-title">{{favorito.pessoa.pessoa}}</span>
                                      <span class="md-subhead">Favorito</span>
                                  </md-card-header-text>
                                </md-card-header>
@@ -76,7 +76,7 @@
                  <md-tab id="todos" ng-disabled="data.secondLocked">
                    <md-tab-label>MEUS CONTATOS</md-tab-label>
                      <md-tab-body>
-                       <div ng-repeat="convidado in vm.dataset" layout="column" layout-xs="column">  
+                       <div ng-repeat="convidado in vm.carregaConvidados" layout="column" layout-xs="column">  
                          <md-content class="md-padding">
                            <div flex>
                              <md-card>
@@ -85,7 +85,7 @@
                                    <md-icon md-svg-src="../../../assets/img/user.svg"></md-icon>
                                  </md-card-avatar>
                                    <md-card-header-text>
-                                     <span class="md-title">{{convidado.nomeConvidado}}</span>
+                                     <span class="md-title">{{convidado.pessoa.nome}}</span>
                                      <span class="md-subhead">Favorito</span>
                                    </md-card-header-text>
                                </md-card-header>
@@ -118,7 +118,7 @@
                 <center>
                     <md-button type="reset" class="md-warn">Limpar</md-button>
                     <span flex></span>
-                    <md-button type="submit" ng-click="novaVisitaForm.$valid && vm.salvar()" class="md-fab md-primary" aria-label="Salvar Dados">
+                    <md-button type="submit" ng-click="vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados">
                     <md-icon md-svg-src="../../../assets/img/save.svg"></md-icon>
                     </md-button>
                 </center>
