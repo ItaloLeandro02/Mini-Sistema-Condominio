@@ -43,7 +43,7 @@
                  <md-tab id="favoritos">
                    <md-tab-label><md-icon md-svg-src="../../../assets/img/star.svg"></md-icon></md-tab-label>
                      <md-tab-body>
-                       <div ng-repeat="favorito in vm.carregaConvidados" layout="row" layout-xs="column">  
+                       <div ng-repeat="favorito in vm.dsContatos" layout="row" layout-xs="column">  
                          <md-content class="md-padding">
                            <div flex>
                              <md-card ng-if="favorito.favorito">
@@ -52,7 +52,7 @@
                                    <md-icon md-svg-src="../../../assets/img/user.svg"></md-icon>
                                </md-card-avatar>
                                  <md-card-header-text>
-                                   <span class="md-title">{{favorito.pessoa.pessoa}}</span>
+                                   <span class="md-title">{{favorito.pessoa.nome}}</span>
                                      <span class="md-subhead">Favorito</span>
                                  </md-card-header-text>
                                </md-card-header>
@@ -76,7 +76,7 @@
                  <md-tab id="todos" ng-disabled="data.secondLocked">
                    <md-tab-label>MEUS CONTATOS</md-tab-label>
                      <md-tab-body>
-                       <div ng-repeat="convidado in vm.carregaConvidados" layout="column" layout-xs="column">  
+                       <div ng-repeat="convidado in vm.dsContatos" layout="column" layout-xs="column">  
                          <md-content class="md-padding">
                            <div flex>
                              <md-card>

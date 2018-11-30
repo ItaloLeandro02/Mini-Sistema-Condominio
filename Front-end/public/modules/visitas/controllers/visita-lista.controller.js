@@ -1,7 +1,7 @@
 angular.module('app.visita')
 .controller('VisitaListaController', visitaListaController);
 
-function visitaListaController(visitaService, $state, $stateParams, $localStorage) {
+function visitaListaController(visitaService, $state, $stateParams, $localStorage, $mdDialog) {
 	
 	vm = this;
 
@@ -29,17 +29,24 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 		$state.go('editar-visita', {id : visitaId})		
 	}
 
+	let dadosVisita;
+
 	function cancelar(ev, visita) {
-        let confirmacao = $mdDialog.confirm()
+		dadosVisita = visita;
+		let confirmacao = $mdDialog.confirm()
 	        .title('A	guardando confirmação')
 			.textContent('Confirma o cancelamento da visita ' + visita.nomeConvidado + ' as ' + visita.dataHoraReserva + '?')
 	        .ariaLabel('Msg interna do botao')
 	        .targetEvent(ev)
 	        .ok('Sim')
 	        .cancel('Não');
-	    		$mdDialog.show(confirmacao).then(function(visitaModel) {
-					visitaModel.situacao = 4;
-					visitaService.cancela(visitaModel)
+	    		$mdDialog.show(confirmacao).then(function() {
+					if (dadosVisita.situacao == 4) {
+						toastr.error("Visita já cancelada.","ERRO")
+						return
+					}
+					dadosVisita.situacao = 4;
+					visitaService.cancela(dadosVisita)
 					.then(function(resposta){
 						if (resposta.sucesso) {				
 							toastr.success("Visita cancelada com êxito :)","SUCESSO")

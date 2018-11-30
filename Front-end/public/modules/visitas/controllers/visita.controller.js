@@ -22,14 +22,17 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         $localStorage.condomino = {
             id : 1015,
             nome : 'Jose Mayer'
-		}
+        }
+        
+        carregaContatos(1015)
 	}
 
     init()	
     
 
-    vm.carregaConvidados =  carregaConvidados;
-    vm.salvaVisita       = salvaVisita;
+    vm.carregaConvidados    =  carregaConvidados;
+    vm.salvaVisita          = salvaVisita;
+    vm.carregaContatos      = carregaContatos;
 
 	function salvaVisita(){
 
@@ -80,12 +83,19 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 		})
     }
     
-    function carregaConvidados() {
-        return visitaService.getConvidados().then(function(convidadosModel){
+    function carregaConvidados(nomeConvidado) {
+        return visitaService.getConvidados($localStorage.condomino.id, nomeConvidado).then(function(convidadosModel){
             console.log(convidadosModel.data)
             vm.dsConvidados = convidadosModel.data;
             return convidadosModel.data
         })
     }
-	
+
+    function carregaContatos() {
+        return visitaService.getContatos($localStorage.condomino.id).then(function(convidadosModel){
+            console.log(convidadosModel.data)
+            vm.dsContatos = convidadosModel.data;
+            return convidadosModel.data
+        })
+    }
 }

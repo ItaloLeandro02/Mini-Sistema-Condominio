@@ -28,17 +28,21 @@ angular.module('app.visita')
     }
 
     visitaFactory.cancela = function(visitaModel) {
-        var ds      = new applicationCache.visita();
+        var ds      = new api.visita();
         ds.id       = visitaModel.id;
         ds.visita   = visitaModel;
         return ds.$update();
     }
 
-    visitaFactory.getConvidados = function(condominoId) {       
-        
+    visitaFactory.getConvidados = function(condominoId, nomeConvidado) {       
         var ds = new api.convidado();
-        return ds.$get({condomino : condominoId})
+        return ds.$get({condomino : Number(condominoId), convidado : nomeConvidado})
     };
+
+    visitaFactory.getContatos = function(condominoId) {
+        var ds = new api.convidado();
+        return ds.$get({condomino : condominoId});
+    }
 
 
 

@@ -6,23 +6,28 @@ const dataContext = require('../dao/dao'),
 //Primeiro requisição
 function carregaTudo(req,res) {
 
-	if (req.query.search) {
-    
+	//Caso busque pelo nome do convidado
+	if (req.query.condomino && req.query.convidado) {
+
     return dataContext.Condomino_Convidado.findAll({
-		where :{
-			condominoId : req.query.search
-		},
 		include : [
             {
 				model : dataContext.Condomino,
 				//attributes: { exclude: ['senha'] },
-				
             },
             {
 				model : dataContext.Pessoa,
 				attributes: { exclude: ['endereco_id'] },
+				where : {
+					nome: {
+						$like : '%'+req.query.convidado+'%'
+					}
+				}
 			},
-		]
+		],
+		where :{
+			condominoId : Number(req.query.condomino)
+		},
     }).then(function(convidados){
 
 		convidados = convidados.map(function(convidadosRetornados) {
@@ -39,8 +44,42 @@ function carregaTudo(req,res) {
         	data: convidados
         })
 	})
-
 	}
+
+	//Para retornar todos os convidados
+	if (req.query.condomino) {
+
+		return dataContext.Condomino_Convidado.findAll({
+			include : [
+				{
+					model : dataContext.Condomino,
+					//attributes: { exclude: ['senha'] },
+				},
+				{
+					model : dataContext.Pessoa,
+					attributes: { exclude: ['endereco_id'] },
+				},
+			],
+			where :{
+				condominoId : Number(req.query.condomino)
+			},
+		}).then(function(convidados){
+	
+			convidados = convidados.map(function(convidadosRetornados) {
+				convidadosRetornados = convidadosRetornados.get({plain : true})
+	
+				delete convidadosRetornados.pessoa_id
+				delete convidadosRetornados.condomino_id
+				delete convidadosRetornados.condomino;
+	
+				return convidadosRetornados
+			})
+			res.status(200).json({
+				sucesso:true,
+				data: convidados
+			})
+		})
+		}
 
 	//Para retornar todos para os testes
 	return dataContext.Condomino_Convidado.findAll({
