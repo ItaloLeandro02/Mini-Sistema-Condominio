@@ -12,18 +12,26 @@ angular.module('app.visita')
 
     visitaFactory.getById = function(visitaId) {
         
-        var ds = new api.visita();
-        ds.id = visitaId;
+        var ds  = new api.visita();
+        ds.id   = visitaId;
         return ds.$get()
     }
 
     visitaFactory.save = function(visitaModel){
-        var ds = new api.visita();
-        ds.visita = visitaModel;
-          if (ds.visita.id) {
+        var ds      = new api.visita();
+        ds.visita   = visitaModel;
+        ds.id       = visitaModel.id;
+          if (ds.id) {
             return ds.$update();
           }
             return ds.$save();        
+    }
+
+    visitaFactory.cancela = function(visitaModel) {
+        var ds      = new applicationCache.visita();
+        ds.id       = visitaModel.id;
+        ds.visita   = visitaModel;
+        return ds.$update();
     }
 
     visitaFactory.getConvidados = function(condominoId) {       

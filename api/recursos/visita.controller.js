@@ -34,6 +34,28 @@ function carregaTudo(req,res) {
 	})
 
 	}
+	return dataContext.Visita.findAll({
+		//Procura a Primary Key
+    	order : 'id'
+    }).then(function(visitas){
+
+		visitas = visitas.map(function(visitasRetornadas) {
+			visitasRetornadas = visitasRetornadas.get({plain : true})
+
+			delete visitasRetornadas.pessoa_id
+			delete visitasRetornadas.usuario_id
+			delete visitasRetornadas.condomino_id
+			delete visitasRetornadas.condomino_id
+			delete visitasRetornadas.porteiro_id
+
+			return visitasRetornadas
+		})
+		//Percorre o array retirando os dados desnecessários
+        res.status(200).json({
+        	sucesso:true,
+        	data: visitas
+        })
+	})
 }    
 
 function carregaPorId(req,res) {

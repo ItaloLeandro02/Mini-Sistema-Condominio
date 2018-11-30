@@ -49,7 +49,6 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         
         var visitaModel = {},
                 visita = {
-                    
                     condominoId 			: $localStorage.condomino.id,
                     pessoaId    			: vm.dataset.pessoaId,
                     dataHoraReserva			: vm.dataset.dataHoraReserva,
@@ -57,8 +56,10 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
                     nomeConvidado			: vm.dataset.nomeConvidado,
                     condominoObservacao		: vm.dataset.condominoObservacao
                 }
+
         
         visitaModel = visita;
+        visitaModel.id  = visitaId
        
 		visitaService.save(visitaModel)
 		.then(function(resposta){
@@ -75,6 +76,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 		})
 		.catch(function(error){
             console.log(error)
+            toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
 		})
     }
     
