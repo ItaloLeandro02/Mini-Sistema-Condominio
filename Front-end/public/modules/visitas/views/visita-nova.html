@@ -1,4 +1,4 @@
-<form ng-cloak  name="novaVisitaForm">
+<form ng-cloak  name="vm.form">
   <md-toolbar>
     <div class="md-toolbar-tools">
      <h2 class="texto-branco">Nova Visita</h2>
@@ -11,28 +11,28 @@
              <div layout-gt-sm="row">
                <md-input-container style="margin-right: 150px;">
                  <label>Data</label>
-                   <md-datepicker ng-model="vm.visitaReserva" md-open-on-focus required></md-datepicker>
+                   <md-datepicker ng-model="vm.dataset.dataHoraReserva" md-open-on-focus required></md-datepicker>
                </md-input-container>
             
                <md-input-container>
                  <md-icon md-svg-src="../../../assets/img/clock.svg" aria-label="Close dialog" style="margin-right: 50px;"></md-icon>
                    <label>Hora</label>
-                     <input type="time" ng-model="vm.visitaReservaHora" ng-value="vm.visitaReserva | date: 'HH:mm'">
+                     <input type="time" ng-model="vm.dataset.dataHoraReserva" ng-value="vm.dataset.dataHoraReserva | date: 'HH:mm'">
                </md-input-container>
              </div>
              <div layout-gt-sm="row" style="margin-left: 1px;">
                <md-icon md-svg-src="../../../assets/img/user.svg" class="usuario"></md-icon>
                  <md-input-container class="md-block" flex-gt-xs>
                    <label>Nome</label>
-                     <md-autocomplete flex
+                     <md-autocomplete flex required
                        md-selected-item="vm.query.item" 
-                       md-search-text-change="searchTextChange(vm.visitaConvidado)"
-                       md-search-text="vm.visitaConvidado"
+                       md-search-text-change="searchTextChange(vm.dataset.nomeConvidado)"
+                       md-search-text="vm.dataset.nomeConvidado"
                        md-selected-item-change="vm.dados(pessoa)"
-                       md-items="convidado in vm.carregaConvidados(vm.visitaConvidado)"
+                       md-items="convidado in vm.carregaConvidados(vm.dataset.nomeConvidado)"
                        md-item-text="convidado.pessoa.nome">
                          <md-item-template>
-                           <span md-highlight-text="vm.visitaConvidado">{{convidado.pessoa.nome}}</span>
+                           <span md-highlight-text="vm.dataset.nomeConvidado">{{convidado.pessoa.nome}}</span>
                          </md-item-template>
                      </md-autocomplete>
                  </md-input-container>
@@ -111,14 +111,14 @@
 
         <md-input-container class="md-block">
         <label>Obeservação</label>
-        <textarea ng-model="vm.visitaCondominoObservacao"></textarea>
+        <textarea ng-model="vm.dataset.condominoObservacao"></textarea>
         </md-input-container>
 
                 <div>
                 <center>
                     <md-button type="reset" class="md-warn">Limpar</md-button>
                     <span flex></span>
-                    <md-button type="submit" ng-click="vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados">
+                    <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados">
                     <md-icon md-svg-src="../../../assets/img/save.svg"></md-icon>
                     </md-button>
                 </center>

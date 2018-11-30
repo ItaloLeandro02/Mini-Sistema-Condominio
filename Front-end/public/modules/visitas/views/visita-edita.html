@@ -1,4 +1,4 @@
-<form ng-cloak  name="editaVisitaForm">
+<form ng-cloak  name="vm.form">
   <md-toolbar>
     <div class="md-toolbar-tools">
     <h2 class="texto-branco">Nova Visita</h2>
@@ -24,7 +24,7 @@
                 <md-icon md-svg-src="../../../assets/img/user.svg" class="usuario"></md-icon>
                 <md-input-container class="md-block" flex-gt-xs>
                     <label>Nome</label>
-                    <md-autocomplete flex
+                    <md-autocomplete flex required
                         md-selected-item="vm.query.item" 
                         md-search-text-change="searchTextChange(vm.visitaConvidado)"
                         md-search-text="vm.dataset.nomeConvidado"
@@ -118,7 +118,7 @@
                 <center>
                     <md-button type="reset" class="md-warn">Limpar</md-button>
                     <span flex></span>
-                    <md-button type="submit" ng-click="editaVisitaForm.$valid && vm.salvar()" class="md-fab md-primary" aria-label="Salvar Dados">
+                    <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados">
                     <md-icon md-svg-src="../../../assets/img/save.svg"></md-icon>
                     </md-button>
                 </center>

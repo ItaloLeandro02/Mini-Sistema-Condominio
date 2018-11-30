@@ -20,7 +20,10 @@ angular.module('app.visita')
     visitaFactory.save = function(visitaModel){
         var ds = new api.visita();
         ds.visita = visitaModel;
-        return ds.$save();        
+          if (ds.visita.id) {
+            return ds.$update();
+          }
+            return ds.$save();        
     }
 
     visitaFactory.getConvidados = function(condominoId) {       

@@ -1,7 +1,7 @@
 angular.module('app.visita')
 .controller('VisitaListaController', visitaListaController);
 
-function visitaListaController(visitaService, $state, $stateParams) {
+function visitaListaController(visitaService, $state, $stateParams, $localStorage) {
 	
 	vm = this;
 

@@ -1,7 +1,7 @@
 angular.module('app.visita')
 .controller('VisitaController', VisitaController);
 
-function VisitaController(visitaService, visitaId, $localStorage) {
+function VisitaController(visitaService, visitaId, $localStorage, $state) {
 	
 	vm = this;
 
@@ -11,18 +11,16 @@ function VisitaController(visitaService, visitaId, $localStorage) {
     vm.dataset = {}
     
     function init(){
-        vm.visitaReserva = new Date();
-        vm.visitaReservaHora = vm.visitaReserva;
+        vm.dataset.dataHoraReserva = new Date();
         
         if (visitaId) {
             visitaService.getById(visitaId).then(function(visitaModel){
-                console.log(visitaModel.data)
                 vm.dataset = visitaModel.data
             })
         }
 
         $localStorage.condomino = {
-            id : 1002,
+            id : 1015,
             nome : 'Jose Mayer'
 		}
 	}
@@ -35,35 +33,48 @@ function VisitaController(visitaService, visitaId, $localStorage) {
 
 	function salvaVisita(){
 
-        vm.visitaReserva = new Date(vm.visitaReserva)
-    	vm.visitaReserva.setHours(vm.visitaReservaHora.getHours())
-    	vm.visitaReserva.setMinutes(vm.visitaReservaHora.getMinutes())
+        if (vm.form.$invalid) {
+            toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
+            return
+        } 
 
-    	vm.visitaReserva = new Date(vm.visitaReserva)
+        vm.dataset.dataHoraReserva = new Date(vm.dataset.dataHoraReserva)
+    	vm.dataset.dataHoraReserva.setHours(vm.dataset.dataHoraReserva.getHours())
+    	vm.dataset.dataHoraReserva.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
 
-    	validade = new Date(vm.visitaReserva)
-		validade.setHours(vm.visitaReservaHora.getHours() + 4)
-        validade.setMinutes(vm.visitaReservaHora.getMinutes())
+
+    	validade = new Date(vm.dataset.dataHoraReserva)
+		validade.setHours(vm.dataset.dataHoraReserva.getHours() + 4)
+        validade.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
         
         var visitaModel = {},
                 visita = {
                     
                     condominoId 			: $localStorage.condomino.id,
-                    pessoaId    			: vm.visitaPessoaId,
-                    dataHoraReserva			: vm.visitaReserva,
+                    pessoaId    			: vm.dataset.pessoaId,
+                    dataHoraReserva			: vm.dataset.dataHoraReserva,
                     dataHoraExpiracao		: validade, 			
-                    nomeConvidado			: vm.visitaConvidado,
-                    condominoObservacao		: vm.visitaCondominoObservacao
+                    nomeConvidado			: vm.dataset.nomeConvidado,
+                    condominoObservacao		: vm.dataset.condominoObservacao
                 }
         
-        visitaModel.visita = visita;
-        console.log(visitaModel)
+        visitaModel = visita;
+       
 		visitaService.save(visitaModel)
-		.then(function(){
-			
-		})
-		.catch(function(){
+		.then(function(resposta){
+             if (resposta.sucesso) {				
+                if (visitaId) {
+                    toastr.info("Visita atualizada com êxito :)","SUCESSO")
+                }
+                else {
+                    toastr.success("Visita incluída com êxito :)","SUCESSO")
+                }
 
+                $state.go('visita')
+            }
+		})
+		.catch(function(error){
+            console.log(error)
 		})
     }
     
