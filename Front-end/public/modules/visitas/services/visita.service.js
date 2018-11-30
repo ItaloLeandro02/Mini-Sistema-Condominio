@@ -44,6 +44,12 @@ angular.module('app.visita')
         return ds.$get({condomino : condominoId});
     }
 
+    visitaFactory.favorita = function(convidadoModel) {
+        var ds         = new api.convidado();
+        ds.id          = convidadoModel.id,
+        ds.convidado   = convidadoModel
+        return ds.$update();
+    }
 
 
     return visitaFactory;

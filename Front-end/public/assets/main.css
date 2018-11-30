@@ -124,3 +124,11 @@ md-tabs md-tabs-wrapper {
     height:90px;
     background-color:#FF0;
 }
+
+.user {
+    margin-left: 15px; 
+    margin-bottom: 45px;
+}
+.autocomplete {
+    margin-left: 15px;
+}

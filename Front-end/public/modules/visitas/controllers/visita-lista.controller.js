@@ -15,9 +15,44 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 	init()
 
+	/*
 	function carregaVisitas(){
 		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
 			vm.dataset = visitas.data
+		})
+	}
+	*/
+
+	function carregaVisitas(){
+		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
+			vm.dataset = visitas.data.map(function(resp){
+                if (new Date() >= new Date(resp.dataHoraExpiracao)){
+                    resp.situacao = "Expirado";
+                } 
+
+                switch (resp.situacao) {
+                    case 1:
+                        resp.situacao = "Agendado"
+                        break;
+                    case 2:
+                        resp.situacao = "Liberado"
+                        break;    
+                    case 3:
+                        resp.situacao = "Expirado"
+                        break;
+                    case 4:
+                        resp.situacao = "Cancelado"
+                        break;
+                    case 5:
+                        resp.situacao = "Negado"
+                        break;                
+                    default:
+                        break;
+				}
+				
+				return resp
+            })			
+			
 		})
 	}
 

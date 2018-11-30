@@ -12,6 +12,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     
     function init(){
         vm.dataset.dataHoraReserva = new Date();
+        vm.dataHora = new Date();
         
         if (visitaId) {
             visitaService.getById(visitaId).then(function(visitaModel){
@@ -24,15 +25,17 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
             nome : 'Jose Mayer'
         }
         
-        carregaContatos(1015)
+        carregaContatos()
 	}
 
     init()	
     
-
-    vm.carregaConvidados    =  carregaConvidados;
+    vm.carregaConvidados    = carregaConvidados;
     vm.salvaVisita          = salvaVisita;
     vm.carregaContatos      = carregaContatos;
+    vm.dados                = dados;
+    vm.favoritar            = favoritar;
+    vm.desfavoritar         = desfavoritar;
 
 	function salvaVisita(){
 
@@ -41,12 +44,15 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
             return
         } 
 
-        vm.dataset.dataHoraReserva = new Date(vm.dataset.dataHoraReserva)
-    	vm.dataset.dataHoraReserva.setHours(vm.dataset.dataHoraReserva.getHours())
-    	vm.dataset.dataHoraReserva.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
+        vm.dataHora                 = new Date(vm.dataHora)
+
+        vm.dataset.dataHoraReserva  = new Date(vm.dataset.dataHoraReserva)
+    	vm.dataset.dataHoraReserva.setHours(vm.dataHora.getHours())
+    	vm.dataset.dataHoraReserva.setMinutes(vm.dataHora.getMinutes())
 
 
-    	validade = new Date(vm.dataset.dataHoraReserva)
+        validade                    = new Date(vm.dataset.dataHoraReserva)
+        
 		validade.setHours(vm.dataset.dataHoraReserva.getHours() + 4)
         validade.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
         
@@ -96,6 +102,45 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
             console.log(convidadosModel.data)
             vm.dsContatos = convidadosModel.data;
             return convidadosModel.data
+        })
+    }
+
+    function dados(convidado) {
+        vm.dataset.pessoaId          = convidado.pessoa.id,
+        vm.dataset.nomeConvidado     = convidado.pessoa.nome;		
+    }
+
+    function favoritar(convidado) {
+        if (convidado.favorito) {
+            toastr.info(convidado.pessoa.nome + " já é um favorito!.","ERRO");
+            return
+        }
+        convidado.favorito = true;
+        visitaService.favorita(convidado)
+        .then(function(resposta){
+            if (resposta.sucesso) {				
+                toastr.success(convidado.pessoa.nome +" adicionado aos favoritos :)","SUCESSO")
+           }
+        })
+        .catch(function(error){
+           toastr.error("Tente novamente.","ERRO")
+        })
+    }
+
+    function desfavoritar(convidado){
+        if (!convidado.favorito) {
+            toastr.info(convidado.pessoa.nome + " não é um favorito!.","ERRO");
+            return
+        }
+        convidado.favorito = false;
+        visitaService.favorita(convidado)
+        .then(function(resposta){
+            if (resposta.sucesso) {				
+                toastr.success(convidado.pessoa.nome +" removido dos favoritos :)","SUCESSO")
+           }
+        })
+        .catch(function(error){
+           toastr.error("Tente novamente.","ERRO")
         })
     }
 }

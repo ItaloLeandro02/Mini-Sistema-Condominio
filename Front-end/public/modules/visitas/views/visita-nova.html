@@ -15,33 +15,32 @@
                </md-input-container>
             
                <md-input-container>
-                 <md-icon md-svg-src="../../../assets/img/clock.svg" aria-label="Close dialog" style="margin-right: 50px;"></md-icon>
+                 <md-icon md-svg-src="assets/img/clock.svg" aria-label="Close dialog" style="margin-right: 50px;"></md-icon>
                    <label>Hora</label>
-                     <input type="time" ng-model="vm.dataset.dataHoraReserva" ng-value="vm.dataset.dataHoraReserva | date: 'HH:mm'">
+                     <input type="time" ng-model="vm.dataHora" ng-value="vm.dataHora | date: 'HH:mm'">
                </md-input-container>
              </div>
-             <div layout-gt-sm="row" style="margin-left: 1px;">
-               <md-icon md-svg-src="../../../assets/img/user.svg" class="usuario"></md-icon>
-                 <md-input-container class="md-block" flex-gt-xs>
-                   <label>Nome</label>
-                     <md-autocomplete flex required
-                       md-selected-item="vm.query.item" 
+             <div layout-gt-sm="row">
+               <md-icon md-svg-src="assets/img/user.svg" class="user"></md-icon>
+                     <md-autocomplete flex required class="autocomplete"
+                       md-selected-item="vm.query.item"
+                       md-input-maxlength="50" 
                        md-search-text-change="searchTextChange(vm.dataset.nomeConvidado)"
                        md-search-text="vm.dataset.nomeConvidado"
                        md-selected-item-change="vm.dados(pessoa)"
                        md-items="convidado in vm.carregaConvidados(vm.dataset.nomeConvidado)"
-                       md-item-text="convidado.pessoa.nome">
+                       md-item-text="convidado.pessoa.nome"
+                       md-floating-label="Nome">
                          <md-item-template>
                            <span md-highlight-text="vm.dataset.nomeConvidado">{{convidado.pessoa.nome}}</span>
                          </md-item-template>
                      </md-autocomplete>
-                 </md-input-container>
              </div>
              <!--Tab para exibir contatos favoritos-->
              <md-content class="md-padding">
                <md-tabs class="md-accent" md-selected="data.selectedIndex">
                  <md-tab id="favoritos">
-                   <md-tab-label><md-icon md-svg-src="../../../assets/img/star.svg"></md-icon></md-tab-label>
+                   <md-tab-label><md-icon md-svg-src="assets/img/star.svg"></md-icon></md-tab-label>
                      <md-tab-body>
                        <div ng-repeat="favorito in vm.dsContatos" layout="row" layout-xs="column">  
                          <md-content class="md-padding">
@@ -49,7 +48,7 @@
                              <md-card ng-if="favorito.favorito">
                                <md-card-header>
                                  <md-card-avatar>
-                                   <md-icon md-svg-src="../../../assets/img/user.svg"></md-icon>
+                                   <md-icon md-svg-src="assets/img/user.svg"></md-icon>
                                </md-card-avatar>
                                  <md-card-header-text>
                                    <span class="md-title">{{favorito.pessoa.nome}}</span>
@@ -58,12 +57,12 @@
                                </md-card-header>
                                  <md-card-actions layout="row" layout-align="start center">
                                    <md-card-icon-actions>
-                                     <md-button class="md-icon-button" aria-label="toggle">
-                                       <md-icon ng-click="vm.dados(favorito)" md-svg-icon="../../../assets/img/success.svg"></md-icon>
+                                     <md-button ng-click="vm.dados(favorito)" class="md-icon-button" aria-label="toggle">
+                                       <md-icon  md-svg-icon="assets/img/success.svg"></md-icon>
                                      </md-button>
-                                       <md-button class="md-icon-button" aria-label="toggle">
-                                         <md-icon md-svg-icon="../img/../../assets/remove-user.svg"></md-icon>
-                                       </md-button>
+                                     <md-button ng-click="vm.desfavoritar(favorito)" class="md-icon-button" aria-label="df">
+                                       <md-icon  md-svg-icon="assets/img/remove-user.svg"></md-icon>
+                                     </md-button>
                                   </md-card-icon-actions>
                                  </md-card-actions>
                              </md-card>
@@ -82,7 +81,7 @@
                              <md-card>
                                <md-card-header>
                                  <md-card-avatar>
-                                   <md-icon md-svg-src="../../../assets/img/user.svg"></md-icon>
+                                   <md-icon md-svg-src="assets/img/user.svg"></md-icon>
                                  </md-card-avatar>
                                    <md-card-header-text>
                                      <span class="md-title">{{convidado.pessoa.nome}}</span>
@@ -91,18 +90,18 @@
                                </md-card-header>
                                  <md-card-actions layout="row" layout-align="start center">
                                    <md-card-icon-actions>
-                                     <md-button class="md-icon-button" aria-label="toggle">
-                                       <md-icon ng-click="vm.dados(convidado)" md-svg-icon="../../../assets/img/success.svg"></md-icon>
+                                     <md-button ng-click="vm.dados(convidado)" class="md-icon-button" aria-label="toggle">
+                                       <md-icon  md-svg-icon="assets/img/success.svg"></md-icon>
                                      </md-button>
                                        <!--Botão para adicionar aos favoritos-->
                                        <md-button class="md-icon-button" aria-label="toggle">
-                                         <md-icon ng-click="vm.favoritar(convidado)" md-svg-icon="../../../assets/img/favorite.svg"></md-icon>
+                                         <md-icon ng-click="vm.favoritar(convidado)" md-svg-icon="assets/img/favorite.svg"></md-icon>
                                        </md-button>
                                    </md-card-icon-actions>
                                  </md-card-actions>
                              </md-card>
                            </div>
-                         </md-content>
+                         </md-content>  
                        </div> 
                      </md-tab-body>
                  </md-tab>
@@ -119,7 +118,7 @@
                     <md-button type="reset" class="md-warn">Limpar</md-button>
                     <span flex></span>
                     <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados">
-                    <md-icon md-svg-src="../../../assets/img/save.svg"></md-icon>
+                    <md-icon md-svg-src="assets/img/save.svg"></md-icon>
                     </md-button>
                 </center>
                 </div>
