@@ -48,10 +48,6 @@ function carregaPorId(req,res) {
         include : [
             {
 				model : dataContext.Usuario,
-				attributes: { exclude: ['senha'] },
-				
-				//Retorna todos os atributos menos estes
-                attributes : ['email','desativado']
             },
             {
 				model : dataContext.Pessoa,

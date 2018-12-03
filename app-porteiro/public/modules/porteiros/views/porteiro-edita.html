@@ -1,0 +1,116 @@
+<form ng-cloak  name="vm.form">
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+           <h2 class="texto-branco">Editar Dados Cadastrais</h2>
+            <span flex></span>
+          </div>
+            </md-toolbar>
+             
+            <br/>
+            <md-content class="md-no-momentum">
+    
+              <md-input-container class="md-block">
+                <label>Nome</label>
+                  <md-icon md-svg-src="assets/img/user.svg"></md-icon>
+                    <input ng-model="vm.dataset.pessoa.nome" type="text" ng-required="true">
+              </md-input-container>
+    
+              <md-input-container class="md-block">
+                <md-icon md-svg-src="assets/img/cpf.svg" class="email"></md-icon>
+                  <input ng-model="vm.dataset.pessoa.cpf" type="text" placeholder="CPF" ng-required="true" maxlength="11">
+              </md-input-container>
+    
+              <md-input-container class="md-block data-picker-alinhado-esquerda" >
+                <label>Nascimento</label>
+                  <md-datepicker ng-model="vm.dataset.pessoa.nascimento" md-open-on-focus ng-required="true"></md-datepicker>
+              </md-input-container>
+        
+              <!-- Segunda forma de layout
+            
+                 <div layout="column">
+                <div layout="row">
+                  <md-input-container class="md-block" flex>
+                    <label>Nome</label>
+                      <md-icon md-svg-src="assets/img/user.svg"></md-icon>
+                        <input ng-model="vm.dataset.pessoa.nome" type="text" ng-required="true">
+                  </md-input-container>
+          
+                  <md-input-container class="md-block" >
+                    <label>Nascimento</label>
+                      <md-datepicker ng-model="vm.dataset.pessoa.nascimento" md-open-on-focus ng-required="true"></md-datepicker>
+                  </md-input-container>
+                </div>
+              </div>
+    
+              -->
+    
+              <div layout="column">
+                <div layout="row">
+                  <md-input-container class="md-block">
+                    <md-icon md-svg-src="assets/img/email.svg" class="email"></md-icon>
+                      <input ng-model="vm.dataset.usuario.email" type="email" placeholder="Email" ng-required="true">
+                  </md-input-container>
+    
+              <span flex></span>
+    
+                  <md-input-container class="md-block">
+                    <md-icon md-svg-src="assets/img/lock.svg" class="email"></md-icon>
+                      <input name="senha" ng-model="vm.dataset.usuario.senha" type="password" placeholder="Senha" ng-disabled="true">
+                  </md-input-container>
+    
+              <span flex></span>
+
+                </div>
+              </div>
+              
+              <div layout="column">
+                <div layout="row">
+                  <md-input-container md-no-float class="md-block" flex>
+                    <md-icon md-svg-src="assets/img/logradouro.svg" style="display:inline-block;"></md-icon>
+                      <input ng-model="vm.dataset.pessoa.endereco.logradouro" type="text" placeholder="Logradouro" ng-required="true">
+                      
+                  </md-input-container>
+                  <md-input-container md-no-float class="md-block" flex>
+                    <md-icon md-svg-src="assets/img/numero.svg" style="display:inline-block;"></md-icon>
+                      <input ng-model="vm.dataset.pessoa.endereco.numero" type="number" placeholder="Número" ng-required="true">
+                  </md-input-container>
+    
+                  <md-input-container md-no-float class="md-block" flex>
+                    <md-icon md-svg-src="assets/img/bairro.svg" style="display:inline-block;"></md-icon>
+                      <input ng-model="vm.dataset.pessoa.endereco.bairro" type="text" placeholder="Bairro" ng-required="true">
+                  </md-input-container>
+    
+                  <md-input-container md-no-float class="md-block" flex>
+                    <md-icon md-svg-src="assets/img/cidade.svg" style="display:inline-block;"></md-icon>
+                      <input ng-model="vm.dataset.pessoa.endereco.cidade" type="text" placeholder="Cidade" ng-required="true">
+                  </md-input-container>
+    
+                  <md-input-container md-no-float class="md-block" flex>
+                    <md-icon md-svg-src="assets/img/estado.svg" style="display:inline-block;"></md-icon>
+                      <label>Estado</label>
+                        <md-select ng-model="vm.dataset.pessoa.endereco.uf" flex>
+                          <md-option ng-repeat="estado in vm.estados" ng-value="estado.abbrev">
+                            {{estado.abbrev}}
+                          </md-option>
+                        </md-select>
+                  </md-input-container>
+                </div>
+              </div>
+    
+          
+            </md-content>
+    
+      
+                      <div>
+                      <center>
+                          <md-button type="reset" class="md-warn">Limpar</md-button>
+                          <span flex></span>
+                          <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPorteiro()" class="md-fab md-primary" aria-label="Salvar Dados">
+                          <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+                          </md-button>
+                      </center>
+                      </div>
+      
+      </form>
+      
+            
