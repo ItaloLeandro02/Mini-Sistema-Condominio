@@ -5,9 +5,13 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	
 	vm = this;
 
-	vm.novaVisita 	= novaVisita;
-	vm.editar 		= editar;
-	vm.cancelar 	= cancelar;
+	vm.novaVisita 			= novaVisita;
+	vm.editar 				= editar;
+	vm.cancelar 			= cancelar;
+	vm.visitasCanceladas 	= visitasCanceladas;
+	vm.visitasLiberadas 	= visitasLiberadas;
+	vm.visitasNegadas 		= visitasNegadas;
+	vm.listarVisita			= listarVisita;
 
 	vm.topDirections = ['left', 'up'];
 	vm.bottomDirections = ['down', 'right'];
@@ -20,7 +24,11 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.availableDirections = ['up', 'down', 'left', 'right'];
 	vm.selectedDirection = 'rigth';
 
+	vm.situacao = "Agendado";
+	vm.imagem = "visitas-agendadas.svg"
+
 	function init(){
+		
 		carregaVisitas()
 	}
 
@@ -37,10 +45,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	function carregaVisitas(){	
 		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
 			vm.dataset = visitas.data.map(function(resp){
-                if ((new Date() >= new Date(resp.dataHoraExpiracao)) && (resp.situacao == 1)){
-                    resp.situacao = "Expirado";
-                } 
-
+               
                 switch (resp.situacao) {
                     case 1:
                         resp.situacao = "Agendado"
@@ -59,6 +64,10 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
                         break;                
                     default:
                         break;
+				}
+
+				if ((new Date() >= new Date(resp.dataHoraExpiracao)) && (resp.situacao == "Agendado")){
+					resp.situacao = "Expirado";
 				}
 				
 				return resp
@@ -87,8 +96,8 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	        .ok('Sim')
 	        .cancel('Não');
 	    		$mdDialog.show(confirmacao).then(function() {
-					if (dadosVisita.situacao == 4) {
-						toastr.error("Visita já cancelada.","ERRO")
+					if (dadosVisita.situacao != "Agendado") {
+						toastr.error("Visita não pode ser cancelada.","ERRO")
 						return
 					}
 					dadosVisita.situacao = 4;
@@ -96,7 +105,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 					.then(function(resposta){
 						if (resposta.sucesso) {				
 							toastr.success("Visita cancelada com êxito :)","SUCESSO")
-						   		$state.go('visita')
+							carregaVisitas();
 					   }
 				   })
 				   .catch(function(error){
@@ -104,5 +113,25 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 					   toastr.error("Tente novamente.","ERRO")
 				   })
 	    		});
+	}
+
+	function visitasLiberadas() {
+		vm.situacao = "Liberado"
+		vm.imagem 	= "visitas-confirmadas.svg"
+	}
+
+	function visitasCanceladas() {
+		vm.situacao = "Cancelado"
+		vm.imagem 	= "visitas-canceladas.svg"
+	}
+
+	function visitasNegadas() {
+		vm.situacao = "Negado"
+		vm.imagem 	= "visitas-negadas.svg"
+	}
+
+	function listarVisita() {
+		vm.situacao = ""
+		vm.imagem 	= "visitas-negadas.svg"
 	}
 }

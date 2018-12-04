@@ -1,7 +1,7 @@
 angular.module('app.visita')
 .controller('VisitaController', VisitaController);
 
-function VisitaController(visitaService, visitaId, $localStorage, $state) {
+function VisitaController(visitaService, dadosVisitante, $localStorage, $state, $stateParams) {
 	
 	vm = this;
 
@@ -13,26 +13,22 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     function init(){
         vm.dataset.dataHoraReserva = new Date();
         vm.dataHora = new Date();
-        
-        if (visitaId) {
-            visitaService.getById(visitaId).then(function(visitaModel){
-                vm.dataset = visitaModel.data
-            })
-        }
+
 
         $localStorage.condomino = {
             id : 1015,
             nome : 'Jose Mayer'
         }
-        
-        carregaContatos()
+
+        //console.log($stateParams.obj.nomeConvidado)
+        console.log(dadosVisitante.nomeConvidado)
 	}
 
     init()	
+
     
-    vm.carregaConvidados    = carregaConvidados;
+    
     vm.salvaVisita          = salvaVisita;
-    vm.carregaContatos      = carregaContatos;
     vm.dados                = dados;
     vm.favoritar            = favoritar;
     vm.desfavoritar         = desfavoritar;
@@ -87,22 +83,6 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
             console.log(error)
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
 		})
-    }
-    
-    function carregaConvidados(nomeConvidado) {
-        return visitaService.getConvidados($localStorage.condomino.id, nomeConvidado).then(function(convidadosModel){
-            console.log(convidadosModel.data)
-            vm.dsConvidados = convidadosModel.data;
-            return convidadosModel.data
-        })
-    }
-
-    function carregaContatos() {
-        return visitaService.getContatos($localStorage.condomino.id).then(function(convidadosModel){
-            console.log(convidadosModel.data)
-            vm.dsContatos = convidadosModel.data;
-            return convidadosModel.data
-        })
     }
 
     function dados(convidado) {

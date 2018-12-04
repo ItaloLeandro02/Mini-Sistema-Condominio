@@ -5,15 +5,57 @@ const dataContext = require('../dao/dao'),
 //Orem influência o nome mão
 //Primeiro requisição
 function carregaTudo(req,res) {
+
+	if (req.query.search) {
     
-    return dataContext.Condomino.findAll({
+		return dataContext.Condomino.findAll({
+			include : [
+				{
+					model : dataContext.Usuario,
+					//attributes: { exclude: ['senha'] },
+					
+				},
+				{
+					model : dataContext.Pessoa,
+					attributes: { exclude: ['endereco_id'] },
+					where: {
+						nome: {
+							$like: '%'+req.query.search+'%'
+						}
+					},
+
+					//Inclue o endereço associado a Pessoa
+					include : {
+
+						model : dataContext.Endereco,
+					}
+				},
+			]
+		}).then(function(condominos){
+
+			condominos = condominos.map(function(condominoRetornado) {
+				condominoRetornado = condominoRetornado.get({plain : true})
+
+				delete condominoRetornado.pessoa_id
+				delete condominoRetornado.usuario_id
+
+				return condominoRetornado
+			})
+			res.status(200).json({
+				sucesso:true,
+				data: condominos
+			})
+		})
+	}
+
+	return dataContext.Condomino.findAll({
 		include : [
-            {
+			{
 				model : dataContext.Usuario,
 				//attributes: { exclude: ['senha'] },
 				
-            },
-            {
+			},
+			{
 				model : dataContext.Pessoa,
 				attributes: { exclude: ['endereco_id'] },
 
@@ -24,7 +66,7 @@ function carregaTudo(req,res) {
 				}
 			},
 		]
-    }).then(function(condominos){
+	}).then(function(condominos){
 
 		condominos = condominos.map(function(condominoRetornado) {
 			condominoRetornado = condominoRetornado.get({plain : true})
@@ -34,11 +76,12 @@ function carregaTudo(req,res) {
 
 			return condominoRetornado
 		})
-        res.status(200).json({
-        	sucesso:true,
-        	data: condominos
-        })
-    })
+		res.status(200).json({
+			sucesso:true,
+			data: condominos
+		})
+	})
+	
 }    
 
 function carregaPorId(req,res) {

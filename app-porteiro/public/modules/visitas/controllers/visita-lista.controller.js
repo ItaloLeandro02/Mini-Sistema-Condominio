@@ -5,9 +5,12 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	
 	vm = this;
 
-	vm.novaVisita 	= novaVisita;
-	vm.editar 		= editar;
-	vm.cancelar 	= cancelar;
+	vm.novaVisita 			= novaVisita;
+	vm.editar 				= editar;
+	vm.cancelar 			= cancelar;
+	vm.carregaCondomino		= carregaCondomino;
+	vm.pesquisaVisita		= pesquisaVisita;
+	vm.novoVisitante		= novoVisitante;
 
 	function init(){
 		carregaVisitas()
@@ -24,7 +27,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	*/
 
 	function carregaVisitas(){	
-		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
+		visitaService.getAll().then(function(visitas){			
 			vm.dataset = visitas.data.map(function(resp){
                 if (new Date() >= new Date(resp.dataHoraExpiracao)){
                     resp.situacao = "Expirado";
@@ -49,19 +52,25 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
                     default:
                         break;
 				}
-				
 				return resp
             })			
-			
 		})
 	}
+
+	function carregaCondomino(nomeCondomino) {
+        return visitaService.getCondomino(nomeCondomino).then(function(condominosModel){
+            console.log(condominosModel.data)
+            vm.dsCondominos = condominosModel.data;
+            return condominosModel.data
+        })
+    }
 
 	function novaVisita() {
 		$state.go('nova-visita');	
 	}
 
 	function editar(visitaId) {
-		$state.go('editar-visita', {id : visitaId})		
+		//$state.go('editar-visita', {id : visitaId})		
 	}
 
 	let dadosVisita;
@@ -93,5 +102,18 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 					   toastr.error("Tente novamente.","ERRO")
 				   })
 	    		});
+	}
+	
+	function pesquisaVisita(nomeCondomino) {
+		return visitaService.getVisita(nomeCondomino).then(function(visitaModel) {
+			console.log(visitaModel.data)
+			vm.dataset = visitaModel.data;
+			return visitaModel.data;
+		})
+	}
+
+	function novoVisitante(dadosVisita) {
+		console.log(dadosVisita)
+		$state.go('novo-visitante', {dadosConvidados : dadosVisita.nomeConvidado})
 	}
 }

@@ -3,11 +3,11 @@ angular.module('app.visita')
     
     var visitaFactory = {};
 
-    visitaFactory.getAll = function(condominoId) {       
+    visitaFactory.getAll = function() {       
         
         /// Modelo de consumo da api
         var ds = new api.visita();
-        return ds.$get({condomino : condominoId})
+        return ds.$get()
     };
 
     visitaFactory.getById = function(visitaId) {
@@ -34,14 +34,15 @@ angular.module('app.visita')
         return ds.$update();
     }
 
-    visitaFactory.getConvidados = function(condominoId, nomeConvidado) {       
-        var ds = new api.convidado();
-        return ds.$get({condomino : Number(condominoId), convidado : nomeConvidado})
+    visitaFactory.getVisita = function(nomeCondomino) {       
+        var ds = new api.visita();
+        return ds.$get({condominoVisitas : nomeCondomino})
     };
 
-    visitaFactory.getContatos = function(condominoId) {
-        var ds = new api.convidado();
-        return ds.$get({condomino : condominoId});
+    //Estou trabalhando neste
+    visitaFactory.getCondomino = function(nomeCondomino) {
+        var ds = new api.condomino();
+        return ds.$get({search : nomeCondomino});
     }
 
     visitaFactory.favorita = function(convidadoModel) {

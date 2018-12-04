@@ -1,9 +1,32 @@
-<div layout="column" flex layout-fill>
+  <div layout="column" flex layout-fill>
   <div layout="row" layout-align="start">
     <md-button class="md-raised" ng-click="vm.novaVisita()" aria-label="Nova Visita">
       <md-icon md-svg-src="assets/img/add.svg"></md-icon>
     </md-button>
   </div>
+
+  <div layout="row" >
+    <md-icon md-svg-src="assets/img/user.svg" class="user"></md-icon>
+          <md-autocomplete required class="autocomplete"
+            md-selected-item="vm.query.item"
+            md-input-maxlength="50" 
+            md-search-text="vm.dataset.pessoa.nome"
+            md-selected-item-change="vm.dados(pessoa)"
+            md-items="condomino in vm.carregaCondomino(vm.dataset.pessoa.nome)"
+            md-item-text="condomino.pessoa.nome"
+            md-floating-label="Nome">
+              <md-item-template>
+                <span md-highlight-text="vm.dataset.pessoa.nome">{{condomino.pessoa.nome}}</span>
+              </md-item-template>
+          </md-autocomplete>
+
+
+          <md-button ng-click="vm.pesquisaVisita(vm.dataset.pessoa.nome)">
+            <md-icon md-svg-src="assets/img/search.svg"></md-icon>
+          </md-button>
+          <span flex></span>
+  </div>
+
     <div >
       <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset">
          <div layout="row">
@@ -13,6 +36,16 @@
                  <div layout="column" flex>
                    <div layout="row">
                      <span flex></span>
+                       <md-menu>
+                         <md-button class="md-icon-button" ng-click="$mdMenu.open($event)" ng-show="!visita.pessoaId">
+                          <md-icon md-svg-src="assets/img/warning.svg"></md-icon>                       
+                            </md-button>
+                              <md-menu-content width="3">
+                                <md-menu-item>
+                                 <md-button ng-click="vm.novoVisitante(visita)" >Cadastrar Visitante </md-button>
+                                </md-menu-item>
+                              </md-menu-content>
+                      </md-menu>
                        <md-menu>
                          <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
                            <md-icon md-svg-src="assets/img/edit.svg"></md-icon>                       
@@ -36,6 +69,7 @@
                    </div>
                      <div layout="column" layout-align="start start">
                        <span class="font-size-18 texto-marcador negrito">Convidado: {{visita.nomeConvidado}}</span>
+                       <span class="font-size-18 texto-marcador negrito">Condomino: {{visita.condomino.pessoa.nome}}</span>
                        <span class="font-size-16 texto-branco">Agendamento: {{visita.dataHoraReserva | date : 'dd/MM/yyyy'}}</span>
                        <span class="font-size-16 texto-branco">Horário: {{visita.dataHoraReserva | date : 'HH:mm'}}</span>
                        <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'dd/MM/yyyy'}}</span>

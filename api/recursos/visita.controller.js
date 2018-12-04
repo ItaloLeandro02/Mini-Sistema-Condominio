@@ -11,6 +11,7 @@ function carregaTudo(req,res) {
 		where :{
 			condominoId : req.query.condomino
 		},
+		
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(visitas){
@@ -34,9 +35,56 @@ function carregaTudo(req,res) {
 	})
 
 	}
+
+	if (req.query.condominoVisitas) {
+
+		return dataContext.Visita.findAll({
+			include : [
+				{
+				model : dataContext.Condomino,
+					include: {
+						model : dataContext.Pessoa,
+						where: {
+							nome:{
+								$like: '%'+req.query.condominoVisitas+'%'
+							}
+						}
+					}
+				}
+			]
+		}).then(function(visitas){
+	
+			visitas = visitas.map(function(visitasRetornadas) {
+				visitasRetornadas = visitasRetornadas.get({plain : true})
+	
+				delete visitasRetornadas.pessoa_id
+				delete visitasRetornadas.usuario_id
+				delete visitasRetornadas.condomino_id
+				delete visitasRetornadas.condomino_id
+				delete visitasRetornadas.porteiro_id
+	
+				return visitasRetornadas
+			})
+			//Percorre o array retirando os dados desnecessários
+			res.status(200).json({
+				sucesso:true,
+				data: visitas
+			})
+		})
+	
+		}
+
 	return dataContext.Visita.findAll({
-		//Procura a Primary Key
-    	order : 'id'
+		
+		include : [
+			{
+			model : dataContext.Condomino,
+				include: {
+					model : dataContext.Pessoa,
+				}
+			}
+		]
+		
     }).then(function(visitas){
 
 		visitas = visitas.map(function(visitasRetornadas) {

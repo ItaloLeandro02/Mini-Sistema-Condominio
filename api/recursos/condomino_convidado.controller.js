@@ -79,7 +79,7 @@ function carregaTudo(req,res) {
 				data: convidados
 			})
 		})
-		}
+	}
 
 	//Para retornar todos para os testes
 	return dataContext.Condomino_Convidado.findAll({

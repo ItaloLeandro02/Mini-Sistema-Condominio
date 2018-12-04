@@ -21,34 +21,18 @@
         }
     })
 
-    .state('nova-visita', {
-        url: '/visitas/nova-visita',
-        templateUrl: '/modules/visitas/views/visita-nova.html',
+    .state('novo-visitante', {
+        url: '/visitas/novo-visitante:dadosConvidados',
+        templateUrl: '/modules/visitas/views/visitante-novo.html',
         controller: 'VisitaController',
         controllerAs: 'vm',
         params: {
-            title: "Novo Agendamento"
+            title: "Novo Visitante",
         },
         resolve : {
-            visitaId : function($stateParams){
-                console.log('Modulo: ' + $stateParams.id)
-                return $stateParams.id;
-            }    
-        }
-    })
-
-    .state('editar-visita', {
-        url: '/visitas/editar-visita/:id',
-        templateUrl: '/modules/visitas/views/visita-edita.html',
-        controller: 'VisitaController',
-        controllerAs: 'vm',
-        params: {
-            title: "Editar Visita"
-        },
-        resolve : {
-            visitaId : function($stateParams){
-                console.log('Modulo: ' + $stateParams.id)
-                return $stateParams.id;
+            dadosVisitante : function($stateParams){
+                console.log($stateParams)
+                return $stateParams.dadosConvidados;
             }    
         }
     })
