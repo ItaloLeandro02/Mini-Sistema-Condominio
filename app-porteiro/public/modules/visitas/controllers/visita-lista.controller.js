@@ -11,6 +11,8 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.carregaCondomino		= carregaCondomino;
 	vm.pesquisaVisita		= pesquisaVisita;
 	vm.novoVisitante		= novoVisitante;
+	vm.finalizarVisita		= finalizarVisita
+	vm.novoConvidado		= novoConvidado;
 
 	function init(){
 		carregaVisitas()
@@ -29,7 +31,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	function carregaVisitas(){	
 		visitaService.getAll().then(function(visitas){			
 			vm.dataset = visitas.data.map(function(resp){
-                if (new Date() >= new Date(resp.dataHoraExpiracao)){
+                if (new Date() >= new Date(resp.dataHoraExpiracao) && resp.situacao == 1){
                     resp.situacao = "Expirado";
                 } 
 
@@ -67,6 +69,10 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 	function novaVisita() {
 		$state.go('nova-visita');	
+	}
+
+	function finalizarVisita(visita) {
+		$state.go('finalizar-visita', {visitaId: visita})
 	}
 
 	function editar(visitaId) {
@@ -114,6 +120,10 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 	function novoVisitante(dadosVisita) {
 		console.log(dadosVisita)
-		$state.go('novo-visitante', {dadosConvidados : dadosVisita.nomeConvidado})
+		$state.go('novo-visitante', {visitaId: dadosVisita.id})
+	}
+
+	function novoConvidado() {
+		$state.go('novo-visitante')
 	}
 }

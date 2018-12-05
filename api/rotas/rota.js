@@ -49,6 +49,9 @@ rota.get('/visita/:id', visitaController.carregaPorId);
 rota.post('/visita', visitaController.salva);
 rota.delete('/visita/:id', visitaController.exclui);
 rota.put('/visita/:id', visitaController.atualiza);
+rota.put('/visita/:id/pessoa', visitaController.atualizaPessoa);
+rota.put('/visita/:id/situacao', visitaController.atualizaSituacao);
+rota.put('/visita/:id/portaria', visitaController.atualizaPortaria);
 
 //Condomino
 rota.get('/condomino', condominoController.carregaTudo);

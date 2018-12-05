@@ -1,6 +1,6 @@
   <div layout="column" flex layout-fill>
   <div layout="row" layout-align="start">
-    <md-button class="md-raised" ng-click="vm.novaVisita()" aria-label="Nova Visita">
+    <md-button class="md-raised" ng-click="vm.novoConvidado()" aria-label="Nova Visita">
       <md-icon md-svg-src="assets/img/add.svg"></md-icon>
     </md-button>
   </div>
@@ -46,23 +46,27 @@
                                 </md-menu-item>
                               </md-menu-content>
                       </md-menu>
+                      <!--
                        <md-menu>
                          <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
-                           <md-icon md-svg-src="assets/img/edit.svg"></md-icon>                       
+                           <md-icon md-svg-src="assets/img/liberar.svg"></md-icon>                       
                          </md-button>
                            <md-menu-content width="3">
                              <md-menu-item>
-                               <md-button ng-click="vm.editar(visita.id)"> Editar </md-button>
+                               <md-button ng-click="vm.finalizarVisita(visita.id)"> Liberar </md-button>
                              </md-menu-item>
                           </md-menu-content>
                        </md-menu>
+                       -->
                          <md-menu>
                            <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+                              <md-tooltip>Ver Mais</md-tooltip>
                              <md-icon md-svg-src="assets/img/more-geen.svg"></md-icon>                      
                            </md-button>
                              <md-menu-content width="3">
                                <md-menu-item>
-                                 <md-button ng-click="vm.cancelar($event, visita)"> Cancelar </md-button>
+                                 <!--ng-disabled="vm.dataset.situacao != 'Agendado'"-->
+                                 <md-button ng-click="vm.finalizarVisita(visita.id)"> Ver Mais </md-button>
                                    </md-menu-item>
                              </md-menu-content>
                          </md-menu>

@@ -28,6 +28,24 @@
         }
       })
 
+      api.atualizaVisitaPessoa   = $resource(api.baseUrl + 'visita/:id/pessoa', {id : '@id'},
+        {update: {
+          method: 'PUT'
+        }
+      })
+
+      api.atualizaVisitaPortaria   = $resource(api.baseUrl + 'visita/:id/portaria', {id : '@id'},
+        {update: {
+          method: 'PUT'
+        }
+      })
+
+      api.atualizaVisitaSituacao   = $resource(api.baseUrl + 'visita/:id/situacao', {id : '@id'},
+        {update: {
+          method: 'PUT'
+        }
+      })
+
       api.porteiro  =$resource(api.baseUrl + 'porteiro/:id', {id : '@id'},
         {update: {
           method: 'PUT'
@@ -35,6 +53,12 @@
       })
 
       api.convidado = $resource(api.baseUrl + 'convidado/:id', {id : '@id'},
+        {update: {
+          method: 'PUT'
+        }
+      })
+
+      api.pessoa = $resource(api.baseUrl + 'pessoa/:id', {id : '@id'},
         {update: {
           method: 'PUT'
         }

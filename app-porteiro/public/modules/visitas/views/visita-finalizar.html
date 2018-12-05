@@ -1,0 +1,71 @@
+<form ng-cloak  name="vm.form">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+      <h2 class="texto-branco">Dados Visita</h2>
+      <span flex></span>
+      </div>
+      </md-toolbar>
+          <md-dialog-content>
+          <div class="md-dialog-content">
+              <md-content layout-padding>
+              <div layout-gt-sm="row">
+                  <md-input-container class="data-picker-alinhado-esquerda">
+                  <label>Data</label>
+                      <md-datepicker ng-model="vm.dataset.dataHoraReserva" md-open-on-focus required ng-disabled="true"></md-datepicker>
+                  </md-input-container>
+
+                  <span flex></span>
+              
+                  <md-input-container>
+                  <md-icon md-svg-src="assets/img/clock.svg" aria-label="Close dialog"></md-icon>
+                      <label>Hora</label>
+                      <input type="time" ng-model="vm.dataHora" ng-value="vm.dataset.dataHoraReserva | date: 'HH:mm'" ng-disabled="true">
+                  </md-input-container>
+
+              </div>
+              <div layout-gt-sm="row">
+                <md-input-container>
+                    <md-icon md-svg-src="assets/img/user.svg" aria-label="Close dialog"></md-icon>
+                    <label>Visitante</label>
+                        <input type="text" ng-model="vm.dataset.nomeConvidado" ng-disabled="true">
+                </md-input-container>
+              </div>
+                 
+             
+          <md-input-container class="md-block">
+          <label>Obeservação</label>
+          <textarea ng-model="vm.dataset.condominoObservacao" ng-disabled="true"></textarea>
+          </md-input-container>
+
+          <div>
+            <md-input-container>
+              <label>Situacão</label>
+                <md-select ng-model="vm.dataset.situacao">
+                  <md-option ng-repeat="situacao in vm.situacao" ng-value="situacao.descricao">
+                  {{situacao.descricao}}
+                  </md-option>
+            </md-select>
+            </md-input-container>
+          </div>
+
+          <md-input-container class="md-block">
+            <label>Obeservação Portaria</label>
+              <textarea ng-model="vm.dataset.portariaObservacao" ng-required="vm.dataset.situacao == 'Negar'"></textarea>
+          </md-input-container>
+  
+                  <div>
+                  <center>
+                      <md-button type="reset" class="md-warn">Limpar</md-button>
+                      <span flex></span>
+                      <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados">
+                      <md-icon md-svg-src="../../../assets/img/save.svg"></md-icon>
+                      </md-button>
+                  </center>
+                  </div>
+  
+              </md-content>
+          
+      </md-dialog-content>
+  </form>
+        
+              

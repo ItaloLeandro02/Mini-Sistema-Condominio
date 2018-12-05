@@ -22,18 +22,38 @@
     })
 
     .state('novo-visitante', {
-        url: '/visitas/novo-visitante:dadosConvidados',
+        ///visitas/novo-visitante:dadosConvidados
+        url: '/visitas/novo-visitante/:visitaId',
         templateUrl: '/modules/visitas/views/visitante-novo.html',
         controller: 'VisitaController',
         controllerAs: 'vm',
         params: {
-            title: "Novo Visitante",
+            title: "Novo Visitante"            
         },
-        resolve : {
-            dadosVisitante : function($stateParams){
-                console.log($stateParams)
-                return $stateParams.dadosConvidados;
-            }    
+        resolve: {
+            visitaRecord : function($stateParams,visitaService){
+                return visitaService.getById($stateParams.visitaId).then(function(resposta){
+                    return resposta.data
+                })
+            }
+        }
+    })
+
+    .state('finalizar-visita', {
+        url: '/visitas/finalizar-visita/:visitaId',
+        templateUrl: '/modules/visitas/views/visita-finalizar.html',
+        controller: 'VisitaController',
+        controllerAs: 'vm',
+        params: {
+            title: "Controle de Visitas"
+        },
+        //Passo como parâmetro o id da visita e retorno o resultado da pesquisa do id no banco de dados
+        resolve: {
+            visitaRecord : function($stateParams,visitaService){
+                return visitaService.getById($stateParams.visitaId).then(function(resposta){
+                    return resposta.data
+                })
+            }
         }
     })
   }

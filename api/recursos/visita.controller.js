@@ -113,9 +113,6 @@ function carregaPorId(req,res) {
         include : [
             {
                 model : dataContext.Pessoa,
-				attributes: { exclude: [ 'endereco_id'] },
-				
-				 	//Inclue os dados do endereço vínculados a pessoa
 				 	include : {
 
 						model : dataContext.Endereco,
@@ -123,9 +120,6 @@ function carregaPorId(req,res) {
 			},
             {
 				model: dataContext.Condomino,
-                attributes: { exclude: ['pessoa_id', 'usuario_id'] },
-                
-                    //Retorna os dados da pessoa vínculada ao condômino
                     include : {
 
                         model : dataContext.Pessoa, 
@@ -134,13 +128,8 @@ function carregaPorId(req,res) {
             },
             {
 				model: dataContext.Porteiro,
-                attributes: { exclude: ['pessoa_id', 'usuario_id',] },
-                
-                    //Retorna os dados da pessoa vínculada ao porteiro
                     include : {
-
                         model : dataContext.Pessoa, 
-                        attributes: { exclude: ['senha', 'endereco_id'] },
                  }
             },
 		]
@@ -162,7 +151,6 @@ function carregaPorId(req,res) {
         visita = visita.get({plain : true})
 
         //Exclue estes registros da view, mas os mantém no banco de dados
-        delete visita.id;
         delete visita.pessoa_id;
         delete visita.usuario_id;
         delete visita.condomino_id;
@@ -288,10 +276,10 @@ function atualizaVisita(req,res){
 	}
 
 	//Variável que recebe os dados vindos do formulário
-	let visitaForm = req.body.visita;
+	let visita = req.body.visita;
 
 	//Verifica se retornou algo
-	if (!visitaForm) {
+	if (!visita) {
 		res.status(404).json({
 			sucesso: false,
 			msg: "Formato de entrada inválido."
@@ -318,15 +306,208 @@ function atualizaVisita(req,res){
 		
 		//Campos da visita que serão atualizados
 		let updateFields = {
-			dataHoraReserva			   : visitaForm.dataHoraReserva,
-			nomeConvidado			   : visitaForm.nomeConvidado,
-			condominoObservacao		   : visitaForm.condominoObservacao,
-            situacao	               : visitaForm.situacao,
-            portariaDataHoraChegada    : visitaForm.portariaDataHoraChegada,
-            portariaObservacao         : visitaForm.portariaObservacao,
-			porteiroId	         	   : visitaForm.porteiroId,
-			dataHoraExpiracao		   : visitaForm.dataHoraExpiracao
+			dataHoraReserva			   : visita.dataHoraReserva,
+			nomeConvidado			   : visita.nomeConvidado,
+			condominoObservacao		   : visita.condominoObservacao,
+			dataHoraExpiracao		   : visita.dataHoraExpiracao,
+		}
 
+		//Atualiza os campos da visita
+		visitaRetornada.update(updateFields)
+
+		//Cria uma promise que recebe como parâmetro o objeto visita com os dados atualizados
+		.then(function(visitaAtualizada){
+			res.status(200).json({
+        		sucesso:true,
+        		msg: "Registro atualizado com sucesso",
+        		data: visitaAtualizada
+        	})	
+		})
+
+		//Caso haja uma exceção
+		.catch(function(erro){
+			console.log(erro);
+			res.status(409).json({ 
+				sucesso: false,
+				msg: "Falha ao atualizar a visita" 
+			});	
+		})
+	})
+}
+
+function atualizaIdPessoa(req, res) {
+	//Verifica se o parâmetro passado via URL é um id
+	if (!req.params.id) {
+		res.status(409).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Variável que recebe os dados vindos do formulário
+	let visita = req.body.visita;
+
+	//Verifica se retornou algo
+	if (!visita) {
+		res.status(404).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Pesquisa no banco de dados a visita que corresponde ao id passado como parâmetro via URL
+	dataContext.Visita.findById(req.params.id)
+	
+	//Cria uma promise passando como parâmetro os dados da pesquisa
+	.then(function(visitaRetornada){
+		
+		//Verifica se retornou algo
+		if (!visitaRetornada) {
+			res.status(404).json({
+				sucesso: false,
+				msg: "Visita não encontrada."
+			})
+			return;
+		}
+
+		//Campos da visita que serão atualizados
+		let updateFields = {
+			pessoaId 				   : visita.pessoaId
+		}
+
+		//Atualiza os campos da visita
+		visitaRetornada.update(updateFields)
+
+		//Cria uma promise que recebe como parâmetro o objeto visita com os dados atualizados
+		.then(function(visitaAtualizada){
+			res.status(200).json({
+        		sucesso:true,
+        		msg: "Registro atualizado com sucesso",
+        		data: visitaAtualizada
+        	})	
+		})
+
+		//Caso haja uma exceção
+		.catch(function(erro){
+			console.log(erro);
+			res.status(409).json({ 
+				sucesso: false,
+				msg: "Falha ao atualizar a visita" 
+			});	
+		})
+	})
+}
+
+function atualizaSituacao(req, res) {
+	//Verifica se o parâmetro passado via URL é um id
+	if (!req.params.id) {
+		res.status(409).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Variável que recebe os dados vindos do formulário
+	let visita = req.body.visita;
+
+	//Verifica se retornou algo
+	if (!visita) {
+		res.status(404).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Pesquisa no banco de dados a visita que corresponde ao id passado como parâmetro via URL
+	dataContext.Visita.findById(req.params.id)
+	
+	//Cria uma promise passando como parâmetro os dados da pesquisa
+	.then(function(visitaRetornada){
+		
+		//Verifica se retornou algo
+		if (!visitaRetornada) {
+			res.status(404).json({
+				sucesso: false,
+				msg: "Visita não encontrada."
+			})
+			return;
+		}
+
+		//Campos da visita que serão atualizados
+		let updateFields = {
+			situacao 		   : visita.situacao
+		}
+
+		//Atualiza os campos da visita
+		visitaRetornada.update(updateFields)
+
+		//Cria uma promise que recebe como parâmetro o objeto visita com os dados atualizados
+		.then(function(visitaAtualizada){
+			res.status(200).json({
+        		sucesso:true,
+        		msg: "Registro atualizado com sucesso",
+        		data: visitaAtualizada
+        	})	
+		})
+
+		//Caso haja uma exceção
+		.catch(function(erro){
+			console.log(erro);
+			res.status(409).json({ 
+				sucesso: false,
+				msg: "Falha ao atualizar a visita" 
+			});	
+		})
+	})
+}
+
+function atualizaPortaria(req, res) {
+	//Verifica se o parâmetro passado via URL é um id
+	if (!req.params.id) {
+		res.status(409).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Variável que recebe os dados vindos do formulário
+	let visita = req.body.visita;
+
+	//Verifica se retornou algo
+	if (!visita) {
+		res.status(404).json({
+			sucesso: false,
+			msg: "Formato de entrada inválido."
+		})
+		return;
+	}
+
+	//Pesquisa no banco de dados a visita que corresponde ao id passado como parâmetro via URL
+	dataContext.Visita.findById(req.params.id)
+	
+	//Cria uma promise passando como parâmetro os dados da pesquisa
+	.then(function(visitaRetornada){
+		
+		//Verifica se retornou algo
+		if (!visitaRetornada) {
+			res.status(404).json({
+				sucesso: false,
+				msg: "Visita não encontrada."
+			})
+			return;
+		}
+
+		//Campos da visita que serão atualizados
+		let updateFields = {
+			situacao 		   				: visita.situacao,
+			porteiroId 		   				: visita.porteiroId,
+			portariaDataHoraChegada    		: visita.portariaDataHoraChegada,
+			portariaObservacao 				: visita.portariaObservacao
 		}
 
 		//Atualiza os campos da visita
@@ -354,9 +535,12 @@ function atualizaVisita(req,res){
 
 module.exports = {
 	//Quando for consumir irá pegar os nomes da primeira tabela
-    carregaTudo  	: carregaTudo,
-    carregaPorId 	: carregaPorId,
-    salva 			: salvaVisita,
-    exclui 			: excluiVisita,
-    atualiza 		: atualizaVisita
+    carregaTudo  		: carregaTudo,
+    carregaPorId 		: carregaPorId,
+    salva 				: salvaVisita,
+    exclui 				: excluiVisita,
+	atualiza 			: atualizaVisita,
+	atualizaPessoa  	: atualizaIdPessoa,
+	atualizaSituacao	: atualizaSituacao,
+	atualizaPortaria 	: atualizaPortaria,	
 }

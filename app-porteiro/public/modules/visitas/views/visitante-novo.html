@@ -12,7 +12,7 @@
           <md-input-container class="md-block">
             <label>Nome</label>
               <md-icon md-svg-src="assets/img/user.svg"></md-icon>
-                <input ng-model="vm.dataset.pessoa.nome" ng-value="$stateParams.dadosConvidados" type="text" ng-required="true">
+                <input ng-init="vm.dataset.pessoa.nome=vm.nomeConvidado" ng-model="vm.dataset.pessoa.nome" ng-value= "vm.nomeConvidado"  type="text" ng-required="true">
           </md-input-container>
 
           <md-input-container class="md-block">
@@ -20,10 +20,19 @@
               <input ng-model="vm.dataset.pessoa.cpf" type="text" placeholder="CPF" ng-required="true" maxlength="11">
           </md-input-container>
 
+          <div layout="row">
           <md-input-container class="md-block data-picker-alinhado-esquerda" >
             <label>Nascimento</label>
               <md-datepicker ng-model="vm.dataset.pessoa.nascimento" md-open-on-focus ng-required="true"></md-datepicker>
           </md-input-container>
+
+          <span flex></span>
+
+          <md-input-container class="md-block data-picker-alinhado-esquerda" >
+              <label>Condômino</label>
+                <md-datepicker ng-model="vm.dataset.pessoa.nascimento" md-open-on-focus ng-required="true"></md-datepicker>
+            </md-input-container>
+          </div>
     
           <!-- Segunda forma de layout
         
@@ -43,32 +52,6 @@
           </div>
 
           -->
-
-          <div layout="column">
-            <div layout="row">
-              <md-input-container class="md-block">
-                <md-icon md-svg-src="assets/img/email.svg" class="email"></md-icon>
-                  <input ng-model="vm.dataset.usuario.email" type="email" placeholder="Email" ng-required="true">
-              </md-input-container>
-
-          <span flex></span>
-
-              <md-input-container class="md-block">
-                <md-icon md-svg-src="assets/img/lock.svg" class="email"></md-icon>
-                  <input name="senha" ng-model="vm.dataset.usuario.senha" type="password" placeholder="Senha" ng-required="true">
-              </md-input-container>
-
-          <span flex></span>
-
-              <md-input-container class="md-block">
-                <md-icon md-svg-src="assets/img/lock.svg" class="email"></md-icon>
-                  <input name="confirmaSenha" ng-model="vm.confirmaSenha" type="password" placeholder="Repita a Senha" ng-pattern="vm.dataset.usuario.senha" ng-required="true">
-                    <div ng-messages="vm.form.confirmaSenha.$error" role="alert" multiple>
-                      <div ng-message="pattern" class="my-message">As senhas devem ser iguais
-                    </div>
-              </md-input-container>    
-            </div>
-          </div>
           
           <div layout="column">
             <div layout="row">
@@ -112,7 +95,7 @@
                   <center>
                       <md-button type="reset" class="md-warn">Limpar</md-button>
                       <span flex></span>
-                      <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPorteiro()" class="md-fab md-primary" aria-label="Salvar Dados">
+                      <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisitante()" class="md-fab md-primary" aria-label="Salvar Dados">
                       <md-icon md-svg-src="assets/img/save.svg"></md-icon>
                       </md-button>
                   </center>

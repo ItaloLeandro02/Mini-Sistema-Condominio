@@ -166,6 +166,8 @@ function salvaConvidado(req,res){
 		return;
 	}    
 
+	convidado.favorito	= false;
+	
 	//Cria un objeto porteiro no banco de dados
 	dataContext.Condomino_Convidado.create(convidado)
 

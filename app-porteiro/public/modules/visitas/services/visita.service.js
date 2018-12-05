@@ -17,42 +17,45 @@ angular.module('app.visita')
         return ds.$get()
     }
 
-    visitaFactory.save = function(visitaModel){
-        var ds      = new api.visita();
-        ds.visita   = visitaModel;
-        ds.id       = visitaModel.id;
-          if (ds.id) {
-            return ds.$update();
-          }
-            return ds.$save();        
+    visitaFactory.save = function(pessoaModel){
+        var ds      = new api.pessoa();
+        ds.pessoa   = pessoaModel;
+        return ds.$save().then(function(visitanteModel) {
+            console.log(visitanteModel)
+            return visitanteModel;
+        })        
     }
-
-    visitaFactory.cancela = function(visitaModel) {
-        var ds      = new api.visita();
-        ds.id       = visitaModel.id;
-        ds.visita   = visitaModel;
-        return ds.$update();
-    }
-
+    
     visitaFactory.getVisita = function(nomeCondomino) {       
         var ds = new api.visita();
         return ds.$get({condominoVisitas : nomeCondomino})
     };
 
-    //Estou trabalhando neste
     visitaFactory.getCondomino = function(nomeCondomino) {
         var ds = new api.condomino();
         return ds.$get({search : nomeCondomino});
     }
+     
+    visitaFactory.saveVisitante = function(convidadoModel) {
+        var ds               = new api.convidado();
+        ds.convidado         = convidadoModel;
+        return ds.$save();
+    }
 
-    visitaFactory.favorita = function(convidadoModel) {
-        var ds         = new api.convidado();
-        ds.id          = convidadoModel.id,
-        ds.convidado   = convidadoModel
+    visitaFactory.updateVisita = function(visitaModel) {
+        var ds      = new api.atualizaVisitaPessoa();
+        ds.id       = visitaModel.id;
+        ds.visita   = visitaModel;
         return ds.$update();
     }
 
-
+    visitaFactory.updateVisitaPortaria = function (visitaModel) {
+        var ds      = new api.atualizaVisitaPortaria();
+        ds.id       = visitaModel.id;
+        ds.visita   = visitaModel;
+        return ds.$update();
+    }
+    
     return visitaFactory;
 
 });
