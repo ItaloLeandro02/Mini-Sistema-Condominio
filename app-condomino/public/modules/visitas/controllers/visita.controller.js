@@ -21,7 +21,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         }
 
         $localStorage.condomino = {
-            id : 1015,
+            id : 1006,
             nome : 'Jose Mayer'
         }
         

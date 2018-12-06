@@ -42,10 +42,10 @@
                  <md-tab id="favoritos">
                    <md-tab-label><md-icon md-svg-src="assets/img/star.svg"></md-icon></md-tab-label>
                      <md-tab-body>
-                       <div ng-repeat="favorito in vm.dsContatos" layout="row" layout-xs="column">  
+                       <div ng-repeat="favorito in vm.dsContatos" layout="row" layout-xs="column" ng-if="favorito.favorito">  
                          <md-content class="md-padding">
                            <div flex>
-                             <md-card ng-if="favorito.favorito">
+                             <md-card >
                                <md-card-header>
                                  <md-card-avatar>
                                    <md-icon md-svg-src="assets/img/user.svg"></md-icon>

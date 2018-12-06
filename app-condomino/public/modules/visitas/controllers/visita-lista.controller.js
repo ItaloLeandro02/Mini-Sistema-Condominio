@@ -24,7 +24,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.availableDirections = ['up', 'down', 'left', 'right'];
 	vm.selectedDirection = 'rigth';
 
-	vm.situacao = "Agendado";
+	vm.situacao = "Agendada";
 	vm.imagem = "visitas-agendadas.svg"
 
 	function init(){
@@ -118,18 +118,18 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	}
 
 	function visitasLiberadas() {
-		vm.situacao = "Liberado"
+		vm.situacao = "Liberada"
 		vm.estado = 2
 		vm.imagem 	= "visitas-confirmadas.svg"
 	}
 
 	function visitasCanceladas() {
-		vm.situacao = "Cancelado"
+		vm.situacao = "Cancelada"
 		vm.imagem 	= "visitas-canceladas.svg"
 	}
 
 	function visitasNegadas() {
-		vm.situacao = "Negado"
+		vm.situacao = "Negada"
 		vm.imagem 	= "visitas-negadas.svg"
 	}
 

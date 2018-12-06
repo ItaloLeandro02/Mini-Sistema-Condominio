@@ -136,3 +136,11 @@ md-tabs md-tabs-wrapper {
 .data-picker-alinhado-esquerda {
     margin-left: -15px;
 }
+
+.notFound {
+    font-family: "Trebuchet MS";
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-transform: capitalize;
+}

@@ -3,7 +3,6 @@
     <md-button class="md-raised" ng-click="vm.novoConvidado()" aria-label="Nova Visita">
       <md-icon md-svg-src="assets/img/add.svg"></md-icon>
     </md-button>
-
     <span flex></span>
 
     <md-fab-speed-dial md-open="vm.isOpen" md-direction="vm.selectedDirection" ng-class="vm.selectedMode">
@@ -13,14 +12,20 @@
         </md-button>
       </md-fab-trigger>
        <md-fab-actions>
-         <md-button ng-click="vm.visitasLiberadas()" aria-label="Confirmadas" class="md-fab md-raised md-mini">
-           <md-icon md-svg-src="assets/img/visitas-confirmadas.svg" aria-label="Twitter"></md-icon>
+         <md-button ng-click="vm.filtraVisita('Liberada')" aria-label="Confirmadas" class="md-fab md-raised md-mini">
+           <md-icon md-svg-src="assets/img/Liberada.svg" aria-label="Twitter"></md-icon>
          </md-button>
-         <md-button ng-click="vm.visitasNegadas()" aria-label="Negadas" class="md-fab md-raised md-mini">
-           <md-icon md-svg-src="assets/img/visitas-negadas.svg" aria-label="Google Hangout"></md-icon>
-            </md-button>
+         <md-button ng-click="vm.filtraVisita('Negada')" aria-label="Negadas" class="md-fab md-raised md-mini">
+           <md-icon md-svg-src="assets/img/Negada.svg" aria-label="Google Hangout"></md-icon>
+         </md-button>
+         <md-button ng-click="vm.filtraVisita('Cancelada')" aria-label="Negadas" class="md-fab md-raised md-mini">
+          <md-icon md-svg-src="assets/img/Cancelada.svg" aria-label="Google Hangout"></md-icon>
+        </md-button>
+        <md-button ng-click="vm.filtraVisita('')" aria-label="Todas" class="md-fab md-raised md-mini">
+          <md-icon md-svg-src="assets/img/visitas-todas.svg" aria-label="Google Hangout"></md-icon>
+        </md-button>
        </md-fab-actions>
-    </md-fab-speed-dial>
+    </md-fab-speed-dial>    
   </div>
 
   <div layout="row" >
@@ -28,62 +33,34 @@
           <md-autocomplete required class="autocomplete"
             md-selected-item="vm.query.item"
             md-input-maxlength="50" 
-            md-search-text="vm.dataset.pessoa.nome"
+            md-search-text="vm.query.text"
             md-selected-item-change="vm.dados(pessoa)"
-            md-items="condomino in vm.carregaCondomino(vm.dataset.pessoa.nome)"
+            md-items="condomino in vm.carregaCondomino(vm.query.text)"
             md-item-text="condomino.pessoa.nome"
             md-floating-label="Nome">
               <md-item-template>
-                <span md-highlight-text="vm.dataset.pessoa.nome">{{condomino.pessoa.nome}}</span>
+                <span md-highlight-text="vm.query.text">{{condomino.pessoa.nome}}</span>
               </md-item-template>
           </md-autocomplete>
 
-
-          <md-button ng-click="vm.pesquisaVisita(vm.dataset.pessoa.nome)">
+          <md-button ng-click="vm.pesquisaVisita(vm.query.text)">
             <md-icon md-svg-src="assets/img/search.svg"></md-icon>
           </md-button>
           <span flex></span>
-
-          <md-content class="md-padding">
-            <md-nav-bar
-              md-no-ink-bar="disableInkBar"
-              md-selected-nav-item="page1"
-              nav-bar-aria-label="navigation links">
-              <md-nav-item md-nav-click="goto('page1')" name="page1">
-                Pendentes
-              </md-nav-item>
-              <md-nav-item md-nav-click="goto('page2')" name="page2">
-                Liberadas
-              </md-nav-item>
-              <md-nav-item md-nav-click="goto('page3')" name="page3">
-                Negadas
-              </md-nav-item>
-              <md-nav-item md-nav-click="goto('page4')" name="page4">
-                Expiradas
-              </md-nav-item>
-              <md-nav-item md-nav-click="goto('page5')" name="page5">
-                Canceladas
-              </md-nav-item>
-              <!-- these require actual routing with ui-router or ng-route, so they
-              won't work in the demo
-              <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
-              <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
-              You can also add options for the <code>ui-sref-opts</code> attribute.
-              <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
-                Page Six
-              </md-nav-item>
-              -->
-            </md-nav-bar>
-            <span>{{vm.imagem}}</span>
-           
-          </md-content>
   </div>
-
-  
-
+  <div>
+      <span style="margin-left: 650px;">Pesquisando {{vm.query.text ? vm.query.text : null}} em: {{vm.situacao ? vm.situacao : 'Todas'}}</span>
+  </div>
     <div >
-      <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset">
-         <div layout="row">
+      <div ng-if="(vm.dataset | filter: vm.situacao).length == 0">
+        <center>
+        <span class="notFound">Nenhuma visita encontrada!</span>
+        <br>
+        <img ng-src="assets/img/not-found.svg" width="64px" height="64px">
+      </center>
+      </div>
+      <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset | filter: vm.situacao">
+         <div layout="row" ng-if="visita">
            <div layout="row" flex="20" layout-align="center center">
              <img ng-src="assets/img/{{visita.situacao}}.svg" style="width: 64px; height: 64px;">
                </div>
@@ -96,7 +73,7 @@
                             </md-button>
                               <md-menu-content width="3">
                                 <md-menu-item>
-                                 <md-button ng-click="vm.novoVisitante(visita)" >Cadastrar Visitante </md-button>
+                                 <md-button ng-click="vm.novoVisitante(visita)">Cadastrar Visitante </md-button>
                                 </md-menu-item>
                               </md-menu-content>
                       </md-menu>
@@ -121,11 +98,12 @@
                        <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'dd/MM/yyyy'}}</span>
                        <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'HH:mm'}}</span>
                        <span class="font-size-16 texto-branco">Observação: {{visita.condominoObservacao}}</span>
+                       <span class="font-size-16 texto-branco" ng-if="visita.portariaObservacao">Observação Portaria: {{visita.portariaObservacao}}</span>
                        <span class="font-size-16 texto-branco">Situação: {{visita.situacao}}</span>
                      </div>
                 </div>
-         </div>
-       </md-card>
+              </div>
+        </md-card>
     </div>
 </div> 
     
