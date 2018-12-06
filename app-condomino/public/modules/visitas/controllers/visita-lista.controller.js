@@ -45,34 +45,36 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	function carregaVisitas(){	
 		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
 			vm.dataset = visitas.data.map(function(resp){
-               
+                if (new Date() >= new Date(resp.dataHoraExpiracao) && resp.situacao == 1){
+					var visitaUpdate = {
+						situacao : 3
+					}
+					visitaUpdate.id = resp.id;
+					visitaService.updateVisitaSituacao(visitaUpdate);
+                    resp.situacao = "Expirada";
+                } 
+
                 switch (resp.situacao) {
                     case 1:
-                        resp.situacao = "Agendado"
+						resp.situacao = "Agendada"
                         break;
                     case 2:
-                        resp.situacao = "Liberado"
+						resp.situacao = "Liberada"
                         break;    
                     case 3:
-                        resp.situacao = "Expirado"
+                        resp.situacao = "Expirada"
                         break;
                     case 4:
-                        resp.situacao = "Cancelado"
+                        resp.situacao = "Cancelada"
                         break;
                     case 5:
-                        resp.situacao = "Negado"
+						resp.situacao = "Negada"
                         break;                
                     default:
                         break;
 				}
-
-				if ((new Date() >= new Date(resp.dataHoraExpiracao)) && (resp.situacao == "Agendado")){
-					resp.situacao = "Expirado";
-				}
-				
 				return resp
             })			
-			
 		})
 	}
 
@@ -117,6 +119,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 	function visitasLiberadas() {
 		vm.situacao = "Liberado"
+		vm.estado = 2
 		vm.imagem 	= "visitas-confirmadas.svg"
 	}
 

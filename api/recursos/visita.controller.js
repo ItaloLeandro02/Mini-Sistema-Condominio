@@ -374,7 +374,8 @@ function atualizaIdPessoa(req, res) {
 
 		//Campos da visita que serão atualizados
 		let updateFields = {
-			pessoaId 				   : visita.pessoaId
+			pessoaId 				   : visita.pessoaId,
+			nomeConvidado			   : visita.nomeConvidado
 		}
 
 		//Atualiza os campos da visita

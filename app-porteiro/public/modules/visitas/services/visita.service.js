@@ -49,11 +49,24 @@ angular.module('app.visita')
         return ds.$update();
     }
 
-    visitaFactory.updateVisitaPortaria = function (visitaModel) {
+    visitaFactory.updateVisitaPortaria = function(visitaModel) {
         var ds      = new api.atualizaVisitaPortaria();
         ds.id       = visitaModel.id;
         ds.visita   = visitaModel;
         return ds.$update();
+    }
+
+    visitaFactory.updateVisitaSituacao = function(visitaModel) {
+        var ds      = new api.atualizaVisitaSituacao();
+        ds.id       = visitaModel.id;
+        ds.visita   = visitaModel;
+        return ds.$update();
+    }
+
+    visitaFactory.getVisitasCondomino = function(condominoId) {
+        /// Modelo de consumo da api
+        var ds = new api.visita();
+        return ds.$get({condomino : condominoId});
     }
     
     return visitaFactory;

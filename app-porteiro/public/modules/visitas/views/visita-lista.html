@@ -3,6 +3,24 @@
     <md-button class="md-raised" ng-click="vm.novoConvidado()" aria-label="Nova Visita">
       <md-icon md-svg-src="assets/img/add.svg"></md-icon>
     </md-button>
+
+    <span flex></span>
+
+    <md-fab-speed-dial md-open="vm.isOpen" md-direction="vm.selectedDirection" ng-class="vm.selectedMode">
+      <md-fab-trigger>
+        <md-button aria-label="menu" class="md-fab md-warn">
+          <md-icon md-svg-src="assets/img/menu.svg"></md-icon>
+        </md-button>
+      </md-fab-trigger>
+       <md-fab-actions>
+         <md-button ng-click="vm.visitasLiberadas()" aria-label="Confirmadas" class="md-fab md-raised md-mini">
+           <md-icon md-svg-src="assets/img/visitas-confirmadas.svg" aria-label="Twitter"></md-icon>
+         </md-button>
+         <md-button ng-click="vm.visitasNegadas()" aria-label="Negadas" class="md-fab md-raised md-mini">
+           <md-icon md-svg-src="assets/img/visitas-negadas.svg" aria-label="Google Hangout"></md-icon>
+            </md-button>
+       </md-fab-actions>
+    </md-fab-speed-dial>
   </div>
 
   <div layout="row" >
@@ -25,13 +43,49 @@
             <md-icon md-svg-src="assets/img/search.svg"></md-icon>
           </md-button>
           <span flex></span>
+
+          <md-content class="md-padding">
+            <md-nav-bar
+              md-no-ink-bar="disableInkBar"
+              md-selected-nav-item="page1"
+              nav-bar-aria-label="navigation links">
+              <md-nav-item md-nav-click="goto('page1')" name="page1">
+                Pendentes
+              </md-nav-item>
+              <md-nav-item md-nav-click="goto('page2')" name="page2">
+                Liberadas
+              </md-nav-item>
+              <md-nav-item md-nav-click="goto('page3')" name="page3">
+                Negadas
+              </md-nav-item>
+              <md-nav-item md-nav-click="goto('page4')" name="page4">
+                Expiradas
+              </md-nav-item>
+              <md-nav-item md-nav-click="goto('page5')" name="page5">
+                Canceladas
+              </md-nav-item>
+              <!-- these require actual routing with ui-router or ng-route, so they
+              won't work in the demo
+              <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+              <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+              You can also add options for the <code>ui-sref-opts</code> attribute.
+              <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+                Page Six
+              </md-nav-item>
+              -->
+            </md-nav-bar>
+            <span>{{vm.imagem}}</span>
+           
+          </md-content>
   </div>
+
+  
 
     <div >
       <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset">
          <div layout="row">
            <div layout="row" flex="20" layout-align="center center">
-             <md-icon md-svg-src="assets/img/agendamento.svg" style="width: 64px; height: 64px;"></md-icon>
+             <img ng-src="assets/img/{{visita.situacao}}.svg" style="width: 64px; height: 64px;">
                </div>
                  <div layout="column" flex>
                    <div layout="row">
@@ -46,18 +100,6 @@
                                 </md-menu-item>
                               </md-menu-content>
                       </md-menu>
-                      <!--
-                       <md-menu>
-                         <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
-                           <md-icon md-svg-src="assets/img/liberar.svg"></md-icon>                       
-                         </md-button>
-                           <md-menu-content width="3">
-                             <md-menu-item>
-                               <md-button ng-click="vm.finalizarVisita(visita.id)"> Liberar </md-button>
-                             </md-menu-item>
-                          </md-menu-content>
-                       </md-menu>
-                       -->
                          <md-menu>
                            <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
                               <md-tooltip>Ver Mais</md-tooltip>

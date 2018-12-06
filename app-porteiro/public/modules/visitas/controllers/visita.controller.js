@@ -9,15 +9,21 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
 	//vm.editar 		= editar;
 
     vm.dataset = {}
+    vm.query = {
+        text : ''
+    }
     
     function init(){
+
+        console.log(vm.query)
 
         $localStorage.porteiro = {
             id : 1020,
             nome : 'Severino Cara Cracha Nascimento'
         }
 
-        vm.dataset = visitaRecord
+        vm.dataset          = visitaRecord
+        vm.nomeConvidado    = vm.dataset.nomeConvidado
 
         console.log(vm.dataset)
 	}
@@ -26,6 +32,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
     
     vm.salvaVisita          = salvaVisita;
     vm.salvaVisitante       = salvaVisitante;
+    vm.pesquisaCondomino    = pesquisaCondomino;
     vm.estados              = ('AC AL AP AM BA CE DF ES GO MA '+
     ' MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO').split(' ').map(function (estado) { return { abbrev: estado }; });
     vm.situacao             = ('Liberar Negar').split(' ').map(function (situacao) { return { descricao: situacao }; });
@@ -36,25 +43,14 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
             return
         } 
-/*
-        vm.dataHora                 = new Date(vm.dataHora)
-
-        vm.dataset.dataHoraReserva  = new Date(vm.dataset.dataHoraReserva)
-    	vm.dataset.dataHoraReserva.setHours(vm.dataHora.getHours())
-    	vm.dataset.dataHoraReserva.setMinutes(vm.dataHora.getMinutes())
-
-
-        validade                    = new Date(vm.dataset.dataHoraReserva)
-        
-		validade.setHours(vm.dataset.dataHoraReserva.getHours() + 4)
-        validade.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
-        */
 
         if (vm.dataset.situacao == 'Liberar') {
             vm.dataset.situacao = 2
+            
         }
         else {
             vm.dataset.situacao = 5
+            
         }
        vm.dataset.dataHoraChegada  = new Date()
         var visitaModel = {
@@ -85,6 +81,10 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
     }
 
     function salvaVisitante() {
+        if (vm.query.item) {
+            vm.dataset.condominoId = vm.query.item.id;
+        }
+        console.log(vm.query)
         if (vm.form.$invalid) {
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
             return
@@ -105,7 +105,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
                     uf                      : vm.dataset.endereco.uf
                 }
 
-        
+        nomeVisitante           = vm.dataset.pessoa.nome;
         pessoaModel             = pessoa;
         pessoaModel.endereco    = endereco;
        
@@ -129,6 +129,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
                  var visitaModel = {},
                      visita = {
                          pessoaId       : pessoaModel.data.pessoaId,
+                         nomeConvidado  : nomeVisitante
                      }
 
                   visitaModel       = visita;
@@ -146,4 +147,11 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
 		})
     }
+
+    function pesquisaCondomino(nomeCondomino) {
+		return visitaService.getCondomino(nomeCondomino).then(function(condominoModel) {
+			console.log(condominoModel.data)
+			return condominoModel.data;
+		})
+	}
 }
