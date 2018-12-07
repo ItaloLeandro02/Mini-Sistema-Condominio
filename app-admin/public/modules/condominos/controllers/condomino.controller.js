@@ -42,11 +42,11 @@ function condominoController(condominoService, condominoId, $state) {
             },
             //Preciso Cuidar Disso
             endereco = {
-                logradouro  : vm.dataset.endereco.logradouro,
-                numero      : vm.dataset.endereco.numero,
-                bairro      : vm.dataset.endereco.bairro,
-                cidade      : vm.dataset.endereco.cidade,
-                uf          : vm.dataset.endereco.uf                    
+                logradouro  : null,
+                numero      : null,
+                bairro      : null,
+                cidade      : null,
+                uf          : null                    
             }                    
                 
 

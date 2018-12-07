@@ -18,5 +18,4 @@ angular.module('appCtrl', [])
     self.toggleRight = function() {
     	$mdSidenav('right').toggle();
     }
-
 })

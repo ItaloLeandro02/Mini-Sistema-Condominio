@@ -3,7 +3,7 @@
 <head>
   <title>Material Starter</title>
 
-  <base href="/" />
+  <base href="/login" />
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,7 +39,7 @@
         
         </md-toolbar>
 
-        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/">
+        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/home">
             <span>Inicio</span>
         </md-list-item>
         <md-divider></md-divider>
@@ -102,6 +102,7 @@
 <script src="/scripts/angular-aria/angular-aria.min.js"></script>
 <script src="/scripts/angular-material/angular-material.min.js"></script>
 <script src="/scripts/angular-resource/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
 
 <script type="text/javascript" src="/scripts/angular-ui-router/release/angular-ui-router.min.js"></script>
 
@@ -122,12 +123,17 @@
 <script src="modules/porteiros/controllers/porteiro.controller.js"></script>
 <script src="modules/porteiros/services/porteiro.service.js"></script>
 
+<!--Mascára CPF-->
+<script src="/scripts/angular-input-masks/releases/angular-input-masks-standalone.min.js"></script>
+
 
 <script src="app.controller.js"></script>
 
 <script src="app.js"></script>
 <script src="app.routes.js"></script>
 <script src="app.api.js"></script>
+
+
 
 </body>
 </html>

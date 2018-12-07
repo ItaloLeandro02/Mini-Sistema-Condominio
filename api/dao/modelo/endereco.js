@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
         id: {
             type: DataTypes.INTEGER,
             field: 'id',
-            allowNull: false,
+            allowNull: true,
             primaryKey: true,
             autoIncrement: true,
             comment: 'Chave primaria'
@@ -19,31 +19,31 @@ module.exports = function(sequelize, DataTypes) {
         logradouro: {
             type: DataTypes.STRING(120),
             field: 'logradouro',
-            allowNull: false,
+            allowNull: true,
             comment: 'Logradouro onde a pessoa reside'
         },
         numero: {
             type: DataTypes.INTEGER,
             field: 'numero',
-            allowNull: false,
+            allowNull: true,
             comment: 'Número onde a pessoa reside'
         },
         bairro: {
             type: DataTypes.STRING(50),
             field: 'bairro',
-            allowNull: false,
+            allowNull: true,
             comment: 'Bairro onde a pessoa reside'
         },
         cidade: {
             type: DataTypes.STRING(50),
             field: 'cidade',
-            allowNull: false,
+            allowNull: true,
             comment: 'Cidade onde a pessoa reside'
         },
         uf: {
             type: DataTypes.CHAR(2),
             field: 'uf',
-            allowNull: false,
+            allowNull: true,
             comment: 'UF onde a pessoa reside'
         },
 

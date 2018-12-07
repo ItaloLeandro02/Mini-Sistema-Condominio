@@ -7,7 +7,9 @@ var materialApp = angular
     'appCtrl',
     'ngStorage',
     'app.condomino',
-    'app.porteiro'    
+    'app.porteiro',
+    'ui.utils.masks',
+    'ngMessages'   
     
 
 ]).config(function($mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider) {

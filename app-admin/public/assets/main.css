@@ -136,3 +136,7 @@ md-tabs md-tabs-wrapper {
 .data-picker-alinhado-esquerda {
     margin-left: -15px;
 }
+
+.autocomplete-lista {
+    margin-right: 950px;
+}

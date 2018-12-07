@@ -30,5 +30,10 @@ angular.module('app.condomino')
                 return ds.$delete();
     }
 
+    condominoFactory.getCondomino = function(nomeCondomino) {
+        var ds          = new api.condomino;
+            return ds.$get({search: nomeCondomino})
+    }
+
     return condominoFactory;
 });

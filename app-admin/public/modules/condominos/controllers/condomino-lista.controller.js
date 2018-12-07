@@ -3,11 +3,12 @@ angular.module('app.condomino')
 
 function condominoListaController(condominoService, $state, $mdDialog, $stateParams) {
 	
-	vm 					= this;
-	vm.novo 			= novo;
-	vm.editar  			= editar;
-	vm.excluir			= excluir;
-	vm.calcularIdade 	= calcularIdade;
+	vm 						= this;
+	vm.novo 				= novo;
+	vm.editar  				= editar;
+	vm.excluir				= excluir;
+	vm.calcularIdade 		= calcularIdade;
+	vm.carregaCondomino 	= carregaCondomino;
 
 	function init(){
 		carregaCondominos()
@@ -17,7 +18,8 @@ function condominoListaController(condominoService, $state, $mdDialog, $statePar
     
 	function carregaCondominos(){	
 		condominoService.getAll().then(function(condominos){			
-            vm.dataset = condominos.data 
+			vm.dataset = condominos.data 
+			console.log(vm.dataset)
            		return vm.dataset
 		})
     }
@@ -71,4 +73,11 @@ function condominoListaController(condominoService, $state, $mdDialog, $statePar
 	
 					return quantos_anos < 0 ? 0 : quantos_anos;
 	}
+
+	function carregaCondomino(nomeCondomino) {
+    	return condominoService.getCondomino(nomeCondomino).then(function(condominosModel){
+        	vm.dataset = condominosModel.data;
+       			return condominosModel.data
+     	})
+    }
 }

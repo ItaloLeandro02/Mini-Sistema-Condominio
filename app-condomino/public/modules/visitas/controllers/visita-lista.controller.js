@@ -9,6 +9,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.editar 				= editar;
 	vm.cancelar 			= cancelar;
 	vm.filtraVisita		 	= fnFiltraVisita;
+	vm.carregaConvidados 	= carregaConvidados;
 
 	vm.topDirections = ['left', 'up'];
 	vm.bottomDirections = ['down', 'right'];
@@ -23,9 +24,8 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 
 	function init(){
-		
-        $localStorage.condomino = {
-            id : 2,
+		$localStorage.condomino = {
+            id : 1006,
             nome : 'Jose Mayer'
         }
 		carregaVisitas()
@@ -34,7 +34,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	init()
 
 	function carregaVisitas(){	
-		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
+		visitaService.getAll($localStorage.condomino.id).then(function(visitas){
 			vm.dataset = visitas.data.map(function(resp){
                 if (new Date() >= new Date(resp.dataHoraExpiracao) && resp.situacao == 1){
 					var visitaUpdate = {
@@ -89,13 +89,18 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 				.ok('Sim')
 				.cancel('Não');
 	    			$mdDialog.show(confirmacao).then(function() {
-						if (dadosVisita.situacao != "Agendado") {
+						if (dadosVisita.situacao != "Agendada") {
 							toastr.error("Visita não pode ser cancelada.","ERRO")
 								return
 						}
 
-						dadosVisita.situacao = 4;
-						visitaService.cancela(dadosVisita)
+						var visitaModel = {
+							situacao : 4
+						}
+
+						visitaModel.id = dadosVisita.id;
+
+						visitaService.updateVisitaSituacao(visitaModel)
 
 						.then(function(resposta){
 							if (resposta.sucesso) {				
@@ -112,5 +117,12 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 	function fnFiltraVisita(filtro) {
 		vm.situacao = filtro
-   }
+	}
+
+	function carregaConvidados(nomeConvidado) {
+        return visitaService.getConvidados($localStorage.condomino.id, nomeConvidado).then(function(convidadosModel){
+            vm.dataset = convidadosModel.data;
+                return convidadosModel.data
+        })
+    }
 }

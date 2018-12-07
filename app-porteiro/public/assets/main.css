@@ -144,3 +144,12 @@ md-tabs md-tabs-wrapper {
     font-style: italic;
     text-transform: capitalize;
 }
+
+.texto-erro {
+    font-size       : 18px;
+    font-family     : "Anton";
+}
+.button-login {
+    width: 30px;
+    height: 30px;
+}

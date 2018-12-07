@@ -1,7 +1,7 @@
 <form ng-cloak name="vm.form">
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2 class="texto-branco">Editar Dados Cadastrais</h2>
+        <h2 class="texto-branco">Formulário de Cadastro</h2>
           <span flex></span>
       </div>
     </md-toolbar>
@@ -18,7 +18,11 @@
           <md-input-container class="md-block">
             <md-tooltip>Somente os números do CPF</md-tooltip>
               <md-icon md-svg-src="assets/img/cpf.svg" class="email"></md-icon>
-                <input ng-model="vm.dataset.pessoa.cpf" type="text" placeholder="CPF" ng-required="true" maxlength="11">
+                <input  name="cpf" ng-model="vm.dataset.pessoa.cpf"  type="text" placeholder="CPF" required ui-br-cpf-mask>
+                  <div ng-messages="vm.form.cpf.$error">
+                    <div ng-message="required">Informe o CPF</div>
+                    <div ng-message="cpf">CPF Inválido</div>
+                  </div>
           </md-input-container>
   
           <md-input-container class="md-block">
@@ -46,7 +50,18 @@
                 <md-input-container class="md-block">
                   <md-tooltip>Senha</md-tooltip>
                     <md-icon md-svg-src="assets/img/lock.svg" class="email"></md-icon>
-                      <input name="senha" ng-model="vm.dataset.usuario.senha" type="password" placeholder="Senha" ng-disabled="true">
+                      <input name="senha" ng-model="vm.dataset.usuario.senha" type="password" placeholder="Senha">
+                </md-input-container>
+
+                <span flex></span>
+
+                <md-input-container class="md-block">
+                  <md-tooltip>Repita a Senha</md-tooltip>
+                    <md-icon md-svg-src="assets/img/lock.svg" class="email"></md-icon>
+                      <input name="confirmaSenha" ng-model="vm.confirmaSenha" type="password" placeholder="Repita a Senha" ng-pattern="vm.dataset.usuario.senha" ng-required="true">
+                        <div ng-messages="vm.form.confirmaSenha.$error" role="alert" multiple>
+                          <div ng-message="pattern" class="my-message">As senhas devem ser iguais
+                        </div>
                 </md-input-container>
       
                 <span flex></span>

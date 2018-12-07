@@ -2,7 +2,6 @@ angular.module('app.visita')
 .controller('VisitaListaController', visitaListaController);
 
 function visitaListaController(visitaService, $state, $stateParams, $localStorage, $mdDialog) {
-	
 	vm = this;
 
 	vm.carregaCondomino		= carregaCondomino;
@@ -11,6 +10,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.finalizarVisita		= finalizarVisita
 	vm.novoConvidado		= novoConvidado;
 	vm.filtraVisita		 	= fnFiltraVisita;
+	vm.entrar 				= entrar;
 	
 	vm.topDirections	 	= ['left', 'up'];
 	vm.bottomDirections 	= ['down', 'right'];
@@ -105,4 +105,13 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	function novoConvidado() {
 		$state.go('novo-visitante')
 	}
+
+	function entrar() {
+
+		if (vm.form.$valid) {
+			visitaService.login(vm.email,vm.senha).then(function(resposta) {
+				console.log(resposta)
+			})
+		}
+    }
 }

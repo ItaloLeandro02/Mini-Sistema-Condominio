@@ -27,13 +27,6 @@ angular.module('app.visita')
             return ds.$save();        
     }
 
-    visitaFactory.cancela = function(visitaModel) {
-        var ds      = new api.visita();
-        ds.id       = visitaModel.id;
-        ds.visita   = visitaModel;
-        return ds.$update();
-    }
-
     visitaFactory.getConvidados = function(condominoId, nomeConvidado) {       
         var ds = new api.convidado();
         return ds.$get({condomino : Number(condominoId), convidado : nomeConvidado})
@@ -48,6 +41,13 @@ angular.module('app.visita')
         var ds         = new api.convidado();
         ds.id          = convidadoModel.id,
         ds.convidado   = convidadoModel
+        return ds.$update();
+    }
+
+    visitaFactory.updateVisitaSituacao = function(visitaModel) {
+        var ds      = new api.atualizaVisitaSituacao();
+        ds.id       = visitaModel.id;
+        ds.visita   = visitaModel;
         return ds.$update();
     }
 

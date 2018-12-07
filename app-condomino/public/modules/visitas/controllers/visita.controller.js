@@ -5,6 +5,9 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 	
 	vm          = this;
     vm.dataset  = {}
+    vm.query    = {
+        text : ''
+    }
     
     function init(){
         vm.dataset.dataHoraReserva  = new Date();
@@ -17,7 +20,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         }
 
         $localStorage.condomino = {
-            id : 2,
+            id : 1006,
             nome : 'Jose Mayer'
         }
         
@@ -48,6 +51,9 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 
 
         validade                    = new Date(vm.dataset.dataHoraReserva)
+
+        vm.dataset.pessoaId         = vm.query.item ? vm.query.item.pessoa.id : null;
+        vm.dataset.nomeConvidado    = vm.query.text;
         
 		validade.setHours(vm.dataset.dataHoraReserva.getHours() + 4)
         validade.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
@@ -100,8 +106,8 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     }
 
     function dados(convidado) {
-        vm.dataset.pessoaId          = convidado.pessoa.id,
-        vm.dataset.nomeConvidado     = convidado.pessoa.nome;		
+        vm.query.item          = convidado.pessoa.nome,
+        vm.query.text          = convidado.pessoa.nome;		
     }
 
     function favoritar(convidado) {

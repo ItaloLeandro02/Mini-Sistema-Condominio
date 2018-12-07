@@ -68,6 +68,10 @@ angular.module('app.visita')
         var ds = new api.visita();
         return ds.$get({condomino : condominoId});
     }
+
+    visitaFactory.login = function(email, senha) {
+        var ds  = new api.convidado();
+    }
     
     return visitaFactory;
 

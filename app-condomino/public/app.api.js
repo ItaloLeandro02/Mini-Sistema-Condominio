@@ -28,6 +28,13 @@
         }
       })
 
+      api.atualizaVisitaSituacao   = $resource(api.baseUrl + 'visita/:id/situacao', {id : '@id'},
+        {update: {
+          method: 'PUT'
+        }
+      })
+
+
       api.porteiro  =$resource(api.baseUrl + 'porteiro/:id', {id : '@id'},
         {update: {
           method: 'PUT'
