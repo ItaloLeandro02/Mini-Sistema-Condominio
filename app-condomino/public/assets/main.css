@@ -136,3 +136,8 @@ md-tabs md-tabs-wrapper {
 .data-picker-alinhado-esquerda {
     margin-left: -15px;
 }
+
+.nova-vista-button {
+    height  : 64px;
+    width   : 64px;
+}

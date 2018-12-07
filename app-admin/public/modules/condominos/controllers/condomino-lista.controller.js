@@ -3,31 +3,22 @@ angular.module('app.condomino')
 
 function condominoListaController(condominoService, $state, $mdDialog, $stateParams) {
 	
-	vm = this;
-
+	vm 					= this;
+	vm.novo 			= novo;
+	vm.editar  			= editar;
+	vm.excluir			= excluir;
+	vm.calcularIdade 	= calcularIdade;
 
 	function init(){
 		carregaCondominos()
 	}
 
 	init()
-
-	/*
-	function carregaVisitas(){
-		visitaService.getAll($localStorage.condomino.id).then(function(visitas){			
-			vm.dataset = visitas.data
-		})
-	}
-    */
     
-	vm.novo 	= novo;
-	vm.editar  	= editar;
-	vm.excluir	= excluir;  
-
 	function carregaCondominos(){	
 		condominoService.getAll().then(function(condominos){			
             vm.dataset = condominos.data 
-            return vm.dataset
+           		return vm.dataset
 		})
     }
     
@@ -52,13 +43,32 @@ function condominoListaController(condominoService, $state, $mdDialog, $statePar
 					.then(function(resposta){
 						if (resposta.sucesso) {				
 							toastr.success("Condomino excluido com êxito :)","SUCESSO")
-					   }
+					   	}
 					   carregaCondominos();
-				   })
-				   .catch(function(error){
+				   	})
+				   	.catch(function(error){
 					   console.log(error)
 					   toastr.error("Tente novamente.","ERRO")
-				   })
+				  	})
 	    		});
-    }
+	}
+	
+	function calcularIdade(ano_aniversario, mes_aniversario, dia_aniversario) {
+		var d = new Date,
+			ano_atual = d.getFullYear(),
+			mes_atual = d.getMonth() + 1,
+			dia_atual = d.getDate(),
+	
+			ano_aniversario = +ano_aniversario,
+			mes_aniversario = +mes_aniversario,
+			dia_aniversario = +dia_aniversario,
+	
+			quantos_anos = ano_atual - ano_aniversario;
+	
+				if (mes_atual < mes_aniversario || mes_atual == mes_aniversario && dia_atual < dia_aniversario) {
+					quantos_anos--;
+				}
+	
+					return quantos_anos < 0 ? 0 : quantos_anos;
+	}
 }

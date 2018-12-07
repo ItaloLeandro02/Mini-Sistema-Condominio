@@ -3,16 +3,12 @@ angular.module('app.visita')
 
 function VisitaController(visitaService, visitaId, $localStorage, $state) {
 	
-	vm = this;
-
-	//vm.novaVisita 	= novaVisita;
-	//vm.editar 		= editar;
-
-    vm.dataset = {}
+	vm          = this;
+    vm.dataset  = {}
     
     function init(){
-        vm.dataset.dataHoraReserva = new Date();
-        vm.dataHora = new Date();
+        vm.dataset.dataHoraReserva  = new Date();
+        vm.dataHora                 = new Date();
         
         if (visitaId) {
             visitaService.getById(visitaId).then(function(visitaModel){
@@ -21,7 +17,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         }
 
         $localStorage.condomino = {
-            id : 1006,
+            id : 2,
             nome : 'Jose Mayer'
         }
         
@@ -41,7 +37,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 
         if (vm.form.$invalid) {
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
-            return
+                return
         } 
 
         vm.dataHora                 = new Date(vm.dataHora)
@@ -91,17 +87,15 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     
     function carregaConvidados(nomeConvidado) {
         return visitaService.getConvidados($localStorage.condomino.id, nomeConvidado).then(function(convidadosModel){
-            console.log(convidadosModel.data)
             vm.dsConvidados = convidadosModel.data;
-            return convidadosModel.data
+                return convidadosModel.data
         })
     }
 
     function carregaContatos() {
         return visitaService.getContatos($localStorage.condomino.id).then(function(convidadosModel){
-            console.log(convidadosModel.data)
             vm.dsContatos = convidadosModel.data;
-            return convidadosModel.data
+                return convidadosModel.data
         })
     }
 
@@ -113,14 +107,16 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     function favoritar(convidado) {
         if (convidado.favorito) {
             toastr.info(convidado.pessoa.nome + " já é um favorito!.","ERRO");
-            return
+                return
         }
+
         convidado.favorito = true;
+
         visitaService.favorita(convidado)
         .then(function(resposta){
             if (resposta.sucesso) {				
                 toastr.success(convidado.pessoa.nome +" adicionado aos favoritos :)","SUCESSO")
-           }
+            }
         })
         .catch(function(error){
            toastr.error("Tente novamente.","ERRO")
@@ -130,14 +126,16 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     function desfavoritar(convidado){
         if (!convidado.favorito) {
             toastr.info(convidado.pessoa.nome + " não é um favorito!.","ERRO");
-            return
+                return
         }
+
         convidado.favorito = false;
+
         visitaService.favorita(convidado)
         .then(function(resposta){
             if (resposta.sucesso) {				
                 toastr.success(convidado.pessoa.nome +" removido dos favoritos :)","SUCESSO")
-           }
+            }
         })
         .catch(function(error){
            toastr.error("Tente novamente.","ERRO")

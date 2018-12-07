@@ -17,7 +17,7 @@
         controller: 'VisitaListaController',
         controllerAs: 'vm',
         params: {
-            title: "Visitas agendadas"
+            title: "Registro de Visitas"
         }
     })
 
@@ -27,7 +27,7 @@
         controller: 'VisitaController',
         controllerAs: 'vm',
         params: {
-            title: "Novo Agendamento"
+            title: "Nova Visita"
         },
         resolve : {
             visitaId : function($stateParams){

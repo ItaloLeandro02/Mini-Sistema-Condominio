@@ -12,21 +12,19 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.novoConvidado		= novoConvidado;
 	vm.filtraVisita		 	= fnFiltraVisita;
 	
-	vm.topDirections = ['left', 'up'];
-	vm.bottomDirections = ['down', 'right'];
+	vm.topDirections	 	= ['left', 'up'];
+	vm.bottomDirections 	= ['down', 'right'];
 
-	vm.isOpen = false;
+	vm.isOpen 				= false;
 
-	vm.availableModes = ['md-fling', 'md-scale'];
-	vm.selectedMode = 'md-scale';
+	vm.availableModes		= ['md-fling', 'md-scale'];
+	vm.selectedMode 		= 'md-scale';
 
-	vm.availableDirections = ['up', 'down', 'left', 'right'];
-	vm.selectedDirection = 'rigth';
+	vm.availableDirections 	= ['up', 'down', 'left', 'right'];
+	vm.selectedDirection	= 'rigth';
 	
-	vm.exibir =  false
 	function init(){
 		carregaVisitas()
-		vm.situacao = "";
 	}
 
 	init()
@@ -41,10 +39,10 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	}
 
 	function carregaCondomino(nomeCondomino) {
-     return visitaService.getCondomino(nomeCondomino).then(function(condominosModel){
-      vm.dsCondominos = condominosModel.data;
-       return condominosModel.data
-     })
+    	return visitaService.getCondomino(nomeCondomino).then(function(condominosModel){
+        	vm.dsCondominos = condominosModel.data;
+       			return condominosModel.data
+     	})
     }
 
 	function finalizarVisita(visita) {
@@ -52,16 +50,13 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	}
 
 	function fnFiltraVisita(filtro) {
-		 vm.situacao = filtro
-		 vm.count ++;
+		vm.situacao = filtro
 	}
 	
 	function pesquisaVisita(nomeCondomino) {
-		
 		return visitaService.getVisita(nomeCondomino).then(function(visitas) {
 			classificaVisitas(visitas.data)
 		})
-		
 	}
 
 	function classificaVisitas(dsVisita){ 
@@ -76,7 +71,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 				visitaService.updateVisitaSituacao(visitaUpdate);
 				resp.situacao = "Expirada";
 			} 
-		
+			
 			switch (resp.situacao) {
 				case 1:
 					resp.situacao = "Agendada";
@@ -98,9 +93,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 				default:
 					break;
 			}
-
 			return resp
-			
 		})			
 	}
 
