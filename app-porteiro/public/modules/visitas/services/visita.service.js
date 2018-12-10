@@ -69,7 +69,7 @@ angular.module('app.visita')
     }
 
     visitaFactory.login = function(email, senha) {
-        var ds  = new api.convidado();
+        var ds  = new api.usuario();
             return ds.$get({emailLogin : email, senhaLogin : senha})
     }
     

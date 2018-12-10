@@ -3,7 +3,7 @@
         <div class="md-toolbar-tools">
             <h2 class="texto-branco">Dados Visita</h2>
                 <span flex></span>
-                    <div class="texto-erro">
+                    <div class="texto-erro"  ng-show="!vm.dataset.pessoaId">
                         <md-tooltip>Erro!</md-tooltip>
                             <md-icon md-svg-src="assets/img/warning.svg"></md-icon>{{vm.dataset.nomeConvidado}} Não está cadastrado!
                     </div>

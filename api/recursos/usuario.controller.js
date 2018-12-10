@@ -20,6 +20,20 @@ function carregaTudo(req,res) {
 		})
 	}
 
+	//Verifica o token no banco de dados
+	if (req.token) {
+		return dataContext.Usuario.findOne({
+			where : {
+				token : req.token
+			}
+		}).then(function(usuarios){
+			res.status(200).json({
+				sucesso:true,
+				data: usuarios
+			})
+		})
+	}
+
 	return dataContext.Usuario.findAll({
 		//Procura a Primary Key
     	order : 'id'
@@ -179,7 +193,7 @@ function atualizaUsuario(req,res){
 		//Campos do usuário que serão atualizados
 		let updateFields = {
 			email	:	usuarioForm.email,
-			senha	:	usuarioForm.senha
+			senha	:	usuarioForm.senha,
 		}
 
 		//Atualiza os campos do usuário

@@ -1,15 +1,17 @@
 //Importar um módulo sequelize usando require('sequelize'). Assim Sequelize representa uma variável de referência ao Sequelize.
 //Configurações
-let express = require('express'),
- path = require('path'),
- logger = require('morgan'),
+let express   = require('express'),
+ path         = require('path'),
+ logger       = require('morgan'),
  cookieParser = require('cookie-parser'),
- bodyParser = require('body-parser');
+ bodyParser   = require('body-parser');
 
-let rota = require('./rotas/rota');
+const rota                = require('./rotas/rota'),
+      rotaAutenticacao    = require('./seguranca/autenticacao.rota'),
+      auth                = require('./seguranca/autenticacao')
 
 
-let app = express();
+const app = express();
 
 
 // uncomment after placing your favicon in /public
@@ -33,15 +35,20 @@ app.use(function(req, res, next) {
   next();
 });
 
+/// Funcao de login não pode ser validada pelo "validaRequisicao"
+app.use(rotaAutenticacao)
 
+///A partir daqui, toda requisição deve estar "autorizada"
+//App servidor
+//Vai ser executando antes da rota
+//Antes de executar a rota ele valida, continua se lee tive autorizado e caso esteja ok o Next faz com que ele continue a executação
+app.use(auth.validaRequisicao)
 
 
 /*
 Declaração de mapeamento das rotas da API
 */
-app.use('/api', rota);
-
-
+app.use('/api', auth.validaCredenciais, rota);  
 
 
 

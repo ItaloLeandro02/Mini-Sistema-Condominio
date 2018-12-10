@@ -14,14 +14,6 @@ router.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
                 title: "Material Starter"
             }
         })
-        
-        .state('login', {
-            url: '/login',
-            templateUrl: '/modules/visitas/views/index.html',
-            controller: 'VisitaListaController',
-            controllerAs: 'vm',
-            
-        });
 
     $locationProvider.html5Mode(true);
 

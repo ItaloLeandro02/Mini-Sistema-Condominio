@@ -64,6 +64,14 @@
         }
       })
 
+      api.usuario = $resource(api.baseUrl + 'usuario/:id', {id : '@id'},
+        {update: {
+          method: 'PUT'
+        }
+      })
+
+      api.autenticacao = $resource(api.baseUrl + 'autenticacao');
+
       return api;
     }
 

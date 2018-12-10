@@ -45,6 +45,12 @@ module.exports = function(sequelize, DataTypes) {
             field: 'criacao',
             allowNull: false,
             comment: 'Data e hora da criacao'
+        },
+        token: {
+            type: DataTypes.STRING,
+            field: 'token',
+            allowNull: false,
+            comment: 'Token para validação'
         }
         
     }, {
