@@ -3,8 +3,7 @@ angular.module('app.visita')
     
     var visitaFactory = {};
 
-    visitaFactory.getAll = function() {       
-        
+    visitaFactory.getAll = function() {              
         /// Modelo de consumo da api
         var ds = new api.visita();
         return ds.$get()
@@ -71,6 +70,7 @@ angular.module('app.visita')
 
     visitaFactory.login = function(email, senha) {
         var ds  = new api.convidado();
+            return ds.$get({emailLogin : email, senhaLogin : senha})
     }
     
     return visitaFactory;

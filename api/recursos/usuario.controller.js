@@ -4,8 +4,23 @@ let dataContext = require('../dao/dao');
 //Orem influência o nome mão
 //Primeiro requisição
 function carregaTudo(req,res) {
-    
-    return dataContext.Usuario.findAll({
+	
+	//Verifica se o email e senha passados como parâmetros existem no banco de dados
+	if (req.query.emailLogin && req.query.senhaLogin) {
+		return dataContext.Usuario.findAll({
+			where : {
+				email : req.query.emailLogin,
+				senha : req.query.senhaLogin
+			}
+		}).then(function(usuarios){
+			res.status(200).json({
+				sucesso:true,
+				data: usuarios
+			})
+		})
+	}
+
+	return dataContext.Usuario.findAll({
 		//Procura a Primary Key
     	order : 'id'
     }).then(function(usuarios){
@@ -13,7 +28,7 @@ function carregaTudo(req,res) {
         	sucesso:true,
         	data: usuarios
         })
-    })
+	})
 }    
 
 function carregaPorId(req,res) {

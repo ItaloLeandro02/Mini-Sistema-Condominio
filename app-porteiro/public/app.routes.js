@@ -7,32 +7,11 @@ router.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     // Inserting Page title as State Param
     $stateProvider
 
-        .state('app', {
-            url: '/app',
-            template:  '<ion-nav-view></ion-nav-view>',
-            abstract: false,
-            resolve : {
-               // resolvedUser : checkForAuthenticatedUser 
-            }
-        })
-        .state('app.home', {
+        .state('home', {
             url: '/home',
             templateUrl: 'home.html',
-            controlador :  'homeCtrl', 
             params: {
                 title: "Material Starter"
-            },
-            resolve: {
-                CurrentUser: function(resolvedUser){
-                    return resolvedUser;
-                },
-                getCurrentUser: function () {
-                    if (CurrentUser) {
-                        return $q.when(CurrentUser);
-                    } else {
-                        return $q.reject("NO USER");
-                    }
-                },
             }
         })
         

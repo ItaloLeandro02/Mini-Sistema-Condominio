@@ -28,15 +28,4 @@ var materialApp = angular
     // Desativar os warnings de ARIA-LABEL (label para tecnologias assistivas)
     $mdAriaProvider.disableWarnings();
 
-},
-//Função para verificar se o usuário está logado
-function CheckForAuthenticatedUser(ParseService, $state) {
-    return ParseService.getCurrentUser().then(function (_user) {
-        // if resolved successfully return a user object that will set
-        // the variable `resolvedUser`
-        return _user;
-    }, function (_error) {
-        $state.go('login');
-    })
-}
-);
+});

@@ -17,11 +17,6 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
 
         console.log(vm.query)
 
-        $localStorage.porteiro = {
-            id : 1020,
-            nome : 'Severino Cara Cracha Nascimento'
-        }
-
         vm.dataset          = visitaRecord
         vm.nomeConvidado    = vm.dataset.nomeConvidado
 

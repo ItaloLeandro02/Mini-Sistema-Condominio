@@ -24,7 +24,11 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.selectedDirection	= 'rigth';
 	
 	function init(){
+
+		verificarLogin()
+
 		carregaVisitas()
+		verificarLogin()
 	}
 
 	init()
@@ -110,8 +114,23 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 		if (vm.form.$valid) {
 			visitaService.login(vm.email,vm.senha).then(function(resposta) {
+				//Verifica a resposta obtida
 				console.log(resposta)
+				if (resposta.sucesso) {
+					//Caso retornoe sucesso, armazenar os dados no $localStorage
+					//Consigo incluir o id do comidomino ou porteiro no sequelize Usuário?
+					//$localStorage.condomino
+				}
 			})
 		}
-    }
+	}
+	
+	function verificarLogin() {
+		if ($localStorage.porteiro) {
+			console.log($localStorage.porteiro.id)
+		}
+		else {
+			$state.go('login')
+		}
+	}
 }
