@@ -16,8 +16,14 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         if (visitaId) {
             visitaService.getById(visitaId).then(function(visitaModel){
                 vm.dataset = visitaModel.data
-                vm.query.item = vm.dataset;
-                vm.query.text = vm.dataset.nomeConvidado;
+                
+                    if (vm.dataset.PessoaId) {
+                        vm.query.item = vm.dataset;
+                    }
+                    else {
+                        vm.query.text = vm.dataset.nomeConvidado;
+                    }
+                
             })
         }
 
