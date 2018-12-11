@@ -9,10 +9,11 @@ var materialApp = angular
     'app.condomino',
     'app.porteiro',
     'ui.utils.masks',
-    'ngMessages'   
+    'ngMessages',
+    'app.login',   
     
 
-]).config(function($mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider) {
+]).config(function($mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider, $httpProvider) {
   
     $mdThemingProvider.theme('default')
     .primaryPalette('indigo')
@@ -25,5 +26,30 @@ var materialApp = angular
 
     // Desativar os warnings de ARIA-LABEL (label para tecnologias assistivas)
     $mdAriaProvider.disableWarnings();
+
+     /// Interceptador de requisicoes
+     $httpProvider.interceptors.push(function($q, $injector, $localStorage) {
+        return {
+          'request': function (config) {
+            config.headers = config.headers || {};
+            if ($localStorage.usuarioLogado) {
+              config.headers.Authorization = 'Baerer ' + $localStorage.usuarioLogado.token;
+            }
+
+            return config;
+          },
+          'responseError': function(response) {
+            switch (response.status) {
+              case 401:
+                var stateService = $injector.get('$state');
+                stateService.go('login');
+                break;                
+
+              default :
+                return $q.reject(response);
+            }
+          }
+        };
+      })
 
 });

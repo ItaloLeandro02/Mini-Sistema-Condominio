@@ -1,6 +1,6 @@
 //Require quero o arquivo
 const dataContext = require('../dao/dao'),
-      util        = require('../util/util');	
+	  util        = require('../util/util');
 
 //Orem influência o nome mão
 //Primeiro requisição
@@ -36,7 +36,7 @@ function carregaTudo(req,res) {
 		})
         res.status(200).json({
         	sucesso:true,
-        	data: porteiros
+        	data: porteiros	
         })
     })
 }    
@@ -127,59 +127,57 @@ function salvaPorteiro(req,res){
 		})
 		return;
 	}    
-    
-    //variavel para receber o usuario criado devido ao "Clojure"
-    let dadosUsuarioCriado
-
-	//Cria um objeto usuario no banco de dados
-	dataContext.Usuario.create(usuario)
 	
-	//Cria uma promise passando como parâmetro o objeto criado 
-    .then(function(novoUsuario){
-		
-		//Atribui o objeto passado como parâmetro para ser usado na criação do porteiro
-		dadosUsuarioCriado = novoUsuario;
-		
-		//Cria um objeto endereco no banco de dados
-        return dataContext.Endereco.create(endereco)
-	})
+	//Iniciando transação
+	return dataContext.conexao.transaction(function (t) {
 
-	//Cria uma promise passando como parâmetro o objeto criado
-	.then(function(enderecoCriado) {
+		//variavel para receber o usuario criado devido ao "Clojure"
+		let dadosUsuarioCriado
 
-		//Atribuia ao campo endereco_id o valor do id do endereco criado
-		pessoa.enderecoId = enderecoCriado.id
-		//Cria um objeto pessoa no banco de dados
-		return dataContext.Pessoa.create(pessoa)
-	})
-	
-	//Cria uma promise passando como parâmetro o objeto criado
-    .then(function(novaPessoa){
+		//Cria um objeto usuario no banco de dados
+			return dataContext.Usuario.create(usuario, {transaction : t})
+				//Cria uma promise passando como parâmetro o objeto criado 
+				.then(function(novoUsuario){
+					//Atribui o objeto passado como parâmetro para ser usado na criação do porteiro
+					dadosUsuarioCriado = novoUsuario;
+					//Cria um objeto endereco no banco de dados
+					return dataContext.Endereco.create(endereco, {transaction : t})
+				})
 
-		//Cria un objeto porteiro no banco de dados
-        return dataContext.Porteiro.create({
-            usuarioId : dadosUsuarioCriado.id,
-            pessoaId  : novaPessoa.id 
-        })
-	})
+				//Cria uma promise passando como parâmetro o objeto criado
+				.then(function(enderecoCriado) {
+					//Atribuia ao campo endereco_id o valor do id do endereco criado
+					pessoa.enderecoId = enderecoCriado.id
+					//Cria um objeto pessoa no banco de dados
+					return dataContext.Pessoa.create(pessoa, {transaction : t})
+				})
+				
+				//Cria uma promise passando como parâmetro o objeto criado
+				.then(function(novaPessoa){
+					//Cria un objeto porteiro no banco de dados
+					return 	dataContext.Porteiro.create({
+							usuarioId : dadosUsuarioCriado.id,
+							pessoaId  : novaPessoa.id
+					}, {transaction : t})
+				})
+	})//Finaliza transação
+
+	//Comit
+	.then(function(resultado){
 	
-	//Cria uma promise que retorna o JSON
-    .then(function(novoPorteiro){
-        
-        res.status(201).json({
-            sucesso : true,
-            data : porteiro
-        })
+		res.status(201).json({
+			sucesso : true,
+			data 	: resultado
+		})
 	})
-	
 	//Caso haja uma exceção
-    .catch(function(e){
-        console.log(e)
-        res.status(409).json({ 
-            sucesso: false,
-            msg: "Falha ao incluir o porteiro" 
-        })
-    })
+	.catch(function(erro){
+		console.log(erro)
+		res.status(409).json({ 
+			sucesso: false,
+			msg: "Falha ao incluir o porteiro" 
+		})
+	})
 }
 
 function excluiPorteiro(req,res){

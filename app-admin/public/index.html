@@ -39,7 +39,7 @@
         
         </md-toolbar>
 
-        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/">
+        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/home">
             <span>Inicio</span>
         </md-list-item>
         <md-divider></md-divider>
@@ -114,6 +114,11 @@
 <script src="/scripts/jquery/dist/jquery.min.js"></script>
 <script src="/scripts/moment/min/moment.min.js"></script>
 <script src="/scripts/toastr/build/toastr.min.js"></script>
+
+<!--Importando arquivos para login-->
+<script src="modules/login/login.module.js"></script>
+<script src="modules/login/controllers/login.controller.js"></script>
+<script src="modules/login/services/login.service.js"></script>
 
 <!--Declarando arquivos para Condomino-->
 <script src="modules/condominos/condomino.module.js"></script>

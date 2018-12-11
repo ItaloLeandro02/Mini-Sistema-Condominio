@@ -25,7 +25,7 @@ function porteiroListaController(porteiroService, $state, $mdDialog, $stateParam
 	vm.excluir	= excluir;  
 
 	function carregaPorteiros(){	
-		porteiroService.getAll().then(function(porteiros){			
+		porteiroService.getAll().then(function(porteiros){
             vm.dataset = porteiros.data 
             return vm.dataset
 		})

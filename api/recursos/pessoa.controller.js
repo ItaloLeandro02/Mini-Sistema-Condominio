@@ -103,24 +103,29 @@ function salvaPessoa(req,res){
 		return;
 	}
 
-	//Variável para receber os dados do endereco criado
-	let dadosEnderecoCriado
+	//Inicia uma transação
+	dataContext.transaction(function(t) {
 
-	//Cria um endereco
-	dataContext.Endereco.create(endereco).then(function(enderecoCriado) {
-		dadosEnderecoCriado = enderecoCriado
+		//Variável para receber os dados do endereco criado
+		let dadosEnderecoCriado
 
-		//Vou retornar um novo objeto Pessoa
-		return dataContext.Pessoa.create({
-			criacao 			: new Date(),
-			digital 			: util.criaDigital(),
-			nome                : pessoa.nome,
-			cpf                 : pessoa.cpf,
-			nascimento          : pessoa.nascimento,
-			enderecoId			: dadosEnderecoCriado.id
-		})
+		//Cria um endereco
+		dataContext.Endereco.create(endereco), {transaction : t}
+			.then(function(enderecoCriado) {
+				dadosEnderecoCriado = enderecoCriado
+
+				//Vou retornar um novo objeto Pessoa
+				return dataContext.Pessoa.create({
+					criacao 			: new Date(),
+					digital 			: util.criaDigital(),
+					nome                : pessoa.nome,
+					cpf                 : pessoa.cpf,
+					nascimento          : pessoa.nascimento,
+					enderecoId			: dadosEnderecoCriado.id
+				})
+			})
 	})
-	//.then é promise
+	//Commit
 	.then(function(novaPessoa){
 		res.status(201).json({
 			sucesso: true, 

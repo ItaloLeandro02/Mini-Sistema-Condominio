@@ -49,7 +49,7 @@ module.exports = function(sequelize, DataTypes) {
         token: {
             type: DataTypes.STRING,
             field: 'token',
-            allowNull: false,
+            allowNull: true,
             comment: 'Token para validação'
         }
         

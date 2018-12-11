@@ -4,21 +4,6 @@ let dataContext = require('../dao/dao');
 //Orem influência o nome mão
 //Primeiro requisição
 function carregaTudo(req,res) {
-	
-	//Verifica se o email e senha passados como parâmetros existem no banco de dados
-	if (req.query.emailLogin && req.query.senhaLogin) {
-		return dataContext.Usuario.findAll({
-			where : {
-				email : req.query.emailLogin,
-				senha : req.query.senhaLogin
-			}
-		}).then(function(usuarios){
-			res.status(200).json({
-				sucesso:true,
-				data: usuarios
-			})
-		})
-	}
 
 	//Verifica o token no banco de dados
 	if (req.token) {
