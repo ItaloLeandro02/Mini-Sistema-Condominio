@@ -27,10 +27,9 @@
                     <md-tooltip md-direction="left">Convidado {{convidado.pessoa.nome}}</md-tooltip>
                         <md-icon md-svg-src="assets/img/user.svg" class="user"></md-icon>
                             <md-autocomplete flex required class="autocomplete"
-                                md-selected-item="vm.query.item" 
-                                md-search-text-change="searchTextChange(vm.query.text)"
+                                md-no-cache = "true" 
+                                md-selected-item="vm.query.item"
                                 md-search-text="vm.query.text"
-                                md-selected-item-change="vm.dados(pessoa)"
                                 md-items="convidado in vm.carregaConvidados(vm.query.text)"
                                 md-item-text="convidado.pessoa.nome"
                                 md-floating-label="Nome">

@@ -308,6 +308,7 @@ function atualizaVisita(req,res){
 		let updateFields = {
 			dataHoraReserva			   : visita.dataHoraReserva,
 			nomeConvidado			   : visita.nomeConvidado,
+			pessoaId 				   : visita.pessoaId,
 			condominoObservacao		   : visita.condominoObservacao,
 			dataHoraExpiracao		   : visita.dataHoraExpiracao,
 		}

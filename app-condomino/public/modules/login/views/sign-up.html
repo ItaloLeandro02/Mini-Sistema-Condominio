@@ -1,0 +1,26 @@
+<div layout="row"  layout-align="center center">
+    <h1>Log In</h1>
+</div>
+    <form ng-cloak name="vm.form">
+
+        <md-input-container class="md-block">
+            <label>Email</label>
+                <md-tooltip>Email</md-tooltip>
+                    <md-icon md-svg-src="assets/img/email.svg" class="button-login"></md-icon>
+                        <input ng-model="vm.email" type="text" required>
+        </md-input-container>
+      
+        <md-input-container class="md-block">
+            <label>Senha</label>
+                <md-tooltip>Senha</md-tooltip>
+                    <md-icon md-svg-src="assets/img/password.svg" class="button-login"></md-icon>
+                        <input ng-model="vm.senha" type="password" required>
+        </md-input-container>
+
+            <div layout="row" layout-align="center center"> 
+                <md-button type="submit" ng-click="vm.form.$valid && vm.signUp()" aria-label="Salvar Dados">
+                    <md-tooltip>Entrar</md-tooltip>
+                        <md-icon md-svg-src="assets/img/accept.svg" class="button-login"></md-icon>
+                </md-button>
+            </div>
+    

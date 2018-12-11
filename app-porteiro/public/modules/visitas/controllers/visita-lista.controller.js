@@ -97,7 +97,6 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	}
 
 	function novoVisitante(dadosVisita) {
-		console.log(dadosVisita)
 		$state.go('novo-visitante', {visitaId: dadosVisita.id})
 	}
 

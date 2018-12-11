@@ -16,6 +16,8 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         if (visitaId) {
             visitaService.getById(visitaId).then(function(visitaModel){
                 vm.dataset = visitaModel.data
+                vm.query.item = vm.dataset;
+                vm.query.text = vm.dataset.nomeConvidado;
             })
         }
 
@@ -51,9 +53,23 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 
 
         validade                    = new Date(vm.dataset.dataHoraReserva)
-
-        vm.dataset.pessoaId         = vm.query.item ? vm.query.item.pessoa.id : null;
         vm.dataset.nomeConvidado    = vm.query.text;
+        
+
+        if (vm.query.item) {
+            
+            vm.dataset.pessoaId         = vm.query.item.pessoa ? vm.query.item.pessoa.id : null;
+        } 
+        else {
+            vm.dataset.pessoaId = null
+        }
+
+        /*
+        //Caso não haja um convidado selecionado vindo do form, busque no banco de dados
+        visitaService.dadosVisitante(vm.query.text, $localStorage.condomino.id)
+        */
+        
+        
         
 		validade.setHours(vm.dataset.dataHoraReserva.getHours() + 4)
         validade.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
@@ -106,8 +122,9 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     }
 
     function dados(convidado) {
-        vm.query.item          = convidado.pessoa.nome,
-        vm.query.text          = convidado.pessoa.nome;		
+        console.log(convidado)
+        vm.query.item               = angular.copy(convidado),
+        vm.query.text               = convidado.pessoa.nome;
     }
 
     function favoritar(convidado) {

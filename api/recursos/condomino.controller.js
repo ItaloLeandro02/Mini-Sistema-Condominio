@@ -172,53 +172,56 @@ function salvaCondomino(req,res){
 		})
 		return;
 	}    
-    
-    //variavel para receber o usuario criado devido ao "Clojure"
-    let dadosUsuarioCriado;
-
-	//Cria um objeto usuario no banco de dados
-	dataContext.Usuario.create(usuario)
 	
-	//Cria uma promise passando como parâmetro o objeto criado 
-    .then(function(novoUsuario){
+	//Inicia Transação
+	dataContext.conexao.transaction(function(t) {
+		//variavel para receber o usuario criado devido ao "Clojure"
+		let dadosUsuarioCriado;
+
+		//Cria um objeto usuario no banco de dados
+		return dataContext.Usuario.create(usuario, {transaction : t})
 		
-		//Atribui o objeto passado como parâmetro para ser usado na criação do porteiro
-		dadosUsuarioCriado = novoUsuario;
+		//Cria uma promise passando como parâmetro o objeto criado 
+		.then(function(novoUsuario){
+			
+			//Atribui o objeto passado como parâmetro para ser usado na criação do porteiro
+			dadosUsuarioCriado = novoUsuario;
+			
+			//Cria um objeto endereco no banco de dados
+			return dataContext.Endereco.create(endereco, {transaction : t})
+		})
 		
-        //Cria um objeto endereco no banco de dados
-        return dataContext.Endereco.create(endereco)
-	})
-	
-	//Cria uma promise passando como parâmetro o objeto criado
-    .then(function(enderecoCriado){
+		//Cria uma promise passando como parâmetro o objeto criado
+		.then(function(enderecoCriado){
 
-		//Atribui ao campo enderecoId da variável pessoa o id passado como parâmetro desta função
-		pessoa.enderecoId = enderecoCriado.id
+			//Atribui ao campo enderecoId da variável pessoa o id passado como parâmetro desta função
+			pessoa.enderecoId = enderecoCriado.id
 
-		//Cria um objeto pessoa no banco de dados
-        return dataContext.Pessoa.create(pessoa)
-	})
-	
-	//Cria uma promise passando como parâmetro o objeto criado
-    .then(function(novaPessoa){
+			//Cria um objeto pessoa no banco de dados
+			return dataContext.Pessoa.create(pessoa, {transaction : t})
+		})
+		
+		//Cria uma promise passando como parâmetro o objeto criado
+		.then(function(novaPessoa){
 
-		//Cria um objeto condomino no banco de dados
-		return dataContext.Condomino.create({
-			usuarioId 			: dadosUsuarioCriado.id,
-            pessoaId  			: novaPessoa.id, 
-            enderecoCondomino  	: condomino.enderecoCondomino
+			//Cria um objeto condomino no banco de dados
+			return dataContext.Condomino.create({
+				usuarioId 			: dadosUsuarioCriado.id,
+				pessoaId  			: novaPessoa.id, 
+				enderecoCondomino  	: condomino.enderecoCondomino
+			}, {transaction : t})
 		})
 	})
 
-	//Cria uma promise passando como parâmetro o objeto criado
-    .then(function(condomino) {    
+	//Commit
+    .then(function(resultado) {    
         res.status(201).json({
             sucesso : true,
-            data : condomino
+            data : resultado
         })
     })
-    .catch(function(e){
-        console.log(e)
+    .catch(function(erro){
+        console.log(erro)
         res.status(409).json({ 
             sucesso: false,
             msg: "Falha ao incluir o condomino" 

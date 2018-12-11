@@ -8,7 +8,7 @@ angular.module('app.login')
         var ds = new api.autenticacao();
         ds.email = email;
         ds.senha = senha;
-        ds.tipo  = 1; 
+        ds.tipo  = 2;
         return ds.$save()
 
     }    

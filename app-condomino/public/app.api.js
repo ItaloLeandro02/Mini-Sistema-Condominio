@@ -47,6 +47,8 @@
         }
       })
 
+      api.autenticacao = $resource(api.baseUrl + 'autenticacao');
+
       return api;
     }
 

@@ -1,6 +1,6 @@
 //Require quero o arquivo
 const dataContext = require('../dao/dao'),
-	  util = require('../util/util');	
+	 		 util = require('../util/util');	
 
 //Orem influência o nome mão
 //Primeiro requisição
@@ -104,7 +104,7 @@ function salvaPessoa(req,res){
 	}
 
 	//Inicia uma transação
-	dataContext.transaction(function(t) {
+	dataContext.conexao.transaction(function(t) {
 
 		//Variável para receber os dados do endereco criado
 		let dadosEnderecoCriado
@@ -122,7 +122,7 @@ function salvaPessoa(req,res){
 					cpf                 : pessoa.cpf,
 					nascimento          : pessoa.nascimento,
 					enderecoId			: dadosEnderecoCriado.id
-				})
+				}, {transaction : t})
 			})
 	})
 	//Commit

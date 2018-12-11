@@ -39,7 +39,7 @@
         
         </md-toolbar>
 
-        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/">
+        <md-list-item layout="row" ng-click="app.toggleLeft()" href="/home">
             <span>Inicio</span>
         </md-list-item>
         <md-divider></md-divider>
@@ -101,8 +101,14 @@
 <script src="/scripts/angular-aria/angular-aria.min.js"></script>
 <script src="/scripts/angular-material/angular-material.min.js"></script>
 <script src="/scripts/angular-resource/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
 
 <script type="text/javascript" src="/scripts/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+<!--Importando arquivos para login-->
+<script src="modules/login/login.module.js"></script>
+<script src="modules/login/controllers/login.controller.js"></script>
+<script src="modules/login/services/login.service.js"></script>
 
 <script src="/scripts/ngstorage/ngstorage.min.js"></script>
 <script src="/scripts/jquery/dist/jquery.min.js"></script>
