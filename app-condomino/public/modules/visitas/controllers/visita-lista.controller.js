@@ -24,10 +24,6 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 
 	function init(){
-		$localStorage.condomino = {
-            id : 1006,
-            nome : 'Jose Mayer'
-        }
 		carregaVisitas()
 	}
 

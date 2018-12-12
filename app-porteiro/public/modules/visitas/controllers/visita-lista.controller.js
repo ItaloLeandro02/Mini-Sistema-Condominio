@@ -21,6 +21,8 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 
 	vm.availableDirections 	= ['up', 'down', 'left', 'right'];
 	vm.selectedDirection	= 'rigth';
+
+	vm.usuarioLogado = $localStorage.usuarioLogado
 	
 	function init(){
 		carregaVisitas()

@@ -18,7 +18,7 @@
         <md-input-container class="md-block">
           <md-tooltip>Somente os números do CPF</md-tooltip>
             <md-icon md-svg-src="assets/img/cpf.svg" class="email"></md-icon>
-              <input ng-model="vm.dataset.pessoa.cpf" type="text" placeholder="CPF" ng-required="true" maxlength="11">
+              <input  name="cpf" ng-model="vm.dataset.pessoa.cpf"  type="text" placeholder="CPF" required ui-br-cpf-mask>
         </md-input-container>
 
         <md-input-container class="md-block">

@@ -90,13 +90,73 @@ function signup(req,res){
 
                 .then(function(usuarioAtualizado){
                     //Id é um campo sensível, logo escondemos ele
+                    
                     resposta   = {};
 
-                    resposta.usuario = usuarioAtualizado.email;    
-                    resposta.token = usuarioAtualizado.token;
+                    switch (usuarioAtualizado.tipo) {
+                        case 1:
+                            dataContext.Porteiro.findOne({
+                                where : {
+                                    usuarioId : usuarioAtualizado.id
+                                }
+                            })
+                            .then(function(poteiroRetornado) {
+                                resposta.porteiro =  poteiroRetornado
+                                    return dataContext.Pessoa.findOne({
+                                        where : {
+                                            id : poteiroRetornado.pessoaId
+                                        }
+                                    })
+                            })
+                            .then(function(pessoaRetornada) {
+                               
+                                resposta.usuario    = usuarioAtualizado;
+                                resposta.pessoa     = pessoaRetornada   
+                                resposta.token      = usuarioAtualizado.token;
+            
+                                    res.status(200).json({sucesso:true, mensagem:"Bem vindo", data: resposta })
+                                    return 
+                            })
+                            break;
 
-                    res.status(200).json({sucesso:true, mensagem:"Bem vindo", data: resposta })
-                    return 
+                        case 2:
+                            dataContext.Condomino.findOne({
+                                where : {
+                                    usuarioId : usuarioAtualizado.id
+                                }
+                            })
+                            .then(function(condominoRetornado) {
+                                resposta.condomino =  condominoRetornado
+                                    return dataContext.Pessoa.findOne({
+                                        where : {
+                                            id : condominoRetornado.pessoaId
+                                        }
+                                    })
+                            })
+                            .then(function(pessoaRetornada) {
+                               
+
+                                resposta.usuario    = usuarioAtualizado;
+                                resposta.pessoa     = pessoaRetornada   
+                                resposta.token      = usuarioAtualizado.token;
+            
+                                    res.status(200).json({sucesso:true, mensagem:"Bem vindo", data: resposta })
+                                    return 
+                            })
+                            break;
+
+                        case 3:
+                                resposta.usuario    = usuarioAtualizado;
+                                resposta.token      = usuarioAtualizado.token;
+            
+                                    res.status(200).json({sucesso:true, mensagem:"Bem vindo", data: resposta })
+                                    return 
+   
+                            break;        
+                    
+                        default:
+                            break;
+                    }
                 })
 
                 //Caso haja uma exceção

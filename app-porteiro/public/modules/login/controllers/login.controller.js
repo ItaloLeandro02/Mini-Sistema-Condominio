@@ -17,10 +17,10 @@ function LoginController($localStorage, loginService, $state) {
     function fnSignUp(){
        
         let sucesso = function(resposta) {
-        
             $localStorage.usuarioLogado = resposta.data;
+            $state.go('home', {nome : $localStorage.usuarioLogado.pessoa.nome})
             toastr.info("Login Efetuado com sucesso!")
-            $state.go('home')
+           
         }
 
         let erro = function(repsosta) {

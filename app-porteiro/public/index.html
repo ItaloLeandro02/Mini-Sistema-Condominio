@@ -23,6 +23,7 @@
 
   
   <link rel="stylesheet"  type="text/css" href="../assets/estilo.css">
+
 </head>
 
 <body ng-app="materialApp" layout="row" ng-controller="appCtrl as app" class="background">
@@ -62,19 +63,24 @@
             </md-button>
 
         </md-toolbar>
-
+            <div layout="row" layout-align="end" ng-show="app.usuarioLogado">
+            <md-button ng-click="app.logout()">Sair 
+                <md-icon md-svg-src="assets/img/logout.svg"></md-icon>
+            </md-button>
+        </div>
     </md-sidenav>
 
 <div style="width:100%" class="ng-cloak">
     <md-toolbar class="toolbar md-whiteframe-2dp">
         <div layout="row" layout-align="center center" layout-wrap class="md-toolbar-tools">
 
+            
             <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Main Menu">
               <md-icon md-font-icon="fa-bars" class="md-menu-text-color fa s24"></md-icon>
             </md-button>
 
             <span flex></span>
-
+            {{app.usuarioLogado.pessoa.nome}}
             <md-button ng-click="app.toggleRight()" class="md-icon-button" aria-label="User Menu">
               <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
             </md-button>

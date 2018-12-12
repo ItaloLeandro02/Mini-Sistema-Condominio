@@ -193,72 +193,79 @@ function excluiPorteiro(req,res){
 	let porteiroRetornado
 	let pessoaRetornada
 
-	//Procura o porteiro pelo id passado pela URL
-	dataContext.Porteiro.findById(req.params.id).then(function(porteiro) {
+	//Iniciando tansaction
+	dataContext.conexao.transaction(function(t) {
+
+		//Procura o porteiro pelo id passado pela URL
+		return dataContext.Porteiro.findById(req.params.id, {transaction : t}).then(function(porteiro) {
+			
+			//Atribui os dados do porteiro encontrado para serem usados fora da função
+			porteiroRetornado = porteiro
+
+			//Verifica se o porteiro existe
+			if (!porteiro) {
+				res.status(404).json({
+					sucesso: false,
+					msg: "Porteiro não encontrado."
+				})
+				return;
+			}
+
+			//Exclui somente o porteiro
+			porteiro.destroy({transaction : t})
+
+			//Retorna o objeto pessoa vinculado ao porteiro
+			return dataContext.Pessoa.findById(porteiroRetornado.pessoaId, {transaction : t})
+
+			//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
+		})
+		.then(function(pessoa) {
+
+			//Atribui os dados da pessoa encontrada pare serem usados fora da função
+			pessoaRetornada = pessoa
+
+			//Exclui a pessoa vinculada
+			pessoa.destroy({transaction : t})
+
+			//Retorna o objeto endereço vinculado ao porteiro
+			return dataContext.Endereco.findById(pessoaRetornada.enderecoId, {transaction : t})
+		})
 		
-		//Atribui os dados do porteiro encontrado para serem usados fora da função
-		porteiroRetornado = porteiro
+		//Cria uma promise passando como parâmetro os dados retornados
+		.then(function(enderecoRetornado) {
 
-		//Verifica se o porteiro existe
-		if (!porteiro) {
-			res.status(404).json({
-				sucesso: false,
-				msg: "Porteiro não encontrado."
-			})
-			return;
-		}
+			//Exclui o objeto retornado
+			enderecoRetornado.destroy({transaction : t})
 
-		//Exclui somente o porteiro
-		porteiro.destroy()
+			//Retorna o objeto usuário vinculado ao porteiro
+			return dataContext.Usuario.findById(porteiroRetornado.usuarioId, {transaction : t})
 
-		//Retorna o objeto pessoa vinculado ao porteiro
-		return dataContext.Pessoa.findById(porteiroRetornado.pessoaId)
+			//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
+		}).then(function(usuario) {
 
-		//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
-	}).then(function(pessoa) {
+			//Exclui o usuário vinculado ao porteiro
+			return usuario.destroy({transaction : t})
 
-		//Atribui os dados da pessoa encontrada pare serem usados fora da função
-		pessoaRetornada = pessoa
-
-		//Exclui a pessoa vinculada
-		pessoa.destroy()
-
-		//Retorna o objeto endereço vinculado ao porteiro
-		return dataContext.Endereco.findById(pessoaRetornada.enderecoId)
+			//Chama uma promise que retorna os dados em formato JSON
+		})	
 	})
-	
-	//Cria uma promise passando como parâmetro os dados retornados
-	.then(function(enderecoRetornado) {
+	//Commit
+	.then(function(){
+		res.status(200).json({
+			sucesso:true,
+			msg: "Registro excluído com sucesso",
+			data: []
+		})	        	
+	})
 
-		//Exclui o objeto retornado
-		enderecoRetornado.destroy()
-
-		//Retorna o objeto usuário vinculado ao porteiro
-		return dataContext.Usuario.findById(porteiroRetornado.usuarioId)
-
-		//Chama uma promise passando como parâmetro os dados retornados da pessoa vínculada
-	}).then(function(usuario) {
-
-		//Exclui o usuário vinculado ao porteiro
-		usuario.destroy()
-
-		//Chama uma promise que retorna os dados em formato JSON
-	}).then(function(){
-			res.status(200).json({
-        		sucesso:true,
-        		msg: "Registro excluído com sucesso",
-        		data: []
-        	})	        	
-		})
-
-		//Caso hja um erro durante a operação 
-		.catch(function(erro){
-			console.log(erro);
-			res.status(409).json({ 
-				sucesso: false,
-				msg: "Falha ao excluir o porteiro" 
-			});	
-		})
+	//Roolback 
+	.catch(function(erro){
+		console.log(erro);
+		res.status(409).json({ 
+			sucesso: false,
+			msg: "Falha ao excluir o porteiro" 
+		});	
+	})
 }
 
 function atualizaPorteiro(req,res){
@@ -283,75 +290,79 @@ function atualizaPorteiro(req,res){
 		return;
 	}
 
-	//Variável para receber os dados retornados para serem usados fora das suas respectivas funções
-	let dadosPorteiro
+	//Iniciando transaction
+	dataContext.conexao.transaction(function(t) {
 
-	//Pesquisa o porteiro pelo id passado como parâmetro na URL
-	dataContext.Porteiro.findById(req.params.id)
-	
-	//Chama uma promise passando como parâmetro o porteiro retornado
-	.then(function(porteiroRetornado){
+		//Variável para receber os dados retornados para serem usados fora das suas respectivas funções
+		let dadosPorteiro
 
-		//Verifica se retornou algo
-		if (!porteiroRetornado) {
-			res.status(404).json({
-				sucesso: false,
-				msg: "Porteiro não encontrada."
-			})
-			return;
-		}
+		//Pesquisa o porteiro pelo id passado como parâmetro na URL
+		return dataContext.Porteiro.findById(req.params.id, {transaction : t})
+		
+		//Chama uma promise passando como parâmetro o porteiro retornado
+		.then(function(porteiroRetornado){
 
-		//Atribui a uma variável os dados retornados
-		dadosPorteiro = porteiroRetornado
+			//Verifica se retornou algo
+			if (!porteiroRetornado) {
+				res.status(404).json({
+					sucesso: false,
+					msg: "Porteiro não encontrado."
+				})
+				return;
+			}
 
-		//Pesquisa a pessoa vinculada ao porteiro
-		return dataContext.Pessoa.findById(porteiroRetornado.pessoaId)
-	})
-	
-	//Chama uma promise passando como parâmetro os dados da pessoa vinculada
-	.then(function(pessoaRetornada){
+			//Atribui a uma variável os dados retornados
+			dadosPorteiro = porteiroRetornado
 
-		let updateFields = {
-			nome 						: porteiroForm.pessoa.nome,
-			nascimento 					: porteiroForm.pessoa.nascimento,
-		}
+			//Pesquisa a pessoa vinculada ao porteiro
+			return dataContext.Pessoa.findById(porteiroRetornado.pessoaId, {transaction : t})
+		})
+		
+		//Chama uma promise passando como parâmetro os dados da pessoa vinculada
+		.then(function(pessoaRetornada){
 
-		//Atualiza os dados da pessoa vinculada
-		pessoaRetornada.update(updateFields)
+			let updateFields = {
+				nome 						: porteiroForm.pessoa.nome,
+				nascimento 					: porteiroForm.pessoa.nascimento,
+			}
 
-		//Pesquisa o endereço vinculado ao porteiro
-		return dataContext.Endereco.findById(pessoaRetornada.enderecoId)
-	})
+			//Atualiza os dados da pessoa vinculada
+			pessoaRetornada.update(updateFields, {transaction : t})
 
-	//Chama uma promise passando como parâmetro os dados do endereço vinculado
-	.then(function(enderecoRetornado) {
+			//Pesquisa o endereço vinculado ao porteiro
+			return dataContext.Endereco.findById(pessoaRetornada.enderecoId, {transaction : t})
+		})
 
-		let updateFields = {
-			logradouro 			: porteiroForm.endereco.logradouro,
-			numero 				: porteiroForm.endereco.numero,
-			bairro 				: porteiroForm.endereco.bairro,
-			cidade 				: porteiroForm.endereco.cidade,
-			uf 					: porteiroForm.endereco.uf
-		}
+		//Chama uma promise passando como parâmetro os dados do endereço vinculado
+		.then(function(enderecoRetornado) {
 
-		//Atualiza os dados do endereço vinculado
-		enderecoRetornado.update(updateFields)
+			let updateFields = {
+				logradouro 			: porteiroForm.endereco.logradouro,
+				numero 				: porteiroForm.endereco.numero,
+				bairro 				: porteiroForm.endereco.bairro,
+				cidade 				: porteiroForm.endereco.cidade,
+				uf 					: porteiroForm.endereco.uf
+			}
 
-		//Pesquisa no banco de dados o usuário vinculado ao porteiro
-		return dataContext.Usuario.findById(dadosPorteiro.usuarioId)
-	})
+			//Atualiza os dados do endereço vinculado
+			enderecoRetornado.update(updateFields, {transaction : t})
 
-	//Cria uma promise passando como parâmetro os dados retornados da pesquisa
-	.then(function(usuarioRetornado) {
+			//Pesquisa no banco de dados o usuário vinculado ao porteiro
+			return dataContext.Usuario.findById(dadosPorteiro.usuarioId, {transaction : t})
+		})
 
-		//Campos que do usuário que serão atualizados
-		let updateFields = {
-			email	:	porteiroForm.usuario.email,
-			senha	:	porteiroForm.usuario.senha
-		}
+		//Cria uma promise passando como parâmetro os dados retornados da pesquisa
+		.then(function(usuarioRetornado) {
 
-		//Atualiza os campos do usuário
-		usuarioRetornado.update(updateFields)
+			//Campos que do usuário que serão atualizados
+			let updateFields = {
+				emailjhasgdgajsdg	:	porteiroForm.usuario.email,
+				senha	:	porteiroForm.usuario.senha
+			}
+
+			//Atualiza os campos do usuário
+			return usuarioRetornado.update(updateFields, {transaction : t})
+		})
 	})
 
 	//Chama uma promise que retona os dados e o JSON
@@ -359,7 +370,7 @@ function atualizaPorteiro(req,res){
 			res.status(200).json({
         		sucesso:true,
         		msg: "Registro atualizado com sucesso",
-        		data: dadosPorteiro
+        		data: porteiroAtualizado
         	})	
 		})
 

@@ -15,8 +15,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
     
     function init(){
 
-        console.log(vm.query)
-
+        vm.usuarioLogado    = $localStorage.usuarioLogado
         vm.dataset          = visitaRecord
         vm.nomeConvidado    = vm.dataset.nomeConvidado
 
@@ -50,7 +49,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
        vm.dataset.dataHoraChegada  = new Date()
         var visitaModel = {
                 situacao 			        : vm.dataset.situacao,
-                porteiroId    			    : $localStorage.porteiro.id,
+                porteiroId    			    : vm.usuarioLogado.proteiro.id,
                 portariaDataHoraChegada	    : vm.dataset.dataHoraChegada,
                 portariaObservacao		    : vm.dataset.portariaObservacao		
             }

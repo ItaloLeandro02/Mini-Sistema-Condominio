@@ -110,7 +110,7 @@ function salvaPessoa(req,res){
 		let dadosEnderecoCriado
 
 		//Cria um endereco
-		dataContext.Endereco.create(endereco), {transaction : t}
+		return dataContext.Endereco.create(endereco), {transaction : t}
 			.then(function(enderecoCriado) {
 				dadosEnderecoCriado = enderecoCriado
 
@@ -150,36 +150,42 @@ function excluiPessoa(req,res){
 		return;
 	}
 
-	//Recebe os dados da pessoa antes de ser excluida
-	let pessoa
-	//Busca a pessoa pelo id passado como parâmetro na URL
-	dataContext.Pessoa.findById(req.params.id).then(function(pessoaEncontrada){
+	//Inicia transaction
+	dataContext.conexao.transaction(function(t) {
+
+		//Recebe os dados da pessoa antes de ser excluida
+		let pessoa
+		//Busca a pessoa pelo id passado como parâmetro na URL
+		dataContext.Pessoa.findById(req.params.id, {transaction : t})
 		
-		//Verifica se a pessoa existe
-		if (!pessoaEncontrada) {
-			res.status(404).json({
-				sucesso: false,
-				msg: "Pessoa não encontrada."
-			})
-			return;
-		}
+		.then(function(pessoaEncontrada){
+			
+			//Verifica se a pessoa existe
+			if (!pessoaEncontrada) {
+				res.status(404).json({
+					sucesso: false,
+					msg: "Pessoa não encontrada."
+				})
+				return;
+			}
 
-		//Atribui os dados antes de ser excluida
-		pessoa = pessoaEncontrada
+			//Atribui os dados antes de ser excluida
+			pessoa = pessoaEncontrada
 
-		//Exclui o objeto pessoa, bem como os outros objetos relacionados ao seu id
-		pessoaEncontrada.destroy()
+			//Exclui o objeto pessoa, bem como os outros objetos relacionados ao seu id
+			pessoaEncontrada.destroy({transaction : t})
 
-		//Retorna o endereço vinculado a esta pessoa
-		return dataContext.Endereco.findById(pessoa.enderecoId)
+			//Retorna o endereço vinculado a esta pessoa
+			return dataContext.Endereco.findById(pessoa.enderecoId, {transaction : t})
+		})
+		//Cria uma promise passando como parâmetro o endereço retornado
+		.then(function(enderecoRetornado) {
+
+			//Exclui o endereco retornado
+			enderecoRetornado.destroy({transaction : t})
+		})
 	})
-	//Cria uma promise passando como parâmetro o endereço retornado
-	.then(function(enderecoRetornado) {
-
-		//Exclui o endereco retornado
-		enderecoRetornado.destroy()
-	})
-	//Cria uma promise para retornar o JSON
+	//Commit
 	.then(function(){
 			res.status(200).json({
         		sucesso:true,
@@ -188,14 +194,14 @@ function excluiPessoa(req,res){
         	})	        	
 		})
 
-		//Caso haja uma excessão
-		.catch(function(erro){
-			console.log(erro);
-			res.status(409).json({ 
-				sucesso: false,
-				msg: "Falha ao excluir a pessoa" 
-			});	
-		})
+	//Roolback
+	.catch(function(erro){
+		console.log(erro);
+		res.status(409).json({ 
+			sucesso: false,
+			msg: "Falha ao excluir a pessoa" 
+		});	
+	})
 }
 
 function atualizaPessoa(req,res){
@@ -210,7 +216,6 @@ function atualizaPessoa(req,res){
 
 	//No front devo retornar um objeto pessoa com os dados
 	let pessoaForm	= req.body.pessoa;
-	let resposta
 
 	if (!pessoaForm) {
 		res.status(404).json({
@@ -220,56 +225,58 @@ function atualizaPessoa(req,res){
 		return;
 	}
 
-	//Pesquise antes de atualizar
-	dataContext.Pessoa.findById(req.params.id)
-	
-	.then(function(pessoa){
-		if (!pessoa) {
-			res.status(404).json({
-				sucesso: false,
-				msg: "Pessoa não encontrada."
-			})
-			return;
-		}
+	//Inicia transaction
+	dataContext.conexao.transaction(function(t) {
+
+		//Pesquise antes de atualizar
+		dataContext.Pessoa.findById(req.params.id, {transaction : t})
 		
-		//Campos da Pessoa que serão alterados
-		let updateFields = {
-			nome 						: pessoaForm.nome,
-			nascimento					: pessoaForm.nascimento
-		}
+		.then(function(pessoa){
+			if (!pessoa) {
+				res.status(404).json({
+					sucesso: false,
+					msg: "Pessoa não encontrada."
+				})
+				return;
+			}
+			
+			//Campos da Pessoa que serão alterados
+			let updateFields = {
+				nome 						: pessoaForm.nome,
+				nascimento					: pessoaForm.nascimento
+			}
 
-		//Atualiza somente os campos Pessoa
-		pessoa.update(updateFields)
+			//Atualiza somente os campos Pessoa
+			pessoa.update(updateFields, {transaction : t})
 
-		//Recebe os dados da pessoa atualizada para serem exibidos na tela
-		resposta = pessoa
+			//Busca o endereço vinculado a Pessoa
+			return dataContext.Endereco.findById(pessoa.enderecoId, {transaction : t})
+		})
+		.then(function(enderecoEncontrado){
 
-		//Busca o endereço vinculado a Pessoa
-		return dataContext.Endereco.findById(pessoa.enderecoId)
+			//Campos do endereço que serão alterados
+			let updateFields = {
+				logradouro 			: pessoaForm.endereco.logradouro,
+				numero 				: pessoaForm.endereco.numero,
+				bairro 				: pessoaForm.endereco.bairro,
+				cidade 				: pessoaForm.endereco.cidade,
+				uf 					: pessoaForm.endereco.uf
+			}
+
+			//Atualiza somente os campos Endereço
+			return enderecoEncontrado.update(updateFields, {transaction : t})
+
+		})	
 	})
-	.then(function(enderecoEncontrado){
-
-		//Campos do endereço que serão alterados
-		let updateFields = {
-			logradouro 			: pessoaForm.endereco.logradouro,
-			numero 				: pessoaForm.endereco.numero,
-			bairro 				: pessoaForm.endereco.bairro,
-			cidade 				: pessoaForm.endereco.cidade,
-			uf 					: pessoaForm.endereco.uf
-		}
-
-		//Atualiza somente os campos Endereço
-		return enderecoEncontrado.update(updateFields)
-
-	})	
+	//Commit
 	.then(function(pessoaAtualizada) {	
 		res.status(200).json({
         sucesso:true,
         msg: "Registro atualizado com sucesso",
-        data: resposta
+        data: pessoaAtualizada
         	})	
 	})
-		
+	//Roolback
 	.catch(function(erro){
 		console.log(erro);
 		res.status(409).json({ 

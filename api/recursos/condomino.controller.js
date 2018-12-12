@@ -244,78 +244,79 @@ function excluiCondomino(req,res){
 	let dadosCondomino
 	let dadosPessoa
 
-	//Pesquisa no banco de dados o condomino com o id passado como parâmetro via URL
-	dataContext.Condomino.findById(req.params.id)
-	
-	//Chama uma promise com os dados retornados da pesquisa
-	.then(function(condominoRetornado){
+	//Iniciando transaction
+	dataContext.conexao.transaction(function(t) {
+
+		//Pesquisa no banco de dados o condomino com o id passado como parâmetro via URL
+		return dataContext.Condomino.findById(req.params.id, {transaction : t})
 		
-		//Verifica se retornou algo
-		if (!condominoRetornado) {
-			res.status(404).json({
-				sucesso: false,
-				msg: "Condomino não encontrado."
-			})
-			return;
-		}
+		//Chama uma promise com os dados retornados da pesquisa
+		.then(function(condominoRetornado){
+			
+			//Verifica se retornou algo
+			if (!condominoRetornado) {
+				res.status(404).json({
+					sucesso: false,
+					msg: "Condomino não encontrado."
+				})
+				return;
+			}
+	
+			//Atribui os dados antes de excluir o objeto
+			dadosCondomino = condominoRetornado;
 
-		//Atribui os dados antes de excluir o objeto
-		dadosCondomino = condominoRetornado;
+			//exclui somente os dados de condomino
+			condominoRetornado.destroy({transaction : t})
 
-		//exclui somente os dados de condomino
-		condominoRetornado.destroy()
-
-		//Pesquisa no banco dedaos o usuario associado ao condomino
-		return dataContext.Usuario.findById(dadosCondomino.usuarioId)
-	})
-
-	//Chama uma promise e passa como parâmetro os dados da pesquisa
-	.then(function(usuarioRetornado) {
-
-		//Exclui o usuário retornado
-		usuarioRetornado.destroy()
-
-		//Pesquisa no banco de dados a pessoa associada ao condomino
-		return dataContext.Pessoa.findById(dadosCondomino.pessoaId)
-	})
-
-	//Cria uma promise e passa como parâmetro os dados da pesquisa
-	.then(function(pessoaRetornada) {
-
-		//Atribui os dados da pessoa retornada antes de ser excluida
-		dadosPessoa = pessoaRetornada
-
-		//Exclui a pessoa vinculada
-		pessoaRetornada.destroy()
-
-		//Pesquisa no banco de dados o endereço vinculado ao condomino
-		return dataContext.Endereco.findById(dadosPessoa.enderecoId)
-	})
-
-	//Cria uma promise passando como parâmetro os dados da pesquisa
-	.then(function(enderecoRetornado) {
-
-		//Exclui o endereço vinculado
-		enderecoRetornado.destroy()
-	})
-
-		//Caso a exclusão seja um sucesso
-		.then(function(){
-			res.status(200).json({
-        		sucesso:true,
-        		msg: "Registro excluído com sucesso",
-        		data: []
-        	})	        	
+			//Pesquisa no banco dedaos o usuario associado ao condomino
+			return dataContext.Usuario.findById(dadosCondomino.usuarioId, {transaction : t})
 		})
 
-		//Caso haja uma exceção
-		.catch(function(erro){
-			console.log(erro);
-			res.status(409).json({ 
-				sucesso: false,
-				msg: "Falha ao excluir o Condomino" 
-			});	
+		//Chama uma promise e passa como parâmetro os dados da pesquisa
+		.then(function(usuarioRetornado) {
+			//Exclui o usuário retornado
+			usuarioRetornado.destroy({transaction : t})
+
+			//Pesquisa no banco de dados a pessoa associada ao condomino
+			return dataContext.Pessoa.findById(dadosCondomino.pessoaId, {transaction : t})
 		})
+
+		//Cria uma promise e passa como parâmetro os dados da pesquisa
+		.then(function(pessoaRetornada) {
+
+			//Atribui os dados da pessoa retornada antes de ser excluida
+			dadosPessoa = pessoaRetornada
+
+			//Exclui a pessoa vinculada
+			pessoaRetornada.destroy({transaction : t})
+
+			//Pesquisa no banco de dados o endereço vinculado ao condomino
+			return dataContext.Endereco.findById(dadosPessoa.enderecoId,{transaction : t})
+		})
+
+		//Cria uma promise passando como parâmetro os dados da pesquisa
+		.then(function(enderecoRetornado) {
+
+			//Exclui o endereço vinculado
+			return enderecoRetornado.destroy({transaction : t})
+		})
+	})
+	//Commit
+	.then(function(){
+		res.status(200).json({
+			sucesso:true,
+			msg: "Registro excluído com sucesso",
+			data: []
+		})	        	
+	})
+	//Roolback
+	.catch(function(erro){
+		console.log(erro);
+		res.status(409).json({ 
+			sucesso: false,
+			msg: "Falha ao excluir o Condomino" 
+		});	
+	})
 }
 
 function atualizaCondomino(req,res){
@@ -341,103 +342,106 @@ function atualizaCondomino(req,res){
 		return;
 	}
 
-	//Variável que recebe os dados retornados para serem usados fora das respectivas funcões
-	let dadosCondomino
+	//Inicia transaction
+	dataContext.conexao.transaction(function(t) {
 
-	//Pesquisa no banco de dados o condomino com o id associado ao id passado na URL
-	dataContext.Condomino.findById(req.params.id)
-	
-	//Cria uma promise passando como parâmetro os dados da pesquisa
-	.then(function(condominoRetornado){
+		//Variável que recebe os dados retornados para serem usados fora das respectivas funcões
+		let dadosCondomino
+
+		//Pesquisa no banco de dados o condomino com o id associado ao id passado na URL
+		return dataContext.Condomino.findById(req.params.id, {transaction : t})
 		
-		//Verifica se retornou algo
-		if (!condominoRetornado) {
-			res.status(404).json({
-				sucesso: false,
-				msg: "Condomino não encontrada."
-			})
-			return;
-		}
+		//Cria uma promise passando como parâmetro os dados da pesquisa
+		.then(function(condominoRetornado){
+			
+			//Verifica se retornou algo
+			if (!condominoRetornado) {
+				res.status(404).json({
+					sucesso: false,
+					msg: "Condomino não encontrada."
+				})
+				return;
+			}
 
-		let updateFields = {
-			enderecoCondomino	:	condominoForm.enderecoCondomino
-		}
+			let updateFields = {
+				enderecoCondomino	:	condominoForm.enderecoCondomino
+			}
 
-		//Atualiza os dados do condomino
-		condominoRetornado.update(updateFields)
+			//Atualiza os dados do condomino
+			condominoRetornado.update(updateFields, {transaction : t})
 
-		//Atribui os dados atualizados a uma variável
-		dadosCondomino = condominoRetornado
+			//Atribui os dados atualizados a uma variável
+			dadosCondomino = condominoRetornado
 
-		//Pesquisa no banco de dados a pessoa associada ao condomino
-		return dataContext.Pessoa.findById(condominoRetornado.pessoaId)
+			//Pesquisa no banco de dados a pessoa associada ao condomino
+			return dataContext.Pessoa.findById(condominoRetornado.pessoaId, {transaction : t})
+		})
+		
+		//Cria uma promise passando como parâmetro os dados da pesquisa
+		.then(function(pessoaRetornada){
+
+			//Atributos de pessoa que serão atualizados
+			let updateFields = {
+				nome 						: condominoForm.pessoa.nome,
+				nascimento 					: condominoForm.pessoa.nascimento
+			}
+
+			//Atualiza os campos do objeto pessoa
+			pessoaRetornada.update(updateFields, {transaction : t})
+
+			//Pesquisa na banco de dados o endereço associado à pessoa
+			return dataContext.Endereco.findById(pessoaRetornada.enderecoId, {transaction : t})
+		})
+
+		//Cria uma promise passando como parâmetro os dados da pesquisa
+		.then(function(enderecoRetornado) {
+
+			//Atributos do endereço que serão atualizados
+			let updateFields = {
+				logradouro 		: condominoForm.endereco.logradouro,
+				numero 			: condominoForm.endereco.numero,
+				bairro 			: condominoForm.endereco.bairro,
+				cidade 			: condominoForm.endereco.cidade,
+				uf 				: condominoForm.endereco.uf,
+			}
+
+			//Atualiza os dados do objeto endereço
+			enderecoRetornado.update(updateFields, {transaction : t})
+
+			//Pesquisa no banco de dados o usuário associado ao condomino
+			return dataContext.Usuario.findById(dadosCondomino.usuarioId, {transaction : t})
+		})
+
+		//Cria uma promise passando como parâmetro os dados da pesquisa
+		.then(function(usuarioRetornado) {
+
+			//Atributos do usuário que serão alterados
+			let updateFields = {
+				email	:	condominoForm.usuario.email,
+				senha	: 	condominoForm.usuario.senha
+			}
+
+			//Atualiza so dadso do objeto usuário
+			return usuarioRetornado.update(updateFields, {transaction : t})
+		})
 	})
 	
-	//Cria uma promise passando como parâmetro os dados da pesquisa
-	.then(function(pessoaRetornada){
-
-		//Atributos de pessoa que serão atualizados
-		let updateFields = {
-			nome 						: condominoForm.pessoa.nome,
-			nascimento 					: condominoForm.pessoa.nascimento
-		}
-
-		//Atualiza os campos do objeto pessoa
-		pessoaRetornada.update(updateFields)
-
-		//Pesquisa na banco de dados o endereço associado à pessoa
-		return dataContext.Endereco.findById(pessoaRetornada.enderecoId)
-	})
-
-	//Cria uma promise passando como parâmetro os dados da pesquisa
-	.then(function(enderecoRetornado) {
-
-		//Atributos do endereço que serão atualizados
-		let updateFields = {
-			logradouro 		: condominoForm.endereco.logradouro,
-			numero 			: condominoForm.endereco.numero,
-			bairro 			: condominoForm.endereco.bairro,
-			cidade 			: condominoForm.endereco.cidade,
-			uf 				: condominoForm.endereco.uf,
-		}
-
-		//Atualiza os dados do objeto endereço
-		enderecoRetornado.update(updateFields)
-
-		//Pesquisa no banco de dados o usuário associado ao condomino
-		return dataContext.Usuario.findById(dadosCondomino.usuarioId)
-	})
-
-	//Cria uma promise passando como parâmetro os dados da pesquisa
-	.then(function(usuarioRetornado) {
-
-		//Atributos do usuário que serão alterados
-		let updateFields = {
-			email	:	condominoForm.usuario.email,
-			senha	: 	condominoForm.usuario.senha
-		}
-
-		//Atualiza so dadso do objeto usuário
-		usuarioRetornado.update(updateFields)
-	})
-	
-	//Cria uma promise passando como parâmetro os dados retornados
+	//Commit
 	.then(function(condominoAtualizado){
-			res.status(200).json({
-        		sucesso:true,
-        		msg: "Registro atualizado com sucesso",
-        		data: dadosCondomino
-        	})	
-		})
-
-		//Caso haja uma exceção
-		.catch(function(erro){
-			console.log(erro);
-			res.status(409).json({ 
-				sucesso: false,
-				msg: "Falha ao atualizar o condomino" 
-			});	
-		})
+		res.status(200).json({
+			sucesso:true,
+			msg: "Registro atualizado com sucesso",
+			data: condominoAtualizado
+		})	
+	})
+	//Roolback
+	.catch(function(erro){
+		console.log(erro);
+		res.status(409).json({ 
+			sucesso: false,
+			msg: "Falha ao atualizar o condomino" 
+		});	
+	})
 }
 
 module.exports = {

@@ -75,8 +75,8 @@ function salvaUsuario(req,res){
 	//Cria uma promise passando como parâmeetro os dados do objeto criado
 	.then(function(novoUsuario){
 		res.status(201).json({
-			sucesso: true, 
-			data: novoUsuario
+			sucesso	: true, 
+			data	: novoUsuario
 		})
 	})
 	.catch(function(erro){

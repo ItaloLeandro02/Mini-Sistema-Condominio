@@ -11,7 +11,9 @@ angular.module('app.login')
         ds.tipo  = 2;
         return ds.$save()
 
-    }    
+    }   
+    
+    loginFactory
 
     return loginFactory;
 

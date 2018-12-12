@@ -67,7 +67,7 @@
                                     <div>
                                         <center>
                                             <span flex></span>
-                                                <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados" ng-disabled="!vm.dataset.pessoaId">
+                                                <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados" ng-disabled="!vm.dataset.pessoaId || vm.dataset.situacao != 1">
                                                     <md-tooltip>Salvar</md-tooltip>
                                                         <md-icon md-svg-src="../../../assets/img/save.svg"></md-icon>
                                                 </md-button>

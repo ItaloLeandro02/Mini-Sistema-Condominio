@@ -35,7 +35,7 @@ function condominoListaController(condominoService, $state, $mdDialog, $statePar
     function excluir(ev, condomino) {
 		let confirmacao = $mdDialog.confirm()
 	        .title('A	guardando confirmação')
-			.textContent('Confirma a exclusão do condômino ' + condomino.pessoa.nome + '?')
+			.textContent('Confirma a exclusão do condômino ' +  '?')
 	        .ariaLabel('Msg interna do botao')
 	        .targetEvent(ev)
 	        .ok('Sim')
