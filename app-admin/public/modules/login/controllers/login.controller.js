@@ -19,8 +19,9 @@ function LoginController($localStorage, loginService, $state) {
         let sucesso = function(resposta) {
         
             $localStorage.usuarioLogado = resposta.data;
+            console.log($localStorage.usuarioLogado)
             toastr.info("Login Efetuado com sucesso!")
-            $state.go('home')
+            $state.go('home', {nome : $localStorage.usuarioLogado.usuario.email})
         }
 
         let erro = function(repsosta) {

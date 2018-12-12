@@ -62,12 +62,14 @@
               <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
             </md-button>
 
+            {{nome}}
+
         </md-toolbar>
             <div layout="row" layout-align="end" ng-show="app.usuarioLogado">
-            <md-button ng-click="app.logout()">Sair 
-                <md-icon md-svg-src="assets/img/logout.svg"></md-icon>
-            </md-button>
-        </div>
+                <md-button ng-click="app.logout()">Sair 
+                    <md-icon md-svg-src="assets/img/logout.svg"></md-icon>
+                </md-button>
+            </div>
     </md-sidenav>
 
 <div style="width:100%" class="ng-cloak">

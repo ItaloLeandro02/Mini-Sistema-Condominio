@@ -9,19 +9,25 @@
   <div layout="row">
     <md-tooltip>Condômino</md-tooltip>
       <md-icon md-svg-src="assets/img/user.svg" class="user"></md-icon>
-        <md-autocomplete class="autocomplete-lista"
-          ng-init= "vm.query.text=vm.dataset.condomino.pessoa.nome"
-          md-selected-item="vm.query.item"
-          md-input-maxlength="50" 
-          md-search-text="vm.query.text"
-          md-items="condomino in vm.carregaCondomino(vm.query.text)"
-          md-item-text="condomino.pessoa.nome"
-          md-floating-label="Pesquisar Condômino">
+        <md-autocomplete class="autocomplete-lista" 
+          ng-init                 = "vm.query.text=vm.dataset.condomino.pessoa.nome"
+          md-selected-item        = "vm.query.item"
+          md-input-maxlength      = "50"
+          md-search-text-change   = "vm.carregaCondomino(vm.query.text)" 
+          md-search-text          = "vm.query.text"
+          md-items                = "condomino in vm.carregaCondomino(vm.query.text)"
+          md-item-text            = "condomino.pessoa.nome"
+          md-floating-label       = "Pesquisar Condômino">
             
             <md-item-template>
               <span md-highlight-text="vm.query.text">{{condomino.pessoa.nome}}</span>
             </md-item-template>
         </md-autocomplete>
+  </div>
+
+  <div layout="row" layout-align="center center" ng-if="vm.dataset.length == 0">
+    <span class="notFound">Nenhum condômino cadastrado!</span>
+      <img ng-src="assets/img/not-found.svg" class="img-404">
   </div>
   
   <div >

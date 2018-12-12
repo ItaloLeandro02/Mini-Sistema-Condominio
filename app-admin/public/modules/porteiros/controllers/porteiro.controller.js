@@ -14,13 +14,6 @@ function porteiroController(porteiroService, porteiroId, $state) {
                 vm.dataset = porteiroModel.data
             })
         }
-
-        /*
-        $localStorage.condomino = {
-            id : 1015,
-            nome : 'Jose Mayer'
-        }
-        */
 	}
 
     init()	

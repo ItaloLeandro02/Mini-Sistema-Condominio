@@ -30,7 +30,6 @@
     <md-sidenav class="md-sidenav-left md-whiteframe-4dp ng-cloak" md-component-id="left">
 
         <md-toolbar class="md-toolbar-tools" layout="row" layout-align="center-center">
-
             <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Close User Menu">
               <md-icon md-font-icon="fa-bars" class="md-menu-text-color fa s24"></md-icon>
             </md-button>
@@ -67,6 +66,12 @@
 
         </md-toolbar>
 
+            <div layout="row" layout-align="end" ng-show="app.usuarioLogado">
+                <md-button ng-click="app.logout()">Sair 
+                    <md-icon md-svg-src="assets/img/logout.svg"></md-icon>
+                </md-button>
+            </div>
+
     </md-sidenav>
 
 <div style="width:100%" class="ng-cloak">
@@ -79,6 +84,8 @@
 
             <span flex></span>
 
+            {{nome}}
+            
             <md-button ng-click="app.toggleRight()" class="md-icon-button" aria-label="User Menu">
               <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
             </md-button>

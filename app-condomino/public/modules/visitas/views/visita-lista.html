@@ -51,13 +51,10 @@
     <span style="margin-left: 650px;">Pesquisando {{vm.query.text ? vm.query.text : null}} em: {{vm.situacao ? vm.situacao : 'Toda'}}s</span>
   </div>
 
-  <div>
-    <div ng-if="(vm.dataset | filter: vm.situacao).length == 0">
-      <center>
-        <span class="notFound">Nenhuma visita encontrada!</span>
-          <br>
-            <img ng-src="assets/img/not-found.svg" width="64px" height="64px">
-      </center>
+    <div layout="row" layout-align="center center" ng-if="(vm.dataset | filter: vm.situacao).length == 0">
+      <span class="notFound">Nenhuma visita encontrada!</span>
+        <br>
+          <img ng-src="assets/img/not-found.svg" class="img-404">
     </div>
 
       <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset | filter: vm.situacao">
@@ -113,6 +110,5 @@
           </div>
         </div>
       </md-card>
-  </div>
 </div> 
     

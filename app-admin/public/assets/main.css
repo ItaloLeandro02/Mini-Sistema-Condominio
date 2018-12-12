@@ -140,3 +140,9 @@ md-tabs md-tabs-wrapper {
 .autocomplete-lista {
     margin-right: 950px;
 }
+
+.img-404 {
+    margin-left : 15px;
+    width       : 64px;
+    height      : 64px;
+}

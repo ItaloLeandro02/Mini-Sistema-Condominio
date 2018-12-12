@@ -10,7 +10,8 @@ router.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: '/home',
             templateUrl: 'home.html',
             params: {
-                title: "Material Starter"
+                title: "Material Starter",
+                nome: null
             }
         })        
 

@@ -16,7 +16,7 @@ CREATE TABLE pessoa (
   nascimento DATE  NOT NULL  ,
   digital VARCHAR(5)  NOT NULL  ,
   endereco_id int NOT NULL, 
-  criacao DATE NOT NULL    ,
+  criacao DATETime NOT NULL    ,
 PRIMARY KEY(id));
 GO
 
@@ -39,7 +39,7 @@ CREATE TABLE usuario (
   tipo integer  NOT NULL  ,
   senha VARCHAR(32)  NOT NULL  ,
   desativado tinyint  NOT NULL  ,
-  criacao DATE NOT NULL    ,
+  criacao DATEtime NOT NULL    ,
 PRIMARY KEY(id));
 GO
 
@@ -53,7 +53,7 @@ CREATE TABLE visita (
   data_hora_reserva DATETIME    ,
   nome_convidado VARCHAR(80)    ,
   condomino_observacao VARCHAR(120)    ,
-  data_hora_expiracao TIMESTAMP    ,
+  data_hora_expiracao DATETIME    ,
   situacao INT    ,
   portaria_data_hora_chegada DATETIME    ,
   porteiro_id INTEGER    ,
@@ -71,39 +71,15 @@ CREATE TABLE endereco(
 PRIMARY KEY(id));
 GO
 
-ALTER TABLE condomino ADD CONSTRAINT FK_Condomino_Pessoa FOREIGN KEY (pessoa_id) REFERENCES pessoa (id)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
-
-ALTER TABLE condomino ADD CONSTRAINT FK_Condomino_Usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
-ALTER TABLE porteiro ADD CONSTRAINT FK_Porteiro_Pessoa FOREIGN KEY (pessoa_id) REFERENCES pessoa (id)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
-
-ALTER TABLE porteiro ADD CONSTRAINT FK_Porteiro_Usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
-
-ALTER TABLE visita ADD CONSTRAINT FK_Visita_Pessoa FOREIGN KEY (pessoa_id) REFERENCES pessoa (id)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
-
-ALTER TABLE visita ADD CONSTRAINT FK_Visita_Condomino FOREIGN KEY (condomino_id) REFERENCES condomino (id)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
-ALTER TABLE pessoa ADD CONSTRAINT FK_Pessoa_Endereco FOREIGN KEY (endereco_id) REFERENCES endereco (id)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
-
+CREATE TABLE condomino_convidado(
+  id INTEGER  NOT NULL   IDENTITY ,
+  pessoa_id integer,
+  condomino_id integer,
+PRIMARY KEY(id));
 GO
+
+
+
 
 
 

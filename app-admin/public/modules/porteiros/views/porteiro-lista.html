@@ -4,8 +4,13 @@
         <md-icon md-svg-src="assets/img/add.svg"></md-icon>
       </md-button>
     </div>
-      <div >
-        <md-card class="row-card md-whiteframe-20dp" ng-repeat="porteiro in vm.dataset">
+      <div>
+        <div layout="row" layout-align="center center" ng-if="vm.dataset.length == 0">
+          <span class="notFound">Nenhum porteiro cadastrado!</span>
+            <br>
+              <img ng-src="assets/img/not-found.svg" class="img-404">
+        </div>
+          <md-card class="row-card md-whiteframe-20dp" ng-repeat="porteiro in vm.dataset">
            <div layout="row">
              <div layout="row" flex="20" layout-align="center center">
                <md-icon md-svg-src="assets/img/porteiro.svg" style="width: 64px; height: 64px;"></md-icon>

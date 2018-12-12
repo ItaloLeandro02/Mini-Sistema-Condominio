@@ -17,7 +17,8 @@
         controller: 'CondominoListaController',
         controllerAs: 'vm',
         params: {
-            title: "Condôminos Cadastrados"
+            title: "Condôminos Cadastrados",
+            nome : null
         }
     })
     .state('novo-condomino', {
@@ -26,7 +27,8 @@
         controller: 'CondominoController',
         controllerAs: 'vm',
         params: {
-            title: "Novo Condômino"
+            title: "Novo Condômino",
+            nome : null
         },
         resolve : {
             condominoId : function($stateParams){
@@ -42,7 +44,8 @@
         controller: 'CondominoController',
         controllerAs: 'vm',
         params: {
-            title: "Editar Condômino"
+            title: "Editar Condômino",
+            nome : null
         },
         resolve : {
             condominoId : function($stateParams){
