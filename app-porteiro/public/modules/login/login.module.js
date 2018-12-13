@@ -12,13 +12,17 @@
     $stateProvider
       
     .state('login', {
-        url: '/login',
-        templateUrl: './modules/login/views/sign-up.html',
-        controller: 'LoginController',
-        controllerAs: 'vm',
-        params: {
-            title: "Entre Com os Dados"
+      url: '/login',
+      params: {
+          title: "Entre Com os Dados"
+      },
+      views : {
+        'login' : {
+         templateUrl: '/modules/login/views/index.html',
+         controller: 'LoginController',
+         controllerAs: 'vm',
         }
+     }
     })
     
   }

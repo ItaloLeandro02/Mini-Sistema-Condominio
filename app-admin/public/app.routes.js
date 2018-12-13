@@ -12,7 +12,7 @@ router.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             params: {
                 title: "Material Starter",
                 nome: null
-            }
+            },
         })        
 
     $locationProvider.html5Mode(true);

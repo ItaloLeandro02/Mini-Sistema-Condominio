@@ -142,3 +142,15 @@ md-tabs md-tabs-wrapper {
     width   : 64px;
 }
 
+.notFound {
+    font-family: "Trebuchet MS";
+    font-size: 26px;
+    font-weight: bold;
+    font-style: italic;
+    text-transform: capitalize;
+}
+
+.img-404 {
+    margin-left: 50px;
+}
+

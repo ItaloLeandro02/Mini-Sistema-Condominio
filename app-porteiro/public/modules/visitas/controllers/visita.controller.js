@@ -5,13 +5,13 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
 	
 	vm = this;
 
-	//vm.novaVisita 	= novaVisita;
-	//vm.editar 		= editar;
+	vm.novoVisitante 	= novoVisitante;
 
     vm.dataset = {}
     vm.query = {
         text : ''
     }
+    
     
     function init(){
 
@@ -19,7 +19,6 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
         vm.dataset          = visitaRecord
         vm.nomeConvidado    = vm.dataset.nomeConvidado
 
-        console.log(vm.dataset)
 	}
 
     init()	
@@ -147,5 +146,9 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
 			console.log(condominoModel.data)
 			return condominoModel.data;
 		})
+    }
+
+    function novoVisitante(dadosVisita) {
+		$state.go('novo-visitante', {visitaId: dadosVisita.id})
 	}
 }

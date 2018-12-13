@@ -4,17 +4,11 @@ angular.module('app.login')
 function LoginController($localStorage, loginService, $state) {
 	
     vm = this; 
-    
-     
 
-	function init(){  
-        if ($localStorage.usuarioLogado)  {
-            $localStorage.usuarioLogado = null
-            $state.go('login')
-        }         
-	}
-
-    init()
+    if ($localStorage.usuarioLogado)  {
+        $localStorage.usuarioLogado = null
+        $state.go('login')
+    }         
 
     vm.signUp = fnSignUp;
 

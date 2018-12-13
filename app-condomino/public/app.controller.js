@@ -3,19 +3,15 @@ angular.module('appCtrl', [])
 
     self = this;
 
-    function init() {
+    self.usuarioLogado = $localStorage.usuarioLogado;
 
-        self.usuarioLogado = $localStorage.usuarioLogado;
-
-        self.updateNome = function() {
-            if ($localStorage.usuarioLogado) {
-                self.nomeUsuario = $localStorage.usuarioLogado.condomino.pessoa.nome;
-            }
+    self.updateNome = function() {
+        if ($localStorage.usuarioLogado) {
+            self.nomeUsuario = $localStorage.usuarioLogado.condomino.pessoa.nome;
         }
-    
-        $rootScope.$on('$stateChangeSuccess', self.updateNome);
     }
-    init()
+
+    $rootScope.$on('$stateChangeSuccess', self.updateNome);
 
     // Update title using rootscope
     self.updateTitle = function() {

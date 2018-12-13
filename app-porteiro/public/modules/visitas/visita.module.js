@@ -22,7 +22,6 @@
     })
 
     .state('novo-visitante', {
-        ///visitas/novo-visitante:dadosConvidados
         url: '/visitas/novo-visitante/:visitaId',
         templateUrl: '/modules/visitas/views/visitante-novo.html',
         controller: 'VisitaController',

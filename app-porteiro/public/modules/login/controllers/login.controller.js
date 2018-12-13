@@ -3,7 +3,8 @@ angular.module('app.login')
 
 function LoginController($localStorage, loginService, $state) {
 	
-    vm = this;   
+    vm = this;  
+     
     
     if ($localStorage.usuarioLogado)  {
         $localStorage.usuarioLogado = null

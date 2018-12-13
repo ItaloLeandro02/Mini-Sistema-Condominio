@@ -1,11 +1,13 @@
-<form ng-cloak  name="vm.form">
+<form name="vm.form">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2 class="texto-branco">Dados Visita</h2>
                 <span flex></span>
                     <div class="texto-erro"  ng-show="!vm.dataset.pessoaId">
-                        <md-tooltip>Erro!</md-tooltip>
-                            <md-icon md-svg-src="assets/img/warning.svg"></md-icon>{{vm.dataset.nomeConvidado}} Não está cadastrado!
+                        <md-button ng-click="vm.novoVisitante(vm.dataset)">
+                            <md-icon md-svg-src="assets/img/warning.svg"></md-icon></md-icon>
+                        </md-button>
+                            {{vm.dataset.nomeConvidado}} Não está cadastrado!
                     </div>
         </div>
     </md-toolbar>
@@ -64,15 +66,11 @@
                                         <textarea ng-model="vm.dataset.portariaObservacao" ng-required="vm.dataset.situacao == 'Negar'"></textarea>
                                 </md-input-container>
 
-                                    <div>
-                                        <center>
-                                            <span flex></span>
-                                                <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados" ng-disabled="!vm.dataset.pessoaId">
-                                                    <md-tooltip>Salvar</md-tooltip>
-                                                        <md-icon md-svg-src="../../../assets/img/save.svg"></md-icon>
-                                                </md-button>
-                                        </center>
-
+                                    <div layout="row" layout-align="center center">
+                                        <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary"  ng-disabled="!vm.dataset.pessoaId || vm.dataset.situacao != 1">
+                                            <md-tooltip>Salvar</md-tooltip>
+                                                <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+                                        </md-button>
                                     </div>
 
                 </md-content>

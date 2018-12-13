@@ -2,20 +2,17 @@ angular.module('appCtrl', [])
 .controller('appCtrl', function($mdSidenav, $stateParams, $rootScope,$localStorage, $state) {  
 
     self  =  this;
+ 
+    self.usuarioLogado = $localStorage.usuarioLogado;
 
-    function init() {
-        self.usuarioLogado = $localStorage.usuarioLogado;
-
-        self.updateNome = function() {
-            if ($localStorage.usuarioLogado) {
-                self.nomeUsuario = $localStorage.usuarioLogado.porteiro.pessoa.nome;
-            }
+    self.updateNome = function() {
+        if ($localStorage.usuarioLogado) {
+            self.nomeUsuario = $localStorage.usuarioLogado.porteiro.pessoa.nome;
         }
-    
-        $rootScope.$on('$stateChangeSuccess', self.updateNome);
     }
 
-    init()
+    $rootScope.$on('$stateChangeSuccess', self.updateNome);
+
 
     // Update title using rootscope
     self.updateTitle = function() {

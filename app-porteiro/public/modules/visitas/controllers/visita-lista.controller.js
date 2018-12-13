@@ -1,7 +1,7 @@
 angular.module('app.visita')
 .controller('VisitaListaController', visitaListaController);
 
-function visitaListaController(visitaService, $state, $stateParams, $localStorage, $mdDialog) {
+function visitaListaController(visitaService, $state, $localStorage) {
 	vm = this;
 
 	vm.carregaCondomino		= carregaCondomino;
@@ -14,7 +14,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	vm.topDirections	 	= ['left', 'up'];
 	vm.bottomDirections 	= ['down', 'right'];
 
-	vm.isOpen 				= false;
+	
 
 	vm.availableModes		= ['md-fling', 'md-scale'];
 	vm.selectedMode 		= 'md-scale';
@@ -26,6 +26,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	
 	function init(){
 		carregaVisitas()
+		vm.isOpen 				= true;
 	}
 
 	init()
