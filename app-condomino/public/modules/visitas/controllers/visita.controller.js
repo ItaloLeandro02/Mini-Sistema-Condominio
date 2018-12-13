@@ -10,6 +10,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     }
     
     function init(){
+
         vm.dataset.dataHoraReserva  = new Date();
         vm.dataHora                 = new Date();
         
@@ -59,7 +60,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 
         if (vm.query.item) {
             
-            vm.dataset.pessoaId         = vm.query.item.pessoa ? vm.query.item.pessoa.id : null;
+            vm.dataset.pessoaId     = vm.query.item.pessoa ? vm.query.item.pessoa.id : null;
         } 
         else {
             vm.dataset.pessoaId = null
@@ -77,7 +78,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         
         var visitaModel = {},
                 visita = {
-                    condominoId 			: $localStorage.condomino.id,
+                    condominoId 			: $localStorage.usuarioLogado.condomino.id,
                     pessoaId    			: vm.dataset.pessoaId,
                     dataHoraReserva			: vm.dataset.dataHoraReserva,
                     dataHoraExpiracao		: validade, 			
@@ -86,7 +87,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
                 }
 
         
-        visitaModel = visita;
+        visitaModel     = visita;
         visitaModel.id  = visitaId
        
 		visitaService.save(visitaModel)
@@ -109,14 +110,14 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     }
     
     function carregaConvidados(nomeConvidado) {
-        return visitaService.getConvidados($localStorage.condomino.id, nomeConvidado).then(function(convidadosModel){
+        return visitaService.getConvidados($localStorage.usuarioLogado.condomino.id, nomeConvidado).then(function(convidadosModel){
             vm.dsConvidados = convidadosModel.data;
                 return convidadosModel.data
         })
     }
 
     function carregaContatos() {
-        return visitaService.getContatos($localStorage.condomino.id).then(function(convidadosModel){
+        return visitaService.getContatos($localStorage.usuarioLogado.condomino.id).then(function(convidadosModel){
             vm.dsContatos = convidadosModel.data;
                 return convidadosModel.data
         })

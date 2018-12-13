@@ -110,7 +110,7 @@ function salvaPessoa(req,res){
 		let dadosEnderecoCriado
 
 		//Cria um endereco
-		return dataContext.Endereco.create(endereco), {transaction : t}
+		return dataContext.Endereco.create(endereco, {transaction : t})
 			.then(function(enderecoCriado) {
 				dadosEnderecoCriado = enderecoCriado
 

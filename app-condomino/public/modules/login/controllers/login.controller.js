@@ -3,11 +3,15 @@ angular.module('app.login')
 
 function LoginController($localStorage, loginService, $state) {
 	
-    vm = this;   
-   
+    vm = this; 
+    
+     
 
-	function init(){
-         
+	function init(){  
+        if ($localStorage.usuarioLogado)  {
+            $localStorage.usuarioLogado = null
+            $state.go('login')
+        }         
 	}
 
     init()

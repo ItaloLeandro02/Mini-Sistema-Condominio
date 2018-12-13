@@ -41,7 +41,7 @@ function validaCredenciais(req,res,next){
             jwt.verify(tokenRetornado.token, JWT_KEY , function(err, decoded) {
                 if (err) {
                     if (err.name == "TokenExpiredError") {
-                        res.status(401).json({sucesso:false, mensagem:'Token expirado!',data: {}});
+                        res.status(401).json({sucesso:false, mensagem:"Token expirado!", data: {} })
                         return;
                     } else {
                         res.status(401).json({sucesso:false, mensagem:"Token inválido! Efetue login novamente", data: {}});
@@ -98,21 +98,15 @@ function signup(req,res){
                             dataContext.Porteiro.findOne({
                                 where : {
                                     usuarioId : usuarioAtualizado.id
+                                }, include : {
+                                    model : dataContext.Pessoa
                                 }
                             })
-                            .then(function(poteiroRetornado) {
-                                resposta.porteiro =  poteiroRetornado
-                                    return dataContext.Pessoa.findOne({
-                                        where : {
-                                            id : poteiroRetornado.pessoaId
-                                        }
-                                    })
-                            })
-                            .then(function(pessoaRetornada) {
+                            .then(function(porteiroRetornado) {
                                
-                                resposta.usuario    = usuarioAtualizado;
-                                resposta.pessoa     = pessoaRetornada   
-                                resposta.token      = usuarioAtualizado.token;
+                                resposta.usuario     = usuarioAtualizado;
+                                resposta.porteiro    = porteiroRetornado   
+                                resposta.token       = usuarioAtualizado.token;
             
                                     res.status(200).json({sucesso:true, mensagem:"Bem vindo", data: resposta })
                                     return 
@@ -123,22 +117,15 @@ function signup(req,res){
                             dataContext.Condomino.findOne({
                                 where : {
                                     usuarioId : usuarioAtualizado.id
+                                }, include : {
+                                    model : dataContext.Pessoa
                                 }
                             })
                             .then(function(condominoRetornado) {
-                                resposta.condomino =  condominoRetornado
-                                    return dataContext.Pessoa.findOne({
-                                        where : {
-                                            id : condominoRetornado.pessoaId
-                                        }
-                                    })
-                            })
-                            .then(function(pessoaRetornada) {
-                               
 
-                                resposta.usuario    = usuarioAtualizado;
-                                resposta.pessoa     = pessoaRetornada   
-                                resposta.token      = usuarioAtualizado.token;
+                                resposta.usuario        = usuarioAtualizado;
+                                resposta.condomino      = condominoRetornado   
+                                resposta.token          = usuarioAtualizado.token;
             
                                     res.status(200).json({sucesso:true, mensagem:"Bem vindo", data: resposta })
                                     return 

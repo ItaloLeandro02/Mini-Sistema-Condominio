@@ -4,7 +4,11 @@ angular.module('app.login')
 function LoginController($localStorage, loginService, $state) {
 	
     vm = this;   
-   
+    
+    if ($localStorage.usuarioLogado)  {
+        $localStorage.usuarioLogado = null
+        window.location.reload();
+    }  
 
 	function init(){
          
@@ -18,7 +22,7 @@ function LoginController($localStorage, loginService, $state) {
        
         let sucesso = function(resposta) {
             $localStorage.usuarioLogado = resposta.data;
-            $state.go('home', {nome : $localStorage.usuarioLogado.pessoa.nome})
+            $state.go('home')
             toastr.info("Login Efetuado com sucesso!")
            
         }

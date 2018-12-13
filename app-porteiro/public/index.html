@@ -62,10 +62,8 @@
               <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
             </md-button>
 
-            {{nome}}
-
         </md-toolbar>
-            <div layout="row" layout-align="end" ng-show="app.usuarioLogado">
+            <div layout="row" layout-align="end" ng-show="app.nomeUsuario">
                 <md-button ng-click="app.logout()">Sair 
                     <md-icon md-svg-src="assets/img/logout.svg"></md-icon>
                 </md-button>
@@ -77,15 +75,17 @@
         <div layout="row" layout-align="center center" layout-wrap class="md-toolbar-tools">
 
             
-            <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Main Menu">
-              <md-icon md-font-icon="fa-bars" class="md-menu-text-color fa s24"></md-icon>
-            </md-button>
-
-            <span flex></span>
-            {{app.usuarioLogado.pessoa.nome}}
-            <md-button ng-click="app.toggleRight()" class="md-icon-button" aria-label="User Menu">
-              <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
-            </md-button>
+            <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Main Menu" ng-disabled="!app.nomeUsuario">
+                <md-icon md-font-icon="fa-bars" class="md-menu-text-color fa s24"></md-icon>
+              </md-button>
+  
+              <span flex></span>
+  
+              <spann ng-if= "app.nomeUsuario">{{ app.nomeUsuario }}</spann>
+  
+              <md-button ng-click="app.toggleRight()" class="md-icon-button" aria-label="User Menu" ng-disabled="!app.nomeUsuario">
+                <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
+              </md-button>
 
         </div>
 

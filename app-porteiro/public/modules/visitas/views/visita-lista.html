@@ -1,4 +1,4 @@
-  <div layout="column" flex layout-fill>
+<div layout="column" flex layout-fill>
   <div layout="row" layout-align="start">
     <md-button class="md-raised" ng-click="vm.novoConvidado()" aria-label="Nova Visita">
       <md-icon md-svg-src="assets/img/add.svg"></md-icon>
@@ -48,16 +48,15 @@
           </md-button>
           <span flex></span>
   </div>
+
   <div>
       <span style="margin-left: 650px;">Pesquisando {{vm.query.text ? vm.query.text : null}} em: {{vm.situacao ? vm.situacao : 'Todas'}}</span>
   </div>
-    <div >
-      <div ng-if="(vm.dataset | filter: vm.situacao).length == 0">
-        <center>
+    <div>
+      <div layout="row" layout-align=" center" ng-if="(vm.dataset | filter: vm.situacao).length == 0">
         <span class="notFound">Nenhuma visita encontrada!</span>
         <br>
         <img ng-src="assets/img/not-found.svg" width="64px" height="64px">
-      </center>
       </div>
       <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset | filter: vm.situacao">
          <div layout="row" ng-if="visita">

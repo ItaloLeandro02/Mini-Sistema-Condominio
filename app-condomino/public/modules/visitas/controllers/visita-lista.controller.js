@@ -1,7 +1,7 @@
 angular.module('app.visita')
 .controller('VisitaListaController', visitaListaController);
 
-function visitaListaController(visitaService, $state, $stateParams, $localStorage, $mdDialog) {
+function visitaListaController(visitaService, $state, $localStorage, $mdDialog) {
 	
 	vm = this;
 
@@ -30,7 +30,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	init()
 
 	function carregaVisitas(){	
-		visitaService.getAll($localStorage.condomino.id).then(function(visitas){
+		visitaService.getAll($localStorage.usuarioLogado.condomino.id).then(function(visitas){
 			vm.dataset = visitas.data.map(function(resp){
                 if (new Date() >= new Date(resp.dataHoraExpiracao) && resp.situacao == 1){
 					var visitaUpdate = {
@@ -116,7 +116,7 @@ function visitaListaController(visitaService, $state, $stateParams, $localStorag
 	}
 
 	function carregaConvidados(nomeConvidado) {
-        return visitaService.getConvidados($localStorage.condomino.id, nomeConvidado).then(function(convidadosModel){
+        return visitaService.getConvidados($localStorage.usuarioLogado.condomino.id, nomeConvidado).then(function(convidadosModel){
             vm.dataset = convidadosModel.data;
                 return convidadosModel.data
         })

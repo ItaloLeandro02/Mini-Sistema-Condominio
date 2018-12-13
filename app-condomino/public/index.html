@@ -62,19 +62,27 @@
 
         </md-toolbar>
 
+        <div layout="row" layout-align="end" ng-show="app.nomeUsuario">
+            <md-button ng-click="app.logout()">Sair 
+                <md-icon md-svg-src="assets/img/logout.svg"></md-icon>
+            </md-button>
+        </div>
+
     </md-sidenav>
 
 <div style="width:100%" class="ng-cloak">
     <md-toolbar class="toolbar md-whiteframe-2dp">
         <div layout="row" layout-align="center center" layout-wrap class="md-toolbar-tools">
 
-            <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Main Menu">
+            <md-button ng-click="app.toggleLeft()" class="md-icon-button" aria-label="Main Menu" ng-disabled="!app.nomeUsuario">
               <md-icon md-font-icon="fa-bars" class="md-menu-text-color fa s24"></md-icon>
             </md-button>
 
             <span flex></span>
 
-            <md-button ng-click="app.toggleRight()" class="md-icon-button" aria-label="User Menu">
+            <spann ng-if= "app.nomeUsuario">{{ app.nomeUsuario }}</spann>
+
+            <md-button ng-click="app.toggleRight()" class="md-icon-button" aria-label="User Menu" ng-disabled="!app.nomeUsuario">
               <md-icon md-font-icon="fa-user" class="md-menu-text-color fa s24"></md-icon>
             </md-button>
 
@@ -83,8 +91,10 @@
         <div layout="row" layout-align="center center" layout-wrap>
             <h1 flex="90" class="md-headline">{{ title }}</h1>
         </div>
+        
 
     </md-toolbar>
+    
 
     <div layout="column" layout-align="center center" style="height: 75%">
             <md-card class="card-central padding-inner md-whiteframe-2dp" style="width: 70%; min-height: 300px; ">

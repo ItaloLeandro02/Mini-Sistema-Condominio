@@ -5,9 +5,12 @@ function LoginController($localStorage, loginService, $state) {
 	
     vm = this;   
    
-
+    
 	function init(){
-         
+        
+        if ($localStorage.usuarioLogado)  {
+            $localStorage.usuarioLogado = null
+        }      
 	}
 
     init()
@@ -19,9 +22,8 @@ function LoginController($localStorage, loginService, $state) {
         let sucesso = function(resposta) {
         
             $localStorage.usuarioLogado = resposta.data;
-            console.log($localStorage.usuarioLogado)
             toastr.info("Login Efetuado com sucesso!")
-            $state.go('home', {nome : $localStorage.usuarioLogado.usuario.email})
+            $state.go('home')
         }
 
         let erro = function(repsosta) {

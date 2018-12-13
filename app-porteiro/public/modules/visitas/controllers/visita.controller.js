@@ -49,7 +49,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
        vm.dataset.dataHoraChegada  = new Date()
         var visitaModel = {
                 situacao 			        : vm.dataset.situacao,
-                porteiroId    			    : vm.usuarioLogado.proteiro.id,
+                porteiroId    			    : $localStorage.usuarioLogado.porteiro.id,
                 portariaDataHoraChegada	    : vm.dataset.dataHoraChegada,
                 portariaObservacao		    : vm.dataset.portariaObservacao		
             }

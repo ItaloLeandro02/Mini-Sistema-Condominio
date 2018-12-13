@@ -7,14 +7,20 @@
             <label>Email</label>
                 <md-tooltip>Email</md-tooltip>
                     <md-icon md-svg-src="assets/img/email.svg" class="button-login"></md-icon>
-                        <input ng-model="vm.email" type="text" required>
+                        <input ng-model="vm.email" type="text" name="email" required>
+                        <div ng-messages = "vm.form.email.$error">
+                            <div ng-message="required">Este campo é obrigatório</div>
+                        </div>
         </md-input-container>
       
         <md-input-container class="md-block">
             <label>Senha</label>
                 <md-tooltip>Senha</md-tooltip>
                     <md-icon md-svg-src="assets/img/password.svg" class="button-login"></md-icon>
-                        <input ng-model="vm.senha" type="password" required>
+                        <input ng-model="vm.senha" type="password" name="senha" required>
+                        <div ng-messages = "vm.form.senha.$error">
+                            <div ng-message="required">Este campo é obrigatório</div>
+                        </div>
         </md-input-container>
 
             <div layout="row" layout-align="center center"> 
@@ -23,4 +29,5 @@
                         <md-icon md-svg-src="assets/img/accept.svg" class="button-login"></md-icon>
                 </md-button>
             </div>
+    </form>
     

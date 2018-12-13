@@ -1,11 +1,18 @@
 angular.module('appCtrl', [])
-.controller('appCtrl', function($mdSidenav, $stateParams, $rootScope,$localStorage) {  
+.controller('appCtrl', function($mdSidenav, $stateParams, $rootScope,$localStorage, $state) {  
 
-    self    =  this;
-
+    self  =  this;
 
     function init() {
-        self.usuarioLogado = $localStorage.usuarioLogado
+        self.usuarioLogado = $localStorage.usuarioLogado;
+
+        self.updateNome = function() {
+            if ($localStorage.usuarioLogado) {
+                self.nomeUsuario = $localStorage.usuarioLogado.porteiro.pessoa.nome;
+            }
+        }
+    
+        $rootScope.$on('$stateChangeSuccess', self.updateNome);
     }
 
     init()
@@ -28,11 +35,8 @@ angular.module('appCtrl', [])
 
     self.logout = function() {
         $localStorage.usuarioLogado = null;
-        window.location.reload()
-    }
-
-    // Update nome user rootscope
-    self.updateName = function() {
-        $rootScope.nome = $stateParams.title;
+        self.nomeUsuario = null
+        toastr.info("Até mais! :P")
+        $state.go('login')
     }
 })

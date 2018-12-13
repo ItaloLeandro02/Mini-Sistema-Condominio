@@ -19,7 +19,6 @@ function porteiroListaController(porteiroService, $state, $mdDialog, $stateParam
 	function carregaPorteiros(){	
 		porteiroService.getAll().then(function(porteiros){
 			vm.dataset = porteiros.data 
-			console.log(vm.dataset)
             return vm.dataset
 		})
     }
