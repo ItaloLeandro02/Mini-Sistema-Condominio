@@ -1,0 +1,14 @@
+{
+  "ProjectFilePath": "c:\\Users\\Adsoft developer\\Documents\\API-JS-Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
+  "TargetFramework": "netcoreapp2.2",
+  "TagHelpers": [],
+  "Configuration": {
+    "ConfigurationName": "MVC-2.1",
+    "LanguageVersion": "2.1",
+    "Extensions": [
+      {
+        "ExtensionName": "MVC-2.1"
+      }
+    ]
+  }
+}
