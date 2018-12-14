@@ -83,10 +83,13 @@
                            </md-button>
                              <md-menu-content width="3">
                                <md-menu-item>
-                                 <!--ng-disabled="vm.dataset.situacao != 'Agendado'"-->
-                                 <md-button ng-click="vm.finalizarVisita(visita.id)"> Ver Mais </md-button>
-                                   </md-menu-item>
+                                 <md-button ng-click="vm.finalizarVisita(visita.id)" ng-disabled="visita.situacao != 'Agendada'"> Finalizar </md-button>
+                               </md-menu-item>
+                               <md-menu-item>
+                                  <md-button ng-click="vm.detalharVisita(visita.id)"> Ver Mais </md-button>
+                                </md-menu-item>
                              </md-menu-content>
+                             
                          </md-menu>
                    </div>
                      <div layout="column" layout-align="start start">

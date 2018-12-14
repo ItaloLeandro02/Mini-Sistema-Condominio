@@ -10,6 +10,7 @@ function visitaListaController(visitaService, $state, $localStorage) {
 	vm.finalizarVisita		= finalizarVisita
 	vm.novoConvidado		= novoConvidado;
 	vm.filtraVisita		 	= fnFiltraVisita;
+	vm.detalharVisita		= detalharVisita;
 	
 	vm.topDirections	 	= ['left', 'up'];
 	vm.bottomDirections 	= ['down', 'right'];
@@ -48,7 +49,11 @@ function visitaListaController(visitaService, $state, $localStorage) {
     }
 
 	function finalizarVisita(visita) {
-	 $state.go('finalizar-visita', {visitaId: visita})
+		$state.go('finalizar-visita', {visitaId: visita})
+	}
+
+	function detalharVisita(visita) {
+		$state.go('detalhar-visita', {visitaId: visita})
 	}
 
 	function fnFiltraVisita(filtro) {

@@ -44,7 +44,25 @@
         controller: 'VisitaController',
         controllerAs: 'vm',
         params: {
-            title: "Controle de Visitas"
+            title: "Finalizar Visita"
+        },
+        //Passo como parâmetro o id da visita e retorno o resultado da pesquisa do id no banco de dados
+        resolve: {
+            visitaRecord : function($stateParams,visitaService){
+                return visitaService.getById($stateParams.visitaId).then(function(resposta){
+                    return resposta.data
+                })
+            }
+        }
+    })
+
+    .state('detalhar-visita', {
+        url: '/visitas/detalhar-visita/:visitaId',
+        templateUrl: '/modules/visitas/views/visita-detalhar.html',
+        controller: 'VisitaController',
+        controllerAs: 'vm',
+        params: {
+            title: "Detalhes da Visitas"
         },
         //Passo como parâmetro o id da visita e retorno o resultado da pesquisa do id no banco de dados
         resolve: {
