@@ -1,34 +1,42 @@
 using System.Collections.Generic;
+using System.Linq;
 using api.Models;
 
 namespace api.Repository
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly UsuarioDbContext _context
-        public void Add(Usuario user)
+        private readonly DataDbContext _context;
+        public UsuarioRepository(DataDbContext ctx) {
+            _context = ctx;
+        }
+        public void Add(Usuario usuario)
         {
-            throw new System.NotImplementedException();
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges();
         }
 
         public Usuario Find(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Usuarios.FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<Usuario> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _context.Usuarios.ToList();
         }
 
         public void Remove(int id)
         {
-            throw new System.NotImplementedException();
+            var entity = _context.Usuarios.First(u => u.Id == id);
+                _context.Usuarios.Remove(entity);
+                _context.SaveChanges();
         }
 
-        public void Update(Usuario user)
+        public void Update(Usuario usuario)
         {
-            throw new System.NotImplementedException();
+            _context.Usuarios.Update(usuario);
+            _context.SaveChanges();
         }
     }
 }

@@ -4,17 +4,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models
 {
+     [Table("pessoa")]
     public class Pessoa
     {
         [Key]
         public int Id { get; set; }
         public string Nome { get; set; }
-        public Int64 Cpf { get; set; }
+        public string Cpf { get; set; }
         public DateTime Nascimento { get; set; }
         public string Digital { get; set; }
 
         [ForeignKey("endereco")]
-        public int EnderecoId { get; set; }
+        public int Endereco_Id { get; set; }
         public virtual Endereco endereco { get; set; }
     }
 }

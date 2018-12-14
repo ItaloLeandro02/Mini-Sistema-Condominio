@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models
 {
+     [Table("usuario")]
     public class Usuario
     {
         [Key]
