@@ -65,13 +65,6 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
         else {
             vm.dataset.pessoaId = null
         }
-
-        /*
-        //Caso não haja um convidado selecionado vindo do form, busque no banco de dados
-        visitaService.dadosVisitante(vm.query.text, $localStorage.condomino.id)
-        */
-        
-        
         
 		validade.setHours(vm.dataset.dataHoraReserva.getHours() + 4)
         validade.setMinutes(vm.dataset.dataHoraReserva.getMinutes())

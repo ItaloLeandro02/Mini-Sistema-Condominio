@@ -32,5 +32,10 @@ angular.module('app.porteiro')
             return ds.$delete();
     }
 
+    porteiroFactory.getPorteiro = function(porteiroModel) {
+        var ds          = new api.porteiro;
+            return ds.$get({nomePorteiro: porteiroModel})
+    }
+
     return porteiroFactory;
 });

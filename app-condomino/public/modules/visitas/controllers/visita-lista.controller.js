@@ -11,16 +11,16 @@ function visitaListaController(visitaService, $state, $localStorage, $mdDialog) 
 	vm.filtraVisita		 	= fnFiltraVisita;
 	vm.carregaConvidados 	= carregaConvidados;
 
-	vm.topDirections = ['left', 'up'];
-	vm.bottomDirections = ['down', 'right'];
+	vm.topDirections 		= ['left', 'up'];
+	vm.bottomDirections 	= ['down', 'right'];
 
-	vm.isOpen = false;
+	vm.isOpen 				= false;
 
-	vm.availableModes = ['md-fling', 'md-scale'];
-	vm.selectedMode = 'md-scale';
+	vm.availableModes 		= ['md-fling', 'md-scale'];
+	vm.selectedMode 		= 'md-scale';
 
-	vm.availableDirections = ['up', 'down', 'left', 'right'];
-	vm.selectedDirection = 'rigth';
+	vm.availableDirections 	= ['up', 'down', 'left', 'right'];
+	vm.selectedDirection 	= 'left';
 
 
 	function init(){
@@ -79,7 +79,7 @@ function visitaListaController(visitaService, $state, $localStorage, $mdDialog) 
 		dadosVisita = visita;
 			let confirmacao = $mdDialog.confirm()
 				.title('A	guardando confirmação')
-				.textContent('Confirma o cancelamento da visita ' + visita.nomeConvidado + ' as ' + visita.dataHoraReserva + '?')
+				.textContent('Confirma o cancelamento da visita ' + visita.nomeConvidado + '?')
 				.ariaLabel('Msg interna do botao')
 				.targetEvent(ev)
 				.ok('Sim')

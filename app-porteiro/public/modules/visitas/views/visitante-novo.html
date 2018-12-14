@@ -92,15 +92,12 @@
 
       </md-content>  
       
-        <div>
-          <center>
-            <md-button type="reset" class="md-warn">Limpar</md-button>
-              <span flex></span>
-                <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisitante()" aria-label="Salvar Dados">
-                  <md-tooltip>Salvar</md-tooltip>
-                    <img ng-src="assets/img/save.svg" class="button-login">
-                </md-button>
-          </center>
+        <div layout="row" layout-align="center center">
+          <md-button type="reset" class="md-warn">Limpar</md-button>
+            <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisitante()" class="md-fab md-primary">
+              <md-tooltip>Salvar</md-tooltip>
+                <img ng-src="assets/img/save.svg" class="button-login">
+          </md-button>
         </div>
 </form>
   

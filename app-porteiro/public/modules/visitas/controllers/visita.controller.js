@@ -28,7 +28,6 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
     vm.pesquisaCondomino    = pesquisaCondomino;
     vm.estados              = ('AC AL AP AM BA CE DF ES GO MA '+
     ' MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO').split(' ').map(function (estado) { return { abbrev: estado }; });
-    vm.situacao             = ('Liberar Negar').split(' ').map(function (situacao) { return { descricao: situacao }; });
 
 	function salvaVisita(){
 
@@ -36,15 +35,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
             return
         } 
-
-        if (vm.dataset.situacao == 'Liberar') {
-            vm.dataset.situacao = 2
-            
-        }
-        else {
-            vm.dataset.situacao = 5
-            
-        }
+        
        vm.dataset.dataHoraChegada  = new Date()
         var visitaModel = {
                 situacao 			        : vm.dataset.situacao,

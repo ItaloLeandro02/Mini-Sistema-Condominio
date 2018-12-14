@@ -149,10 +149,26 @@ md-tabs md-tabs-wrapper {
     font-size       : 18px;
     font-family     : "Anton";
 }
+
 .button-login {
     width: 30px;
     height: 30px;
 }
+
 .img-404 {
-    margin-right: 150px;
+    margin-left     : 10px;
+    width           : 64px; 
+    height          : 64px;
+}
+
+.notFound {
+    font-family: "Trebuchet MS";
+    font-size: 26px;
+    font-weight: bold;
+    font-style: italic;
+    text-transform: capitalize;
+}
+.img-md-card{
+    width           : 64px; 
+    height          : 64px;
 }

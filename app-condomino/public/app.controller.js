@@ -1,5 +1,5 @@
 angular.module('appCtrl', [])
-.controller('appCtrl', function($mdSidenav, $stateParams, $rootScope, $localStorage,$state) {
+.controller('appCtrl', function($mdSidenav, $stateParams, $rootScope, $localStorage, $state, $mdDialog) {
 
     self = this;
 
@@ -29,10 +29,23 @@ angular.module('appCtrl', [])
     	$mdSidenav('right').toggle();
     }
 
-    self.logout = function() {
+    self.encerar = function() {
         $localStorage.usuarioLogado = null;
         self.nomeUsuario = null
         toastr.info("Até mais! :P")
         $state.go('login')
     }
+
+    self.logout = function (ev) {
+			let confirmacao = $mdDialog.confirm()
+				.title('Aguardando confirmação')
+				.textContent('Deseja encerrar a aplicação?')
+				.ariaLabel('Msg interna do botao')
+				.targetEvent(ev)
+				.ok('Sim')
+				.cancel('Não');
+	    			$mdDialog.show(confirmacao).then(function() {
+						self.encerar()
+	    			});
+	}
 })

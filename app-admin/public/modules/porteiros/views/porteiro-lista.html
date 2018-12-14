@@ -4,6 +4,26 @@
         <md-icon md-svg-src="assets/img/add.svg"></md-icon>
       </md-button>
     </div>
+
+    <div layout="row">
+      <md-tooltip>Porteiro</md-tooltip>
+        <md-icon md-svg-src="assets/img/user.svg" class="user"></md-icon>
+          <md-autocomplete class="autocomplete-lista" 
+            ng-init                 = "vm.query.text=vm.dataset.porteiro.pessoa.nome"
+            md-selected-item        = "vm.query.item"
+            md-input-maxlength      = "50"
+            md-search-text-change   = "vm.carregaPorteiro(vm.query.text)" 
+            md-search-text          = "vm.query.text"
+            md-items                = "porteiro in vm.carregaPorteiro(vm.query.text)"
+            md-item-text            = "porteiro.pessoa.nome"
+            md-floating-label       = "Pesquisar Porteiro">
+              
+              <md-item-template>
+                <span md-highlight-text="vm.query.text">{{porteiro.pessoa.nome}}</span>
+              </md-item-template>
+          </md-autocomplete>
+    </div>
+
       <div>
         <div layout="row" layout-align="center center" ng-if="vm.dataset.length == 0">
           <span class="notFound">Nenhum porteiro cadastrado!</span>

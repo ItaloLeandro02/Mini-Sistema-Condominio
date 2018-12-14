@@ -5,7 +5,7 @@
     </md-button>
     <span flex></span>
 
-    <md-fab-speed-dial md-open="vm.isOpen" md-direction="vm.selectedDirection" class="md-scale">
+    <md-fab-speed-dial md-open="vm.isOpen" md-direction="{{vm.selectedDirection}}" class="md-scale">
       <md-fab-trigger>
         <md-button aria-label="menu" class="md-fab md-warn">
           <md-icon md-svg-src="assets/img/menu.svg"></md-icon>
@@ -28,7 +28,7 @@
     </md-fab-speed-dial>    
   </div>
 
-  <div layout="row" >
+  <div layout="row">
     <md-icon md-svg-src="assets/img/user.svg" class="user"></md-icon>
           <md-autocomplete required class="autocomplete"
             md-selected-item="vm.query.item"
@@ -49,19 +49,19 @@
           <span flex></span>
   </div>
 
-  <div>
-      <span style="margin-left: 650px;">Pesquisando {{vm.query.text ? vm.query.text : null}} em: {{vm.situacao ? vm.situacao : 'Todas'}}</span>
+  <div layout="row" layout-align="end end">
+      <span>Pesquisando {{vm.query.text ? vm.query.text : null}} em: {{vm.situacao ? vm.situacao : 'Todas'}}</span>
   </div>
     <div>
       <div layout="row" layout-align=" center" ng-if="(vm.dataset | filter: vm.situacao).length == 0">
         <span class="notFound">Nenhuma visita encontrada!</span>
         <br>
-        <img ng-src="assets/img/not-found.svg" width="64px" height="64px">
+        <img ng-src="assets/img/not-found.svg"  class="img-404">
       </div>
       <md-card class="row-card md-whiteframe-20dp" ng-repeat="visita in vm.dataset | filter: vm.situacao">
          <div layout="row" ng-if="visita">
            <div layout="row" flex="20" layout-align="center center">
-             <img ng-src="assets/img/{{visita.situacao}}.svg" style="width: 64px; height: 64px;">
+             <img ng-src="assets/img/{{visita.situacao}}.svg" class="img-md-card">
                </div>
                  <div layout="column" flex>
                    <div layout="row">
@@ -96,7 +96,6 @@
                        <span class="font-size-16 texto-branco">Horário: {{visita.dataHoraReserva | date : 'HH:mm'}}</span>
                        <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'dd/MM/yyyy'}}</span>
                        <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'HH:mm'}}</span>
-                       <span class="font-size-16 texto-branco">Observação: {{visita.condominoObservacao}}</span>
                        <span class="font-size-16 texto-branco" ng-if="visita.portariaObservacao">Observação Portaria: {{visita.portariaObservacao}}</span>
                        <span class="font-size-16 texto-branco">Situação: {{visita.situacao}}</span>
                      </div>

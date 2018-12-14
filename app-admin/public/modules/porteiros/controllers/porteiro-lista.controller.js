@@ -12,9 +12,10 @@ function porteiroListaController(porteiroService, $state, $mdDialog, $stateParam
 
 	init()
     
-	vm.novo 	= novo;
-	vm.editar  	= editar;
-	vm.excluir	= excluir;  
+	vm.novo 			= novo;
+	vm.editar  			= editar;
+	vm.excluir			= excluir; 
+	vm.carregaPorteiro 	= carregaPorteiro; 
 
 	function carregaPorteiros(){	
 		porteiroService.getAll().then(function(porteiros){
@@ -52,5 +53,12 @@ function porteiroListaController(porteiroService, $state, $mdDialog, $stateParam
 					   toastr.error("Tente novamente.","ERRO")
 				   })
 	    		});
+	}
+
+	function carregaPorteiro(nomePorteiro) {
+    	return porteiroService.getPorteiro(nomePorteiro).then(function(porteirosModel){
+        	vm.dataset = porteirosModel.data;
+       			return vm.dataset
+     	})
     }
 }

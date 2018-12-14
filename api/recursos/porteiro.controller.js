@@ -5,15 +5,59 @@ const dataContext = require('../dao/dao'),
 //Orem influência o nome mão
 //Primeiro requisição
 function carregaTudo(req,res) {
-    
-    return dataContext.Porteiro.findAll({
+	
+	if (req.query.nomePorteiro) {
+		return dataContext.Porteiro.findAll({
+			
+			include : [
+				{
+					model : dataContext.Usuario,
+					//attributes: { exclude: ['senha'] },
+					
+				},
+				{
+					model : dataContext.Pessoa,
+					attributes: { exclude: ['endereco_id'] },
+
+					where : {
+						nome : {
+							$like : '%'+req.query.nomePorteiro+'%'
+						}
+					},
+
+					//Inclue o endereço associado a Pessoa
+					include : {
+
+						model : dataContext.Endereco,
+					}
+				},
+			]
+		}).then(function(porteiros){
+
+			porteiros = porteiros.map(function(porteiroRetornado) {
+				porteiroRetornado = porteiroRetornado.get({plain : true})
+
+				delete porteiroRetornado.pessoa_id
+				delete porteiroRetornado.usuario_id
+
+				return porteiroRetornado
+			})
+			res.status(200).json({
+				sucesso:true,
+				data: porteiros	
+			})
+		})
+	}
+
+	return dataContext.Porteiro.findAll({
+			
 		include : [
-            {
+			{
 				model : dataContext.Usuario,
 				//attributes: { exclude: ['senha'] },
 				
-            },
-            {
+			},
+			{
 				model : dataContext.Pessoa,
 				attributes: { exclude: ['endereco_id'] },
 
@@ -24,7 +68,7 @@ function carregaTudo(req,res) {
 				}
 			},
 		]
-    }).then(function(porteiros){
+	}).then(function(porteiros){
 
 		porteiros = porteiros.map(function(porteiroRetornado) {
 			porteiroRetornado = porteiroRetornado.get({plain : true})
@@ -34,11 +78,12 @@ function carregaTudo(req,res) {
 
 			return porteiroRetornado
 		})
-        res.status(200).json({
-        	sucesso:true,
-        	data: porteiros	
-        })
-    })
+		res.status(200).json({
+			sucesso:true,
+			data: porteiros	
+		})
+	})
+	
 }    
 
 function carregaPorId(req,res) {
@@ -324,6 +369,7 @@ function atualizaPorteiro(req,res){
 			let updateFields = {
 				nome 						: porteiroForm.pessoa.nome,
 				nascimento 					: porteiroForm.pessoa.nascimento,
+				cpf 						: porteiroForm.pessoa.cpf
 			}
 
 			//Atualiza os dados da pessoa vinculada
@@ -356,7 +402,7 @@ function atualizaPorteiro(req,res){
 
 			//Campos que do usuário que serão atualizados
 			let updateFields = {
-				emailjhasgdgajsdg	:	porteiroForm.usuario.email,
+				email	:	porteiroForm.usuario.email,
 				senha	:	porteiroForm.usuario.senha
 			}
 

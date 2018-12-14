@@ -52,10 +52,9 @@
         
                                 <md-input-container>
                                     <label>Situacão</label>
-                                        <md-select ng-model="vm.dataset.situacao" ng-disabled="vm.dataset.situacao != 1">
-                                            <md-option ng-repeat="situacao in vm.situacao" ng-value="situacao.descricao">
-                                                {{situacao.descricao}}
-                                            </md-option>
+                                        <md-select ng-model="vm.dataset.situacao" required>
+                                            <md-option value="2">Liberar</md-option>
+                                            <md-option value="5">Negar</md-option>
                                         </md-select>
                                 </md-input-container>
 
@@ -63,11 +62,11 @@
 
                                 <md-input-container class="md-block">
                                     <label>Obeservação Portaria</label>
-                                        <textarea ng-model="vm.dataset.portariaObservacao" ng-required="vm.dataset.situacao == 'Negar'"></textarea>
+                                        <textarea ng-model="vm.dataset.portariaObservacao" ng-required="vm.dataset.situacao == '5'"></textarea>
                                 </md-input-container>
 
                                     <div layout="row" layout-align="center center">
-                                        <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary"  ng-disabled="!vm.dataset.pessoaId || vm.dataset.situacao != 1">
+                                        <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary"  ng-disabled="!vm.dataset.pessoaId">
                                             <md-tooltip>Salvar</md-tooltip>
                                                 <md-icon md-svg-src="assets/img/save.svg"></md-icon>
                                         </md-button>

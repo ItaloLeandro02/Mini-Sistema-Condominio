@@ -107,19 +107,17 @@
                </md-tabs>
              </md-content>    
 
-        <md-input-container class="md-block">
-        <label>Obeservação</label>
-        <textarea ng-model="vm.dataset.condominoObservacao"></textarea>
-        </md-input-container>
+              <md-input-container class="md-block">
+                <label>Obeservação</label>
+                  <textarea ng-model="vm.dataset.condominoObservacao"></textarea>
+              </md-input-container>
 
-                <div>
-                <center>
-                    <md-button type="reset" class="md-warn">Limpar</md-button>
+                <div layout="row" layout-align="center center">
+                  <md-button type="reset" class="md-warn">Limpar</md-button>
                     <span flex></span>
-                    <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary" aria-label="Salvar Dados">
-                    <md-icon md-svg-src="assets/img/save.svg"></md-icon>
-                    </md-button>
-                </center>
+                      <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary">
+                        <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+                  </md-button>
                 </div>
 
            </md-content>

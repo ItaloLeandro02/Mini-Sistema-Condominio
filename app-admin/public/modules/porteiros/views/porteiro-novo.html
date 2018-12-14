@@ -18,7 +18,7 @@
         <md-input-container class="md-block">
             <md-tooltip>Somente os números do CPF</md-tooltip>
               <md-icon md-svg-src="assets/img/cpf.svg" class="email"></md-icon>
-                <input  name="cpf" ng-model="vm.dataset.pessoa.cpf"  type="text" placeholder="CPF" required ui-br-cpf-mask>
+                <input  name="cpf" ng-model="vm.dataset.pessoa.cpf" type="text" placeholder="CPF" required ui-br-cpf-mask>
                   <div ng-messages="vm.form.cpf.$error">
                     <div ng-message="required">Informe o CPF</div>
                     <div ng-message="cpf">CPF Inválido</div>

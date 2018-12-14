@@ -20,7 +20,7 @@ function visitaListaController(visitaService, $state, $localStorage) {
 	vm.selectedMode 		= 'md-scale';
 
 	vm.availableDirections 	= ['up', 'down', 'left', 'right'];
-	vm.selectedDirection	= 'rigth';
+	vm.selectedDirection	= 'left';
 
 	vm.usuarioLogado = $localStorage.usuarioLogado
 	
