@@ -12,7 +12,7 @@ router.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             params: {
                 title: "Página Principal"
             }
-        });        
+        })        
 
     $locationProvider.html5Mode(true);
 

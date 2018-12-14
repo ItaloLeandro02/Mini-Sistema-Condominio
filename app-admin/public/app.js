@@ -27,8 +27,8 @@ var materialApp = angular
     // Desativar os warnings de ARIA-LABEL (label para tecnologias assistivas)
     $mdAriaProvider.disableWarnings();
 
-     /// Interceptador de requisicoes
-     $httpProvider.interceptors.push(function($q, $injector, $localStorage) {
+    /// Interceptador de requisicoes
+    $httpProvider.interceptors.push(function($q, $injector, $localStorage) {
         return {
           'request': function (config) {
             config.headers = config.headers || {};

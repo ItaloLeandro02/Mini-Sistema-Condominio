@@ -24,7 +24,9 @@ function visitaListaController(visitaService, $state, $localStorage, $mdDialog) 
 
 
 	function init(){
-		carregaVisitas()
+		if ($localStorage.usuarioLogado) {
+			carregaVisitas()
+		}
 	}
 
 	init()

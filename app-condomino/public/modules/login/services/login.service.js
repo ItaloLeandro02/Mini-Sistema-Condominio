@@ -13,8 +13,6 @@ angular.module('app.login')
 
     }   
     
-    loginFactory
-
     return loginFactory;
 
 });

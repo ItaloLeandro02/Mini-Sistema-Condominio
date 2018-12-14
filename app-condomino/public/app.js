@@ -10,43 +10,46 @@ var materialApp = angular
     'app.login',
     'ngMessages',      
 
-]).config(function($mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider, $httpProvider) {
-  
-    $mdThemingProvider.theme('default')
-    .primaryPalette('indigo')
-    .accentPalette('red');
+]).config(
+    
+  function($mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider, $httpProvider) {
 
-    // Formata de data brasileiro
-    $mdDateLocaleProvider.formatDate = function(date) {
-        return date ? moment(date).format('DD/MM/YYYY') : null;
-    };
+  $mdThemingProvider.theme('default')
+  .primaryPalette('indigo')
+  .accentPalette('red');
 
-    // Desativar os warnings de ARIA-LABEL (label para tecnologias assistivas)
-    $mdAriaProvider.disableWarnings();
+  // Formata de data brasileiro
+  $mdDateLocaleProvider.formatDate = function(date) {
+      return date ? moment(date).format('DD/MM/YYYY') : null;
+  };
 
-    /// Interceptador de requisicoes
-    $httpProvider.interceptors.push(function($q, $injector, $localStorage) {
-        return {
-          'request': function (config) {
-            config.headers = config.headers || {};
-            if ($localStorage.usuarioLogado) {
-              config.headers.Authorization = 'Baerer ' + $localStorage.usuarioLogado.token;
-            }
+  // Desativar os warnings de ARIA-LABEL (label para tecnologias assistivas)
+  $mdAriaProvider.disableWarnings();
 
-            return config;
-          },
-          'responseError': function(response) {
-            switch (response.status) {
-              case 401:
-                var stateService = $injector.get('$state');
-                stateService.go('login');
-                break;                
-
-              default :
-                return $q.reject(response);
-            }
+  /// Interceptador de requisicoes
+  $httpProvider.interceptors.push(function($q, $injector, $localStorage) {
+      return {
+        'request': function (config) {
+          config.headers = config.headers || {};
+          if ($localStorage.usuarioLogado) {
+            config.headers.Authorization = 'Baerer ' + $localStorage.usuarioLogado.token;
           }
-        };
-      })
+
+          return config;
+        },
+        'responseError': function(response) {
+          switch (response.status) {
+            case 401:
+              var stateService = $injector.get('$state');
+              stateService.go('login');
+              break;                
+
+            default :
+              return $q.reject(response);
+          }
+        }
+      };
+    })
+
 
 });

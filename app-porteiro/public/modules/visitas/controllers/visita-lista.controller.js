@@ -15,7 +15,7 @@ function visitaListaController(visitaService, $state, $localStorage) {
 	vm.topDirections	 	= ['left', 'up'];
 	vm.bottomDirections 	= ['down', 'right'];
 
-	
+	vm.isOpen 				= true;
 
 	vm.availableModes		= ['md-fling', 'md-scale'];
 	vm.selectedMode 		= 'md-scale';
@@ -26,8 +26,8 @@ function visitaListaController(visitaService, $state, $localStorage) {
 	vm.usuarioLogado = $localStorage.usuarioLogado
 	
 	function init(){
+
 		carregaVisitas()
-		vm.isOpen 				= true;
 	}
 
 	init()

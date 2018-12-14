@@ -103,7 +103,7 @@ function signup(req,res){
                                 }
                             })
                             .then(function(porteiroRetornado) {
-                               
+                            
                                 resposta.usuario     = usuarioAtualizado;
                                 resposta.porteiro    = porteiroRetornado   
                                 resposta.token       = usuarioAtualizado.token;
@@ -112,7 +112,7 @@ function signup(req,res){
                                     return 
                             })
                             break;
-
+                        
                         case 2:
                             dataContext.Condomino.findOne({
                                 where : {
