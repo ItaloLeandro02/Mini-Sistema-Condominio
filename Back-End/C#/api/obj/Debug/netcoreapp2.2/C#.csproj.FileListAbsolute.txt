@@ -1,0 +1,14 @@
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.deps.json
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.runtimeconfig.json
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.runtimeconfig.dev.json
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.dll
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.pdb
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.csprojAssemblyReference.cache
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.csproj.CoreCompileInputs.cache
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.RazorAssemblyInfo.cache
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.RazorAssemblyInfo.cs
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.AssemblyInfoInputs.cache
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.AssemblyInfo.cs
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.RazorTargetAssemblyInfo.cache
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.dll
+C:\Users\Adsoft developer\Documents\API-JS-Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.pdb
