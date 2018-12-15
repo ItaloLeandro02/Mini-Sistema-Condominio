@@ -12,30 +12,30 @@ namespace api.Repository
         }
         public void Add(Porteiro porteiro)
         {
-            _context.Porteiros.Add(porteiro);
+            _context.Porteiro.Add(porteiro);
             _context.SaveChanges();
         }
 
         public Porteiro Find(int id)
         {
-            return _context.Porteiros.FirstOrDefault(u => u.Id == id);
+            return _context.Porteiro.FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<Porteiro> GetAll()
         {
-            return _context.Porteiros.ToList();
+            return _context.Porteiro.ToList();
         }
 
         public void Remove(int id)
         {
-            var entity = _context.Porteiros.First(u => u.Id == id);
-                _context.Porteiros.Remove(entity);
+            var entity = _context.Porteiro.First(u => u.Id == id);
+                _context.Porteiro.Remove(entity);
                 _context.SaveChanges();
         }
 
         public void Update(Porteiro porteiro)
         {
-            _context.Porteiros.Update(porteiro);
+            _context.Porteiro.Update(porteiro);
             _context.SaveChanges();
         }
     }

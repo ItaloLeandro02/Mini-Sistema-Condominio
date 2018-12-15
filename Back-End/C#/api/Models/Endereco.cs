@@ -12,6 +12,5 @@ namespace api.Models
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public char Uf { get; set; }
-        public DateTime Criacao { get; set; }
     }
 }

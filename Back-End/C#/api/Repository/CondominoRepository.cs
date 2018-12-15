@@ -20,12 +20,12 @@ namespace api.Repository
 
         public Condomino Find(int id)
         {
-            return _context.Condomino.FirstOrDefault(u =>u.Id == id);
+            return _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).FirstOrDefault(u =>u.Id == id);
         }
 
         public IEnumerable<Condomino> GetAll()
         {
-            return _context.Condomino.Include(b => b.pessoa).ToList();
+            return _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).ToList();
         }
 
         public void Remove(int id)

@@ -9,10 +9,10 @@ namespace api.Models
         } 
 
         public DbSet<Condomino> Condomino  { get; set; }
-        public DbSet<Endereco>  Enderecos   { get; set; }
-        public DbSet<Pessoa>    Pessoas     { get; set; }
-        public DbSet<Porteiro>  Porteiros   { get; set; }  
-        public DbSet<Usuario>   Usuarios    { get; set; }       
-        public DbSet<Visita>    Visitas     { get; set; }
+        public DbSet<Endereco>  Endereco   { get; set; }
+        public DbSet<Pessoa>    Pessoa     { get; set; }
+        public DbSet<Porteiro>  Porteiro   { get; set; }  
+        public DbSet<Usuario>   Usuario    { get; set; }       
+        public DbSet<Visita>    Visita     { get; set; }
     }
 }

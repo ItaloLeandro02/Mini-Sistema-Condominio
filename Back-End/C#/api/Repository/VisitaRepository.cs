@@ -12,30 +12,30 @@ namespace api.Repository
         }
         public void Add(Visita visita)
         {
-            _context.Visitas.Add(visita);
+            _context.Visita.Add(visita);
             _context.SaveChanges();
         }
 
         public Visita Find(int id)
         {
-            return _context.Visitas.FirstOrDefault(u => u.Id == id);
+            return _context.Visita.FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<Visita> GetAll()
         {
-            return _context.Visitas.ToList();
+            return _context.Visita.ToList();
         }
 
         public void Remove(int id)
         {
-            var entity = _context.Visitas.First(u => u.Id == id);
-                _context.Visitas.Remove(entity);
+            var entity = _context.Visita.First(u => u.Id == id);
+                _context.Visita.Remove(entity);
                 _context.SaveChanges();
         }
 
         public void Update(Visita visita)
         {
-            _context.Visitas.Update(visita);
+            _context.Visita.Update(visita);
             _context.SaveChanges();
         }
     }
