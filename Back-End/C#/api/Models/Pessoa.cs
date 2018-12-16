@@ -13,6 +13,7 @@ namespace api.Models
         public Int64 Cpf { get; set; }
         public DateTime Nascimento { get; set; }
         public string Digital { get; set; }
+        public DateTime Criacao { get; set; }
 
         [ForeignKey("endereco")]
         public int Endereco_Id { get; set; }

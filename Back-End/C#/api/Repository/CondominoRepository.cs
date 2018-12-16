@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
+using api.Util;
 
 namespace api.Repository
 {
@@ -14,6 +16,14 @@ namespace api.Repository
         }
         public void Add(Condomino condomino)
         {
+
+            condomino.pessoa.Criacao        = DateTime.Now;
+            condomino.pessoa.Digital        = Util.Util.geraDigital();
+
+            condomino.usuario.Criacao       = DateTime.Now;
+            condomino.usuario.Tipo          = 2;
+            condomino.usuario.Desativado    = 0;
+
             _context.Condomino.Add(condomino);
             _context.SaveChanges();
         }

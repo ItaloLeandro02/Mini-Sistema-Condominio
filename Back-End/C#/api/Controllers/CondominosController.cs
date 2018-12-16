@@ -54,9 +54,9 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                    _condomino.Pessoa_Id     = condomino.Pessoa_Id;
-                    _condomino.Usuario_Id    = condomino.Usuario_Id;
-                    _condomino.Endereco     = condomino.Endereco;
+                    _condomino.pessoa.Nome      = condomino.pessoa.Nome;
+                    _condomino.usuario.Email    = condomino.usuario.Email;
+                    _condomino.Endereco         = condomino.Endereco;
 
                         _condominoRepository.Update(_condomino);
 

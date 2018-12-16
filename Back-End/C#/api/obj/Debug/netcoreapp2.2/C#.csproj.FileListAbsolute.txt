@@ -26,3 +26,17 @@ C:\Users\italo\Documents\Mini-Sistema-Condominio\Back-End\c#\api\obj\Debug\netco
 C:\Users\italo\Documents\Mini-Sistema-Condominio\Back-End\c#\api\obj\Debug\netcoreapp2.2\C#.RazorTargetAssemblyInfo.cache
 C:\Users\italo\Documents\Mini-Sistema-Condominio\Back-End\c#\api\obj\Debug\netcoreapp2.2\C#.dll
 C:\Users\italo\Documents\Mini-Sistema-Condominio\Back-End\c#\api\obj\Debug\netcoreapp2.2\C#.pdb
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.deps.json
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.runtimeconfig.json
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.runtimeconfig.dev.json
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.dll
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\bin\Debug\netcoreapp2.2\C#.pdb
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.csprojAssemblyReference.cache
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.csproj.CoreCompileInputs.cache
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.RazorAssemblyInfo.cache
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.RazorAssemblyInfo.cs
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.AssemblyInfoInputs.cache
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.AssemblyInfo.cs
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.RazorTargetAssemblyInfo.cache
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.dll
+C:\Users\Danilo\Documents\Mini-Sistema-Condominio\Back-End\C#\api\obj\Debug\netcoreapp2.2\C#.pdb
