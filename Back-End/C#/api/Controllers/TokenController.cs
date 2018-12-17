@@ -35,7 +35,7 @@ namespace api.Controllers
                     .First();
 
             var condomino = _context.Condomino
-                   .Where(p => p.Usuario_Id == data.Id)
+                   .Where(p => p.Usuario_Id == data.Id);
 
             if (data.Email.Length > 0 && data.Senha.Length > 0 && data.Id > 0) {
                 var claims = new[] {
