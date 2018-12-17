@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace api.Repository
 {
@@ -18,12 +21,12 @@ namespace api.Repository
 
         public Pessoa Find(int id)
         {
-            return _context.Pessoa.FirstOrDefault(u => u.Id == id);
+            return _context.Pessoa.Include(p => p.endereco).FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<Pessoa> GetAll()
         {
-            return _context.Pessoa.ToList();
+            return _context.Pessoa.Include(p => p.endereco).ToList() ?? Enumerable.Empty<Pessoa>();
         }
 
         public void Remove(int id)

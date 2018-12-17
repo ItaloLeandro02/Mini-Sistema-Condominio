@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace api.Controllers
 {
     [Route("api/[Controller]")]
-    public class CondominosController : Controller
+    public class CondominoController : Controller
     {
         private readonly ICondominoRepository _condominoRepository;
         
-        public CondominosController(ICondominoRepository condominoRepository) {
+        public CondominoController(ICondominoRepository condominoRepository) {
             _condominoRepository = condominoRepository;
         }
 

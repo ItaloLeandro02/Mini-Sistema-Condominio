@@ -10,7 +10,7 @@ namespace api.Models
         [Key]
         public int Id { get; set; }
         public string Nome { get; set; }
-        public Int64 Cpf { get; set; }
+        public string Cpf { get; set; }
         public DateTime Nascimento { get; set; }
         public string Digital { get; set; }
         public DateTime Criacao { get; set; }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -18,12 +19,12 @@ namespace api.Repository
 
         public Porteiro Find(int id)
         {
-            return _context.Porteiro.FirstOrDefault(u => u.Id == id);
+            return _context.Porteiro.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<Porteiro> GetAll()
         {
-            return _context.Porteiro.ToList();
+            return _context.Porteiro.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).ToList();
         }
 
         public void Remove(int id)

@@ -3,16 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models
 {
-    public class Porteiro
+    public class Condomino_Convidado
     {
+        [Key]
         public int Id { get; set; }
 
-        [ForeignKey("usuario")]
-        public int Usuario_Id { get; set; }
-        public virtual Usuario usuario { get; set; }
-        
+        [ForeignKey("condomino")]
+        public int Condomino_Id { get; set; }
+        public virtual Condomino condomino { get; set; }
+
         [ForeignKey("pessoa")]
         public int Pessoa_Id { get; set; }
         public virtual Pessoa pessoa { get; set; }
+        public byte Favorito { get; set; }
     }
 }

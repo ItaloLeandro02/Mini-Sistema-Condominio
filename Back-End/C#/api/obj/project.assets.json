@@ -4443,7 +4443,7 @@
   },
   "libraries": {
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
-      "sha512": "AIgEc1up4pvH8kXy+eG1x4Qfqd6piAq3yk11pveCQXWNkkYoiKdflSmcJZuWcerdMcAaoF0xC/mWGoTW4vF4Dg==",
+      "sha512": "owAlEIUZXWSnkK8Z1c+zR47A0X6ykF4XjbPok4lQKNuciUfHLGPd6QnI+rt/8KlQ17PmF+I4S3f+m+Qe4IvViw==",
       "type": "package",
       "path": "microsoft.aspnet.webapi.client/5.2.6",
       "files": [
@@ -5741,7 +5741,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
+      "sha512": "2H5R37BVN9xU5j1eDGQ6SaDNM1wFajzrl0Z4GkoUDedrrmVM9/FFNIYarsdy+Gyks8sB6K9JUzzLBYOve+02uA==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "hasTools": true,
@@ -12076,32 +12076,35 @@
     ".NETCoreApp,Version=v2.2": [
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
-      "Microsoft.NETCore.App >= 2.2.0"
+      "Microsoft.NETCore.App >= 2.2.0",
+      "System.IdentityModel.Tokens.Jwt >= 5.3.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\italo\\.nuget\\packages\\": {},
+    "C:\\Users\\Adsoft developer\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\italo\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
+      "projectUniqueName": "C:\\Users\\Adsoft developer\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
       "projectName": "C#",
-      "projectPath": "C:\\Users\\italo\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
-      "packagesPath": "C:\\Users\\italo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\italo\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\obj\\",
+      "projectPath": "C:\\Users\\Adsoft developer\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
+      "packagesPath": "C:\\Users\\Adsoft developer\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Adsoft developer\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\italo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Adsoft developer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -12125,7 +12128,6 @@
             "autoReferenced": true
           },
           "Microsoft.AspNetCore.Razor.Design": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.2.0, )"
           },
@@ -12134,6 +12136,10 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
+          },
+          "System.IdentityModel.Tokens.Jwt": {
+            "target": "Package",
+            "version": "[5.3.0, )"
           }
         },
         "imports": [

@@ -12,7 +12,7 @@
       var api = {}      
 
       // Base Url
-      api.baseUrl = 'http://localhost:3333/api/';
+      api.baseUrl = 'https://localhost:5001/api/';
 
       
       /* Recursos da API */ 

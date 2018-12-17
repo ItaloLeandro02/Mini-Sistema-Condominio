@@ -35,13 +35,14 @@ namespace api.Repository
 
         public IEnumerable<Condomino> GetAll()
         {
-            return _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).ToList();
+            return _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).ToList() ?? Enumerable.Empty<Condomino>();
         }
 
         public void Remove(int id)
         {
-            var entity = _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).FirstOrDefault(c => c.Id == id);
-                _context.Condomino.Remove(entity);
+           var entity = _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).First(c => c.Id == id);
+
+                _context.Remove(entity);
                 _context.SaveChanges();
         }
 

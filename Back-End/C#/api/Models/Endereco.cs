@@ -11,6 +11,6 @@ namespace api.Models
         public int Numero { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
-        public char Uf { get; set; }
+        public string Uf { get; set; }
     }
 }

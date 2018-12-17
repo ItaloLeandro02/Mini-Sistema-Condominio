@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using api.Models;
 using api.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace C_
 {
@@ -31,7 +34,44 @@ namespace C_
             services.AddDbContext<DataDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<ICondominoRepository, CondominoRepository>();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddTransient<IPessoaRepository, PessoaRepository>();
+            services.AddTransient<IPorteiroRepository, PorteiroRepository>();
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<IVisitaRepository, VisitaRepository>();
+            services.AddTransient<ICondomino_ConvidadoRepository, Condomino_ConvidadoRepository>();
+            services.AddTransient<IEnderecoRepository, EnderecoRepository>();
+
+            //Especifica o esquema usado para autenticar o tipo Baerer
+            //e
+            //define configurações como chave, algoritmo, validade, data expiração...
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters {
+                    ValidateIssuer              = true,
+                    ValidateAudience            = true,
+                    ValidateLifetime            = true,
+                    ValidateIssuerSigningKey    = true,
+                    ValidIssuer                 = "marcoratti.net",
+                    ValidAudience               = "marcoratti.net",
+                    IssuerSigningKey            = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
+                };
+
+                options.Events = new JwtBearerEvents {
+                    OnAuthenticationFailed = context => {
+                        Console.WriteLine("Token Inválido..." + context.Exception.Message);
+                        return Task.CompletedTask;
+                    },
+
+                    OnTokenValidated = context => {
+                        Console.WriteLine("Token válido..." + context.SecurityToken);
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
+            // Use the routing logic of ASP.NET Core 2.1 or earlier:
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddCors(o => o.AddPolicy("CorsApi", builder => {
                 builder.AllowAnyOrigin()
@@ -54,6 +94,7 @@ namespace C_
                 app.UseHsts();
             }
             
+            app.UseAuthentication();
             app.UseCors("CorsApi");
             app.UseHttpsRedirection();
             app.UseMvc();

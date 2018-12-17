@@ -14,5 +14,7 @@ namespace api.Controllers
         public IEnumerable<Porteiro> dadosPorteiro { get; set; }
         public IEnumerable<Usuario> dadosUsuario { get; set; }
         public IEnumerable<Visita> dadosVisita { get; set; }
+        public IEnumerable<Condomino_Convidado> dadosConvidado { get; set; }
+
     }
 }
