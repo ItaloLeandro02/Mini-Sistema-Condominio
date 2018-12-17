@@ -31,7 +31,7 @@ namespace api.Repository
         public Condomino Find(int id)
         {
             return _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).FirstOrDefault(u =>u.Id == id);
-        }
+        }   
 
         public IEnumerable<Condomino> GetAll()
         {
@@ -40,7 +40,7 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-            var entity = _context.Condomino.First(u => u.Id == id);
+            var entity = _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).FirstOrDefault(c => c.Id == id);
                 _context.Condomino.Remove(entity);
                 _context.SaveChanges();
         }

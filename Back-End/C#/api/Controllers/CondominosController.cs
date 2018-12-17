@@ -44,7 +44,7 @@ namespace api.Controllers
 
             [HttpPut("{id}")]
             public IActionResult Update(int id, [FromBody] Condomino condomino) {
-                if (condomino == null || condomino.Id != id) {
+                if (condomino == null /* || condomino.Id != id*/) {
                     return BadRequest();
                 }
 
@@ -54,9 +54,11 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                    _condomino.pessoa.Nome      = condomino.pessoa.Nome;
-                    _condomino.usuario.Email    = condomino.usuario.Email;
-                    _condomino.Endereco         = condomino.Endereco;
+                    _condomino.pessoa.Nome          = condomino.pessoa.Nome;
+                    _condomino.pessoa.Nascimento    = condomino.pessoa.Nascimento;
+
+                    _condomino.usuario.Email        = condomino.usuario.Email;
+                    _condomino.Endereco             = condomino.Endereco;
 
                         _condominoRepository.Update(_condomino);
 
