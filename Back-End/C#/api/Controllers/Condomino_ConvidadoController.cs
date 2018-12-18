@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using api.Models;
 using api.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
     [Route("api/[Controller]")]
+    [Authorize()]
     public class ConvidadoController : Controller
     {
         private readonly ICondomino_ConvidadoRepository _convidadoRepository;

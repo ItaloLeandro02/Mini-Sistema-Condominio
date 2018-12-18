@@ -40,9 +40,28 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-           var entity = _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).First(c => c.Id == id);
+           var condomino = _context.Condomino
+           .Where(c => c.Id == id)
+           .First();
 
-                _context.Remove(entity);
+           var pessoa = _context.Pessoa
+           .Where(p => p.Id == condomino.Pessoa_Id)
+           .First();
+
+           var endereco = _context.Endereco
+           .Where(e => e.Id == pessoa.Endereco_Id)
+           .First();
+
+           var usuario = _context.Usuario
+           .Where(u => u.Id == condomino.Usuario_Id)
+           .First();
+
+
+                _context.Remove(condomino);
+                _context.Remove(pessoa);
+                _context.Remove(endereco);
+                _context.Remove(usuario);
+
                 _context.SaveChanges();
         }
 

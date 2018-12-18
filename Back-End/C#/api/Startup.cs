@@ -51,21 +51,24 @@ namespace C_
                     ValidateAudience            = true,
                     ValidateLifetime            = true,
                     ValidateIssuerSigningKey    = true,
-                    ValidIssuer                 = "marcoratti.net",
-                    ValidAudience               = "marcoratti.net",
+                    ValidIssuer                 = "http://localhost:5000",
+                    ValidAudience               = "http://localhost:5001/",
                     IssuerSigningKey            = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
                 };
 
                 options.Events = new JwtBearerEvents {
                     OnAuthenticationFailed = context => {
-                        Console.WriteLine("Token Inválido..." + context.Exception.Message);
+                        //Console.WriteLine("Token Inválido..." + context.Exception.Message);
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException)) {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
                         return Task.CompletedTask;
                     },
 
                     OnTokenValidated = context => {
                         Console.WriteLine("Token válido..." + context.SecurityToken);
                         return Task.CompletedTask;
-                    }
+                    },
                 };
             });
 

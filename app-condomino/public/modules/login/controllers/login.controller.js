@@ -21,7 +21,7 @@ function LoginController($localStorage, loginService, $state) {
             $state.go('home')
         }
 
-        let erro = function(repsosta) {
+        let erro = function(resposta) {
         
             toastr.warning("Nome de usuário ou senha inválidos!")
         }

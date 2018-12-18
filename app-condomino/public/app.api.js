@@ -11,8 +11,10 @@
 
       var api = {}      
 
+      //Java Script = http://localhost:3333/api/
+      //C#          = https://localhost:5001/api/
       // Base Url
-      api.baseUrl = 'http://localhost:3333/api/';
+      api.baseUrl = 'https://localhost:5001/api/';
 
       
       /* Recursos da API */ 

@@ -31,8 +31,19 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-            var entity = _context.Pessoa.First(u => u.Id == id);
-                _context.Pessoa.Remove(entity);
+
+           var pessoa = _context.Pessoa
+           .Where(p => p.Id == id)
+           .First();
+
+           var endereco = _context.Endereco
+           .Where(e => e.Id == pessoa.Endereco_Id)
+           .First();
+
+
+                _context.Remove(pessoa);
+                _context.Remove(endereco);
+
                 _context.SaveChanges();
         }
 

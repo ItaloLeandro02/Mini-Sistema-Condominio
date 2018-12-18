@@ -29,8 +29,28 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-            var entity = _context.Porteiro.First(u => u.Id == id);
-                _context.Porteiro.Remove(entity);
+           var porteiro = _context.Porteiro
+           .Where(p => p.Id == id)
+           .First();
+
+           var pessoa = _context.Pessoa
+           .Where(pe => pe.Id == porteiro.Pessoa_Id)
+           .First();
+
+           var endereco = _context.Endereco
+           .Where(e => e.Id == pessoa.Endereco_Id)
+           .First();
+
+           var usuario = _context.Usuario
+           .Where(u => u.Id == porteiro.Usuario_Id)
+           .First();
+
+
+                _context.Remove(porteiro);
+                _context.Remove(pessoa);
+                _context.Remove(endereco);
+                _context.Remove(usuario);
+
                 _context.SaveChanges();
         }
 
