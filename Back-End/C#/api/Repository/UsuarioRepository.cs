@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
+using System;
 
 namespace api.Repository
 {
@@ -12,6 +13,7 @@ namespace api.Repository
         }
         public void Add(Usuario usuario)
         {
+     
             _context.Usuario.Add(usuario);
             _context.SaveChanges();
         }

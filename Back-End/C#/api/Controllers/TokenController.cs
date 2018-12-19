@@ -53,7 +53,7 @@ namespace api.Controllers
                         issuer              : "http://localhost:5000",
                         audience            : "http://localhost:5001/",
                         claims              : claims,
-                        expires             : DateTime.Now.AddMilliseconds(5000),
+                        expires             : DateTime.Now.AddHours(2),
                         signingCredentials  : creds);
 
                         //Atualiza o Token do usuário

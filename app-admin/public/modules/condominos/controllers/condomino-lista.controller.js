@@ -18,7 +18,6 @@ function condominoListaController(condominoService, $state, $mdDialog, $statePar
 	function carregaCondominos(){	
 		condominoService.getAll().then(function(condominos){			
 			vm.dataset = condominos.data 
-			console.log(vm.dataset)
            		return vm.dataset
 		})
     }

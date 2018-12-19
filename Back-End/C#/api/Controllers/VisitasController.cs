@@ -18,7 +18,7 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Visita>> GetAll() {
-                var resultado = new RetornoView<Visita>() {dadosVisita = _visitaRepository.GetAll()};
+                var resultado = new RetornoView<Visita>() {data = _visitaRepository.GetAll(), sucesso = true};
                     return resultado;
             }
 

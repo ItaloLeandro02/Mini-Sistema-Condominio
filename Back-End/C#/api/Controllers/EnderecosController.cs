@@ -18,7 +18,7 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Endereco>> GetAll() {
-                var resultado = new RetornoView<Endereco>() {dadosEndereco = _enderecoRepository.GetAll()};
+                var resultado = new RetornoView<Endereco>() {data = _enderecoRepository.GetAll(), sucesso = true};
                     return resultado;
             }
 

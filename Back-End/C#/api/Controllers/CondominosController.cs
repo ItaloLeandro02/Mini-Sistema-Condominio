@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using api.Models;
 using api.Repository;
@@ -18,19 +19,27 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Condomino>> GetAll() {
-                var resultado = new RetornoView<Condomino>() {dadosCondomino = _condominoRepository.GetAll()};
+                var resultado = new RetornoView<Condomino>() {data = _condominoRepository.GetAll(), sucesso = true};
                     return resultado;
             }
 
             [HttpGet("{id}", Name = "GetCondomino")]
-            public ActionResult<Condomino> GetById(int id) {
+            public  ActionResult<Condomino> GetById(int id) {
                 var condomino =  _condominoRepository.Find(id);
 
                     if (condomino == null) {
                         return NotFound();
                     }
 
-                    return condomino;
+                    
+                    //IEnumerable<Condomino> data = new []{ condomino };   
+                    
+
+                   // var resultado = new RetornoView<Condomino>() { data = data, sucesso = true };
+
+                    return Ok( new {
+                        data = condomino
+                    });
             }
 
             [HttpPost]
@@ -39,13 +48,20 @@ namespace api.Controllers
                     return BadRequest();
                 }
 
+            condomino.pessoa.Criacao        = DateTime.Now;
+            condomino.pessoa.Digital        = Util.Util.geraDigital();
+
+            condomino.usuario.Criacao       = DateTime.Now;
+            condomino.usuario.Tipo          = 2;
+            condomino.usuario.Desativado    = 0;
+
                 _condominoRepository.Add(condomino);
 
-                    return CreatedAtRoute("GetCondomino", new {id = condomino.Id}, condomino);
+                return CreatedAtRoute("GetCondomino", new {id = condomino.Id, sucesso = true, data = condomino});
             }
 
             [HttpPut("{id}")]
-            public IActionResult Update(int id, [FromBody] Condomino condomino) {
+            public ActionResult<RetornoView<Condomino>> Update(int id, [FromBody] Condomino condomino) {
                 if (condomino == null /* || condomino.Id != id*/) {
                     return BadRequest();
                 }
@@ -64,20 +80,26 @@ namespace api.Controllers
 
                         _condominoRepository.Update(_condomino);
 
-                            return new NoContentResult();
+                            IEnumerable<Condomino> data = new []{ _condomino };
+
+                                var resultado = new RetornoView<Condomino>() {data = data, sucesso = true};
+
+                                    return resultado;
             }
 
             [HttpDelete("{id}")]
-            public IActionResult Delete(int id) {
+            public ActionResult<RetornoView<Condomino>> Delete(int id) {
                 var condomino  = _condominoRepository.Find(id);
 
                     if (condomino == null) {
                         return NotFound();
                     }
 
+                    var resultado = new RetornoView<Condomino>() {data = {}, sucesso = true};
+
                     _condominoRepository.Remove(id);
 
-                        return new NoContentResult();
+                        return resultado;
             }
     }
 }

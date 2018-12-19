@@ -17,25 +17,18 @@ namespace api.Repository
         public void Add(Condomino condomino)
         {
 
-            condomino.pessoa.Criacao        = DateTime.Now;
-            condomino.pessoa.Digital        = Util.Util.geraDigital();
-
-            condomino.usuario.Criacao       = DateTime.Now;
-            condomino.usuario.Tipo          = 2;
-            condomino.usuario.Desativado    = 0;
-
             _context.Condomino.Add(condomino);
             _context.SaveChanges();
         }
 
         public Condomino Find(int id)
         {
-            return _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).FirstOrDefault(u =>u.Id == id);
+            return _context.Condomino.Include(p => p.pessoa).Include(u => u.usuario).FirstOrDefault(u =>u.Id == id);
         }   
 
         public IEnumerable<Condomino> GetAll()
         {
-            return _context.Condomino.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).ToList() ?? Enumerable.Empty<Condomino>();
+            return _context.Condomino.Include(p => p.pessoa).Include(u => u.usuario).ToList() ?? Enumerable.Empty<Condomino>();
         }
 
         public void Remove(int id)
@@ -48,10 +41,6 @@ namespace api.Repository
            .Where(p => p.Id == condomino.Pessoa_Id)
            .First();
 
-           var endereco = _context.Endereco
-           .Where(e => e.Id == pessoa.Endereco_Id)
-           .First();
-
            var usuario = _context.Usuario
            .Where(u => u.Id == condomino.Usuario_Id)
            .First();
@@ -59,7 +48,6 @@ namespace api.Repository
 
                 _context.Remove(condomino);
                 _context.Remove(pessoa);
-                _context.Remove(endereco);
                 _context.Remove(usuario);
 
                 _context.SaveChanges();

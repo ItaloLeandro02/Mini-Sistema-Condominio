@@ -16,6 +16,7 @@ function condominoController(condominoService, condominoId, $state) {
         if (condominoId) {
             condominoService.getById(condominoId).then(function(condominoModel){
                 vm.dataset = condominoModel.data
+                    return vm.dataset
             })
         }
 	}
@@ -36,26 +37,17 @@ function condominoController(condominoService, condominoId, $state) {
             pessoa = {
                 nome        : vm.dataset.pessoa.nome,
                 nascimento  : vm.dataset.pessoa.nascimento,
-                cpf         : vm.dataset.pessoa.cpf
+                cpf         : vm.dataset.pessoa.cpf,
+                
             },
             usuario = {
                 email       : vm.dataset.usuario.email,
                 senha       : vm.dataset.usuario.senha
-            },
-            //Preciso Cuidar Disso
-            endereco = {
-                logradouro  : null,
-                numero      : null,
-                bairro      : null,
-                cidade      : null,
-                uf          : null                    
-            }                    
-                
+            }
 
         condominoModel.pessoa                = pessoa,
         condominoModel.usuario               = usuario,
-        condominoModel.endereco              = endereco;
-        condominoModel.enderecoCondomino     = vm.dataset.enderecoCondomino; 
+        condominoModel.enderecoCondomino     = vm.dataset.endereco; 
 
         condominoModel.id                    = condominoId
        

@@ -35,7 +35,7 @@ var materialApp = angular
           'request': function (config) {
             config.headers = config.headers || {};
             if ($localStorage.usuarioLogado) {
-              config.headers.Authorization = 'Baerer ' + $localStorage.usuarioLogado.token;
+              config.headers.Authorization = 'Bearer ' + $localStorage.usuarioLogado.token;
             }
 
             return config;

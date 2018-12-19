@@ -16,8 +16,9 @@ angular.module('app.condomino')
 
     condominoFactory.save = function(condominoModel) {
         var ds             = new api.condomino();
-            ds.condomino   = condominoModel;
-            ds.id          = condominoModel.id;
+            ds.pessoa                   = condominoModel.pessoa;
+            ds.usuario                  = condominoModel.usuario;
+            ds.endereco                 = condominoModel.enderecoCondomino; 
                 if (ds.id) {
                     return ds.$update();
                 }

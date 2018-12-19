@@ -18,7 +18,7 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Condomino_Convidado>> GetAll() {
-                var resultado = new RetornoView<Condomino_Convidado>() {dadosConvidado = _convidadoRepository.GetAll()};
+                var resultado = new RetornoView<Condomino_Convidado>();
                     return resultado;
             }
 
