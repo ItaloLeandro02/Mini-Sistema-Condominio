@@ -23,30 +23,37 @@ namespace api.Controllers
             }
 
             [HttpGet("{id}", Name = "GetPessoa")]
-            public ActionResult<Pessoa> GetById(int id) {
+            public  ActionResult<Pessoa> GetById(int id) {
                 var pessoa =  _pessoaRepository.Find(id);
 
                     if (pessoa == null) {
                         return NotFound();
                     }
 
-                    return pessoa;
+                    return Ok( new {
+                        data    = pessoa,
+                        sucesso = true
+                    });
             }
 
             [HttpPost]
-            public IActionResult Create([FromBody] Pessoa pessoa) {
+            public ActionResult<RetornoView<Pessoa>> Create([FromBody] Pessoa pessoa) {
                 if (pessoa == null) {
                     return BadRequest();
                 }
 
-                _pessoaRepository.Add(pessoa);
+                    _pessoaRepository.Add(pessoa);
 
-                    return CreatedAtRoute("GetPessoa", new {id = pessoa.Id}, pessoa);
+                        IEnumerable<Pessoa> data = new []{ pessoa };
+
+                            var resultado  = new RetornoView<Pessoa>() {data = data, sucesso = true};
+
+                                return CreatedAtRoute("GetCondomino", new {id = pessoa.Id}, resultado);
             }
 
             [HttpPut("{id}")]
-            public IActionResult Update(int id, [FromBody] Pessoa pessoa) {
-                if (pessoa == null /* || pessoa.Id != id*/) {
+            public ActionResult<RetornoView<Pessoa>> Update(int id, [FromBody] Pessoa pessoa) {
+                if (pessoa == null  || pessoa.Id != id) {
                     return BadRequest();
                 }
 
@@ -67,20 +74,28 @@ namespace api.Controllers
                  
                         _pessoaRepository.Update(_pessoa);
 
-                            return new NoContentResult();
+                            IEnumerable<Pessoa> data = new []{ _pessoa };
+
+                                    var resultado = new RetornoView<Pessoa>() {data = data, sucesso = true};
+
+                                        return resultado;
             }
 
             [HttpDelete("{id}")]
-            public IActionResult Delete(int id) {
+            public ActionResult<RetornoView<Pessoa>> Delete(int id) {
                 var pessoa  = _pessoaRepository.Find(id);
 
                     if (pessoa == null) {
                         return NotFound();
                     }
 
-                    _pessoaRepository.Remove(id);
+                        _pessoaRepository.Remove(id);
 
-                        return new NoContentResult();
+                            var resultado = new RetornoView<Pessoa>() {data = {}, sucesso = true};
+
+                                _pessoaRepository.Remove(id);
+
+                                    return resultado;
             }
     }
 }

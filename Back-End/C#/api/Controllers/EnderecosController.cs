@@ -23,30 +23,37 @@ namespace api.Controllers
             }
 
             [HttpGet("{id}", Name = "GetEndereco")]
-            public ActionResult<Endereco> GetById(int id) {
+            public  ActionResult<Endereco> GetById(int id) {
                 var endereco =  _enderecoRepository.Find(id);
 
                     if (endereco == null) {
                         return NotFound();
                     }
 
-                    return endereco;
+                        return Ok( new {
+                            data    = endereco,
+                            sucesso = true
+                        });
             }
 
             [HttpPost]
-            public IActionResult Create([FromBody] Endereco endereco) {
+            public ActionResult<RetornoView<Endereco>> Create([FromBody] Endereco endereco) {
                 if (endereco == null) {
                     return BadRequest();
                 }
 
-                _enderecoRepository.Add(endereco);
+                    _enderecoRepository.Add(endereco);
 
-                    return CreatedAtRoute("GetEndereco", new {id = endereco.Id}, endereco);
+                        IEnumerable<Endereco> data = new []{ endereco };
+
+                            var resultado  = new RetornoView<Endereco>() {data = data, sucesso = true};
+
+                                    return CreatedAtRoute("GetEndereco", new {id = endereco.Id}, resultado);
             }
 
             [HttpPut("{id}")]
-            public IActionResult Update(int id, [FromBody] Endereco endereco) {
-                if (endereco == null /* || endereco.Id != id*/) {
+            public ActionResult<RetornoView<Endereco>> Update(int id, [FromBody] Endereco endereco) {
+                if (endereco == null || endereco.Id != id) {
                     return BadRequest();
                 }
 
@@ -56,19 +63,23 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                    _endereco.Logradouro        = endereco.Logradouro;
-                    _endereco.Numero            = endereco.Numero;
-                    _endereco.Bairro            = endereco.Bairro;
-                    _endereco.Cidade            = endereco.Cidade;
-                    _endereco.Uf                = endereco.Uf;
+                        _endereco.Logradouro        = endereco.Logradouro;
+                        _endereco.Numero            = endereco.Numero;
+                        _endereco.Bairro            = endereco.Bairro;
+                        _endereco.Cidade            = endereco.Cidade;
+                        _endereco.Uf                = endereco.Uf;
                  
-                        _enderecoRepository.Update(_endereco);
+                            _enderecoRepository.Update(_endereco);
 
-                            return new NoContentResult();
+                                IEnumerable<Endereco> data = new []{ _endereco };
+
+                                    var resultado = new RetornoView<Endereco>() {data = data, sucesso = true};
+
+                                        return resultado;
             }
 
             [HttpDelete("{id}")]
-            public IActionResult Delete(int id) {
+            public ActionResult<RetornoView<Endereco>> Delete(int id) {
                 var endereco  = _enderecoRepository.Find(id);
 
                     if (endereco == null) {
@@ -77,7 +88,11 @@ namespace api.Controllers
 
                     _enderecoRepository.Remove(id);
 
-                        return new NoContentResult();
+                        var resultado = new RetornoView<Endereco>() {data = {}, sucesso = true};
+
+                            _enderecoRepository.Remove(id);
+
+                                return resultado;
             }
     }
 }

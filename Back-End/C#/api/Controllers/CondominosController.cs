@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using api.Models;
 using api.Repository;
 using Microsoft.AspNetCore.Authorization;
@@ -19,27 +20,31 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Condomino>> GetAll() {
-                var resultado = new RetornoView<Condomino>() {data = _condominoRepository.GetAll(), sucesso = true};
-                    return resultado;
+
+                string nome = HttpContext.Request.Query["search"];
+
+                    if (!string.IsNullOrWhiteSpace(nome)) {
+                        var resultado = new RetornoView<Condomino>() {data = _condominoRepository.GetAll().Where(x => x.pessoa.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)).ToList(), sucesso = true};
+                        return resultado;
+                    }
+                    else {
+                        var resultado = new RetornoView<Condomino>() {data = _condominoRepository.GetAll(), sucesso = true};
+                        return resultado;
+                    }
             }
 
             [HttpGet("{id}", Name = "GetCondomino")]
-            public  ActionResult<Condomino> GetById(int id) {
+            public ActionResult<Condomino> GetById(int id) {
                 var condomino =  _condominoRepository.Find(id);
 
                     if (condomino == null) {
                         return NotFound();
                     }
 
-                    
-                    //IEnumerable<Condomino> data = new []{ condomino };   
-                    
-
-                   // var resultado = new RetornoView<Condomino>() { data = data, sucesso = true };
-
-                    return Ok( new {
-                        data = condomino
-                    });
+                        return Ok( new {
+                            data    = condomino,
+                            sucesso = true
+                        });
             }
 
             [HttpPost]
@@ -47,14 +52,6 @@ namespace api.Controllers
                 if (condomino == null) {
                     return BadRequest();
                 }
-
-                condomino.pessoa.Criacao        = DateTime.Now;
-                condomino.pessoa.Digital        = Util.Util.geraDigital();
-
-                condomino.usuario.Criacao       = DateTime.Now;
-                condomino.usuario.Tipo          = 2;
-                condomino.usuario.Desativado    = 0;
-
                     _condominoRepository.Add(condomino);
 
                         IEnumerable<Condomino> data = new []{ condomino };
@@ -66,29 +63,29 @@ namespace api.Controllers
 
             [HttpPut("{id}")]
             public ActionResult<RetornoView<Condomino>> Update(int id, [FromBody] Condomino condomino) {
-                if (condomino == null) {
+                if (condomino == null || condomino.Id != id) {
                     return BadRequest();
                 }
 
-                var _condomino = _condominoRepository.Find(id);
+                    var _condomino = _condominoRepository.Find(id);
 
-                    if (_condomino == null) {
-                        return NotFound();
-                    }
+                        if (_condomino == null) {
+                            return NotFound();
+                        }
 
-                    _condomino.pessoa.Nome          = condomino.pessoa.Nome;
-                    _condomino.pessoa.Nascimento    = condomino.pessoa.Nascimento;
+                            _condomino.pessoa.Nome          = condomino.pessoa.Nome;
+                            _condomino.pessoa.Nascimento    = condomino.pessoa.Nascimento;
 
-                    _condomino.usuario.Email        = condomino.usuario.Email;
-                    _condomino.Endereco             = condomino.Endereco;
+                            _condomino.usuario.Email        = condomino.usuario.Email;
+                            _condomino.Endereco             = condomino.Endereco;
 
-                        _condominoRepository.Update(_condomino);
+                                _condominoRepository.Update(_condomino);
 
-                            IEnumerable<Condomino> data = new []{ _condomino };
+                                    IEnumerable<Condomino> data = new []{ _condomino };
 
-                                var resultado = new RetornoView<Condomino>() {data = data, sucesso = true};
+                                        var resultado = new RetornoView<Condomino>() {data = data, sucesso = true};
 
-                                    return resultado;
+                                            return resultado;
             }
 
             [HttpDelete("{id}")]
@@ -99,11 +96,11 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                    var resultado = new RetornoView<Condomino>() {data = {}, sucesso = true};
+                        var resultado = new RetornoView<Condomino>() {data = {}, sucesso = true};
 
-                    _condominoRepository.Remove(id);
+                            _condominoRepository.Remove(id);
 
-                        return resultado;
+                                return resultado;
             }
     }
 }

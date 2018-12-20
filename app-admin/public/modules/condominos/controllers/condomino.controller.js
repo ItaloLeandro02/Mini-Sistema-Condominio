@@ -47,7 +47,7 @@ function condominoController(condominoService, condominoId, $state) {
 
         condominoModel.pessoa                = pessoa,
         condominoModel.usuario               = usuario,
-        condominoModel.enderecoCondomino     = vm.dataset.endereco; 
+        condominoModel.endereco     = vm.dataset.endereco; 
 
         condominoModel.id                    = condominoId
        

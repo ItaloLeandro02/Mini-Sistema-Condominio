@@ -17,14 +17,22 @@ namespace api.Repository
         public void Add(Condomino condomino)
         {
 
-            _context.Condomino.Add(condomino);
-            _context.SaveChanges();
+            condomino.pessoa.Criacao        = DateTime.Now;
+            condomino.pessoa.Digital        = Util.Util.geraDigital();
+
+            condomino.usuario.Criacao       = DateTime.Now;
+            condomino.usuario.Tipo          = 2;
+            condomino.usuario.Desativado    = 0;
+
+                _context.Condomino.Add(condomino);
+
+                    _context.SaveChanges();
         }
 
         public Condomino Find(int id)
         {
             return _context.Condomino.Include(p => p.pessoa).Include(u => u.usuario).FirstOrDefault(u =>u.Id == id);
-        }   
+        }
 
         public IEnumerable<Condomino> GetAll()
         {
@@ -55,6 +63,7 @@ namespace api.Repository
 
         public void Update(Condomino condomino)
         {
+            
             _context.Condomino.Update(condomino);
             _context.SaveChanges();
         }

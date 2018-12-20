@@ -12,8 +12,14 @@ namespace api.Repository
         }
         public void Add(Visita visita)
         {
-            _context.Visita.Add(visita);
-            _context.SaveChanges();
+
+            visita.Portaria_Data_Hora_Chegada   = null;
+            visita.Portaria_Observacao          = null;
+            visita.Situacao                     = 1;
+
+                _context.Visita.Add(visita);
+            
+                    _context.SaveChanges();
         }
 
         public Visita Find(int id)

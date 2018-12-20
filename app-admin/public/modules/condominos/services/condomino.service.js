@@ -18,7 +18,7 @@ angular.module('app.condomino')
         var ds                          = new api.condomino();
             ds.pessoa                   = condominoModel.pessoa;
             ds.usuario                  = condominoModel.usuario;
-            ds.endereco                 = condominoModel.enderecoCondomino; 
+            ds.endereco                 = condominoModel.endereco; 
             ds.id                       = condominoModel.id;
             
                 if (ds.id) {

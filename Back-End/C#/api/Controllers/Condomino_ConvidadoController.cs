@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using api.Models;
 using api.Repository;
 using Microsoft.AspNetCore.Authorization;
@@ -18,35 +20,56 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Condomino_Convidado>> GetAll() {
-                var resultado = new RetornoView<Condomino_Convidado>();
-                    return resultado;
+               string condominoId   = HttpContext.Request.Query["condomino"];
+               string nomeConvidado = HttpContext.Request.Query["convidado"];
+
+                    if (!string.IsNullOrWhiteSpace(condominoId) && !string.IsNullOrWhiteSpace(nomeConvidado)) {
+                        var resultado = new RetornoView<Condomino_Convidado>() {data = _convidadoRepository.GetAll().Where(x => x.pessoa.Nome.Contains(nomeConvidado, StringComparison.OrdinalIgnoreCase)).ToList(), sucesso = true};
+                        return resultado;
+                    }
+
+                        else if (!string.IsNullOrWhiteSpace(condominoId)) {
+                            var resultado = new RetornoView<Condomino_Convidado>() {data = _convidadoRepository.GetAll().Where(x => x.pessoa.Nome.Contains(nomeConvidado, StringComparison.OrdinalIgnoreCase)).ToList(), sucesso = true};
+                            return resultado;
+                        }
+                            else {
+                                var resultado = new RetornoView<Condomino_Convidado>() {data = _convidadoRepository.GetAll(), sucesso = true};
+                                return resultado;
+                            }
             }
 
             [HttpGet("{id}", Name = "GetConvidado")]
-            public ActionResult<Condomino_Convidado> GetById(int id) {
+            public  ActionResult<Condomino_Convidado> GetById(int id) {
                 var convidado =  _convidadoRepository.Find(id);
 
                     if (convidado == null) {
                         return NotFound();
                     }
 
-                    return convidado;
+                        return Ok( new {
+                            data    = convidado,
+                            sucesso = true
+                        });
             }
 
             [HttpPost]
-            public IActionResult Create([FromBody] Condomino_Convidado convidado) {
+            public ActionResult<RetornoView<Condomino_Convidado>> Create([FromBody] Condomino_Convidado convidado) {
                 if (convidado == null) {
                     return BadRequest();
                 }
 
-                _convidadoRepository.Add(convidado);
+                    _convidadoRepository.Add(convidado);
 
-                    return CreatedAtRoute("GetConvidado", new {id = convidado.Id}, convidado);
+                        IEnumerable<Condomino_Convidado> data = new []{ convidado };
+
+                            var resultado  = new RetornoView<Condomino_Convidado>() {data = data, sucesso = true};
+
+                                return CreatedAtRoute("GetCondomino", new {id = convidado.Id}, resultado);
             }
 
             [HttpPut("{id}")]
-            public IActionResult Update(int id, [FromBody] Condomino_Convidado convidado) {
-                if (convidado == null /* || condomino.Id != id*/) {
+            public ActionResult<RetornoView<Condomino_Convidado>> Update(int id, [FromBody] Condomino_Convidado convidado) {
+                if (convidado == null || convidado.Id != id) {
                     return BadRequest();
                 }
 
@@ -62,20 +85,26 @@ namespace api.Controllers
 
                         _convidadoRepository.Update(_convidado);
 
-                            return new NoContentResult();
+                             IEnumerable<Condomino_Convidado> data = new []{ _convidado };
+
+                                        var resultado = new RetornoView<Condomino_Convidado>() {data = data, sucesso = true};
+
+                                            return resultado;
             }
 
             [HttpDelete("{id}")]
-            public IActionResult Delete(int id) {
+            public ActionResult<RetornoView<Condomino_Convidado>> Delete(int id) {
                 var condomino  = _convidadoRepository.Find(id);
 
                     if (condomino == null) {
                         return NotFound();
                     }
 
-                    _convidadoRepository.Remove(id);
+                     var resultado = new RetornoView<Condomino_Convidado>() {data = {}, sucesso = true};
 
-                        return new NoContentResult();
+                            _convidadoRepository.Remove(id);
+
+                                return resultado;
             }
     }
 }

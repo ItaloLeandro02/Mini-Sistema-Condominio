@@ -15,8 +15,13 @@ namespace api.Repository
         }
         public void Add(Pessoa pessoa)
         {
-            _context.Pessoa.Add(pessoa);
-            _context.SaveChanges();
+
+            pessoa.Criacao        = DateTime.Now;
+            pessoa.Digital        = Util.Util.geraDigital();
+
+                _context.Pessoa.Add(pessoa);
+                
+                    _context.SaveChanges();
         }
 
         public Pessoa Find(int id)

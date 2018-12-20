@@ -13,9 +13,13 @@ namespace api.Repository
         }
         public void Add(Usuario usuario)
         {
+
+            usuario.Criacao       = DateTime.Now;
+            usuario.Desativado    = 0;
      
-            _context.Usuario.Add(usuario);
-            _context.SaveChanges();
+                _context.Usuario.Add(usuario);
+            
+                    _context.SaveChanges();
         }
 
         public Usuario Find(int id)

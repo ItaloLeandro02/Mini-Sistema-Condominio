@@ -30,51 +30,63 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                    return Ok(usuario);
+                        return Ok( new {
+                            data    = usuario,
+                            sucesso = true
+                        });
             }
 
             [HttpPost]
-            public IActionResult Create([FromBody] Usuario usuario) {
+            public ActionResult<RetornoView<Usuario>> Create([FromBody] Usuario usuario) {
                 if (usuario == null) {
                     return BadRequest();
                 }
 
-                _usuarioRepository.Add(usuario);
+                    _usuarioRepository.Add(usuario);
 
-                    return CreatedAtRoute("GetUsuario", new {id = usuario.Id}, usuario);
+                        IEnumerable<Usuario> data = new []{ usuario };
+
+                            var resultado  = new RetornoView<Usuario>() {data = data, sucesso = true};
+
+                                return CreatedAtRoute("GetCondomino", new {id = usuario.Id}, resultado);
             }
 
             [HttpPut("{id}")]
-            public IActionResult Update(int id, [FromBody] Usuario usuario) {
-                if (usuario == null /* || usuario.Id != id*/) {
+            public ActionResult<RetornoView<Usuario>> Update(int id, [FromBody] Usuario usuario) {
+                if (usuario == null || usuario.Id != id) {
                     return BadRequest();
                 }
 
-                var _usuario = _usuarioRepository.Find(id);
+                    var _usuario = _usuarioRepository.Find(id);
 
-                    if (_usuario == null) {
-                        return NotFound();
-                    }
+                        if (_usuario == null) {
+                            return NotFound();
+                        }
 
-                    _usuario.Email              = usuario.Email;
-                    _usuario.Senha              = usuario.Senha;
+                            _usuario.Email              = usuario.Email;
+                            _usuario.Senha              = usuario.Senha;
                  
-                        _usuarioRepository.Update(_usuario);
+                                _usuarioRepository.Update(_usuario);
 
-                            return new NoContentResult();
-            }
+                                    IEnumerable<Usuario> data = new []{ _usuario };
+
+                                        var resultado = new RetornoView<Usuario>() {data = data, sucesso = true};
+
+                                            return resultado;            }
 
             [HttpDelete("{id}")]
-            public IActionResult Delete(int id) {
+            public ActionResult<RetornoView<Usuario>> Delete(int id) {
                 var usuario  = _usuarioRepository.Find(id);
 
                     if (usuario == null) {
                         return NotFound();
                     }
 
-                    _usuarioRepository.Remove(id);
+                        _usuarioRepository.Remove(id);
 
-                        return new NoContentResult();
+                            var resultado = new RetornoView<Usuario>() {data = {}, sucesso = true};
+
+                                    return resultado;
             }
     }
 }

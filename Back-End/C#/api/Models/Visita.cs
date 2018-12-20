@@ -14,12 +14,12 @@ namespace api.Models
         [ForeignKey("pessoa")]
         public int Pessoa_Id { get; set; }
         public virtual Pessoa pessoa { get; set; }
-        public DateTime Data_Hora_Reserva { get; set; }
+        public DateTime? Data_Hora_Reserva { get; set; }
         public string Nome_Convidado { get; set; }
         public string Condomino_Observacao { get; set; }
-        public DateTime Data_Hora_Expiracao { get; set; }
+        public DateTime? Data_Hora_Expiracao { get; set; }
         public int Situacao { get; set; }
-        public DateTime Portaria_Data_Hora_Chegada { get; set; }
+        public DateTime? Portaria_Data_Hora_Chegada { get; set; }
 
         [ForeignKey("porteiro")]
         public int Porteiro_Id { get; set; }

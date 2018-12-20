@@ -17,9 +17,12 @@ angular.module('app.porteiro')
     }
 
     porteiroFactory.save = function(porteiroModel) {
-        var ds        = new api.porteiro();
-        ds.porteiro   = porteiroModel;
-        ds.id         = porteiroModel.id;
+        var ds                  = new api.porteiro();
+        ds.pessoa               = porteiroModel.pessoa;
+        ds.pessoa.endereco      = porteiroModel.endereco;
+        ds.usuario              = porteiroModel.usuario;
+        ds.id                   = porteiroModel.id;
+        
           if (ds.id) {
             return ds.$update();
           }

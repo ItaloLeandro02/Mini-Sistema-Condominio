@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
@@ -13,8 +14,17 @@ namespace api.Repository
         }
         public void Add(Porteiro porteiro)
         {
-            _context.Porteiro.Add(porteiro);
-            _context.SaveChanges();
+
+            porteiro.pessoa.Criacao        = DateTime.Now;
+            porteiro.pessoa.Digital        = Util.Util.geraDigital();
+
+            porteiro.usuario.Criacao       = DateTime.Now;
+            porteiro.usuario.Tipo          = 1;
+            porteiro.usuario.Desativado    = 0;
+
+                _context.Porteiro.Add(porteiro);
+            
+                    _context.SaveChanges();
         }
 
         public Porteiro Find(int id)

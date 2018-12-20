@@ -14,8 +14,10 @@ namespace api.Repository
         }
         public void Add(Condomino_Convidado convidado)
         {
-            _context.Condomino_Convidado.Add(convidado);
-            _context.SaveChanges();
+
+            convidado.Favorito = 0;
+                _context.Condomino_Convidado.Add(convidado);
+                    _context.SaveChanges();
         }
 
         public Condomino_Convidado Find(int id)
