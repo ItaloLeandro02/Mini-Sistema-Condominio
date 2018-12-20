@@ -43,26 +43,30 @@ namespace api.Controllers
             }
 
             [HttpPost]
-            public IActionResult Create([FromBody] Condomino condomino) {
+            public ActionResult<RetornoView<Condomino>> Create([FromBody] Condomino condomino) {
                 if (condomino == null) {
                     return BadRequest();
                 }
 
-            condomino.pessoa.Criacao        = DateTime.Now;
-            condomino.pessoa.Digital        = Util.Util.geraDigital();
+                condomino.pessoa.Criacao        = DateTime.Now;
+                condomino.pessoa.Digital        = Util.Util.geraDigital();
 
-            condomino.usuario.Criacao       = DateTime.Now;
-            condomino.usuario.Tipo          = 2;
-            condomino.usuario.Desativado    = 0;
+                condomino.usuario.Criacao       = DateTime.Now;
+                condomino.usuario.Tipo          = 2;
+                condomino.usuario.Desativado    = 0;
 
-                _condominoRepository.Add(condomino);
+                    _condominoRepository.Add(condomino);
 
-                return CreatedAtRoute("GetCondomino", new {id = condomino.Id, sucesso = true, data = condomino});
+                        IEnumerable<Condomino> data = new []{ condomino };
+
+                            var resultado  = new RetornoView<Condomino>() {data = data, sucesso = true};
+
+                                return CreatedAtRoute("GetCondomino", new {id = condomino.Id}, resultado);
             }
 
             [HttpPut("{id}")]
             public ActionResult<RetornoView<Condomino>> Update(int id, [FromBody] Condomino condomino) {
-                if (condomino == null /* || condomino.Id != id*/) {
+                if (condomino == null) {
                     return BadRequest();
                 }
 

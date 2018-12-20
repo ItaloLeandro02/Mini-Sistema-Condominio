@@ -15,10 +15,12 @@ angular.module('app.condomino')
     }
 
     condominoFactory.save = function(condominoModel) {
-        var ds             = new api.condomino();
+        var ds                          = new api.condomino();
             ds.pessoa                   = condominoModel.pessoa;
             ds.usuario                  = condominoModel.usuario;
             ds.endereco                 = condominoModel.enderecoCondomino; 
+            ds.id                       = condominoModel.id;
+            
                 if (ds.id) {
                     return ds.$update();
                 }
