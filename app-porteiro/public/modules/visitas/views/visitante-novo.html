@@ -12,7 +12,7 @@
             <label>Nome</label>
               <md-tooltip>Usuário</md-tooltip>
                 <md-icon md-svg-src="assets/img/user.svg"></md-icon>
-                  <input ng-init="vm.dataset.pessoa.nome=vm.nomeConvidado" ng-model="vm.dataset.pessoa.nome" ng-value= "vm.nomeConvidado"  type="text" ng-required="true">
+                  <input ng-init="vm.dataset.pessoa.nome = vm.nome_Convidado" ng-model="vm.dataset.pessoa.nome" ng-value= "vm.nome_Convidado"  type="text" ng-required="true">
           </md-input-container>
 
           <md-input-container class="md-block">
@@ -35,7 +35,7 @@
            <span flex></span>
             <md-tooltip>Condômino</md-tooltip>
               <md-icon md-svg-src="assets/img/user.svg" class="user"></md-icon>
-                <md-autocomplete required  ng-disabled="vm.dataset.condominoId"
+                <md-autocomplete required  ng-disabled="vm.dataset.condomino_Id"
                   ng-init= "vm.query.text=vm.dataset.condomino.pessoa.nome"
                   md-selected-item="vm.query.item"
                   md-input-maxlength="50" 

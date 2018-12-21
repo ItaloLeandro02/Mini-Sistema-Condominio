@@ -30,6 +30,12 @@
         }
       })
 
+      api.Novavisita   = $resource(api.baseUrl + 'visita/nova-visita/:id', {id : '@id'},
+        {update: {
+          method: 'PUT'
+        }
+      })
+
       api.atualizaVisitaSituacao   = $resource(api.baseUrl + 'visita/:id/situacao', {id : '@id'},
         {update: {
           method: 'PUT'

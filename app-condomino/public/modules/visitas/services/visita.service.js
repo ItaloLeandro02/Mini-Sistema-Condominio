@@ -18,20 +18,26 @@ angular.module('app.visita')
     }
 
     visitaFactory.save = function(visitaModel){
-        var ds                   = new api.visita();
-        ds.condomino_Id          = visitaModel.condominoId;
-        ds.condomino_Observacao  = visitaModel.condominoObservacao;
-        ds.data_Hora_Expiracao   = visitaModel.dataHoraExpiracao.toUTCString();
-        ds.data_Hora_Reserva     = visitaModel.dataHoraReserva.toUTCString();
-        ds.nome_Convidado        = visitaModel.nomeConvidado;
-        ds.pessoa_Id             = visitaModel.pessoaId;
 
-        ds.id                    = visitaModel.id;
-
-            if (ds.id) {
-            return ds.$update();
+        if (visitaModel.id) {
+            var ds  = new api.visita();
+        }
+            else {
+                var ds  = new api.Novavisita();
             }
-            return ds.$save();        
+        
+                ds.condomino_Id          = visitaModel.condomino_Id;
+                ds.condomino_Observacao  = visitaModel.condomino_Observacao;
+                ds.data_Hora_Expiracao   = visitaModel.data_Hora_Expiracao;
+                ds.data_Hora_Reserva     = visitaModel.data_Hora_Reserva;
+                ds.nome_Convidado        = visitaModel.nome_Convidado;
+                ds.pessoa_Id             = visitaModel.pessoa_Id;
+                ds.id                    = visitaModel.id;
+
+                    if (visitaModel.id) {
+                        return ds.$update();
+                    }
+                        return ds.$save();        
     }
 
     visitaFactory.getConvidados = function(condominoId, nomeConvidado) {       

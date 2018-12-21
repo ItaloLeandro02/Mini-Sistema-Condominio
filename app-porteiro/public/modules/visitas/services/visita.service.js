@@ -17,11 +17,14 @@ angular.module('app.visita')
     }
 
     visitaFactory.save = function(pessoaModel){
-        var ds      = new api.pessoa();
-        ds.pessoa   = pessoaModel;
-        return ds.$save().then(function(visitanteModel) {
-            console.log(visitanteModel)
-            return visitanteModel;
+        var ds              = new api.pessoa();
+        ds.nome             = pessoaModel.nome;
+        ds.cpf              = pessoaModel.cpf;
+        ds.nascimento       = pessoaModel.nascimento;
+        ds.endereco         = pessoaModel.endereco;
+
+            return ds.$save().then(function(visitanteModel) {
+                return visitanteModel;
         })        
     }
     
@@ -36,9 +39,11 @@ angular.module('app.visita')
     }
      
     visitaFactory.saveVisitante = function(convidadoModel) {
-        var ds               = new api.convidado();
-        ds.convidado         = convidadoModel;
-        return ds.$save();
+        var ds            = new api.convidado();
+        ds.pessoa_Id      = convidadoModel.pessoa_Id;
+        ds.condomino_Id   = convidadoModel.condomino_Id;
+        
+            return ds.$save();
     }
 
     visitaFactory.updateVisita = function(visitaModel) {

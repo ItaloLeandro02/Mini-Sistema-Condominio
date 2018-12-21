@@ -4443,7 +4443,7 @@
   },
   "libraries": {
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
-      "sha512": "owAlEIUZXWSnkK8Z1c+zR47A0X6ykF4XjbPok4lQKNuciUfHLGPd6QnI+rt/8KlQ17PmF+I4S3f+m+Qe4IvViw==",
+      "sha512": "AIgEc1up4pvH8kXy+eG1x4Qfqd6piAq3yk11pveCQXWNkkYoiKdflSmcJZuWcerdMcAaoF0xC/mWGoTW4vF4Dg==",
       "type": "package",
       "path": "microsoft.aspnet.webapi.client/5.2.6",
       "files": [
@@ -5741,7 +5741,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "2H5R37BVN9xU5j1eDGQ6SaDNM1wFajzrl0Z4GkoUDedrrmVM9/FFNIYarsdy+Gyks8sB6K9JUzzLBYOve+02uA==",
+      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "hasTools": true,
@@ -12081,30 +12081,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Adsoft developer\\.nuget\\packages\\": {},
+    "C:\\Users\\italo\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Adsoft developer\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
+      "projectUniqueName": "C:\\Users\\italo\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
       "projectName": "C#",
-      "projectPath": "C:\\Users\\Adsoft developer\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
-      "packagesPath": "C:\\Users\\Adsoft developer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Adsoft developer\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\obj\\",
+      "projectPath": "C:\\Users\\italo\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\C#.csproj",
+      "packagesPath": "C:\\Users\\italo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\italo\\Documents\\Mini-Sistema-Condominio\\Back-End\\C#\\api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Adsoft developer\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\italo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

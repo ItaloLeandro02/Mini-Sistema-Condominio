@@ -7,7 +7,7 @@
                         <md-button ng-click="vm.novoVisitante(vm.dataset)">
                             <md-icon md-svg-src="assets/img/warning.svg"></md-icon></md-icon>
                         </md-button>
-                            {{vm.dataset.nomeConvidado}} Não está cadastrado!
+                            {{vm.dataset.nome_Convidado}} Não está cadastrado!
                     </div>
         </div>
     </md-toolbar>
@@ -18,7 +18,7 @@
                     <div layout-gt-sm="row">
                         <md-input-container class="data-picker-alinhado-esquerda">
                             <label>Data</label>
-                                <md-datepicker ng-model="vm.dataset.dataHoraReserva" md-open-on-focus required ng-disabled="true"></md-datepicker>
+                                <md-datepicker ng-model="vm.dataset.data_Hora_Reserva" md-open-on-focus required ng-disabled="true"></md-datepicker>
                         </md-input-container>
 
                         <span flex></span>
@@ -27,7 +27,7 @@
                             <md-tooltip>Hora</md-tooltip>
                                 <md-icon md-svg-src="assets/img/clock.svg" aria-label="Close dialog"></md-icon>
                                     <label>Hora</label>
-                                        <input type="time" ng-model="vm.dataHora" ng-value="vm.dataset.dataHoraReserva | date: 'HH:mm'" ng-disabled="true">
+                                        <input type="time" ng-model="vm.dataHora" ng-value="vm.dataset.data_Hora_Reserva | date: 'HH:mm'" ng-disabled="true">
                         </md-input-container>
 
                     </div>
@@ -35,17 +35,17 @@
                     <div layout-gt-sm="row">
                     
                         <md-input-container>
-                            <md-tooltip>Visitante {{vm.dataset.nomeConvidado}}</md-tooltip>
+                            <md-tooltip>Visitante {{vm.dataset.nome_Convidado}}</md-tooltip>
                                 <md-icon md-svg-src="assets/img/user.svg" aria-label="Close dialog"></md-icon>
                                     <label>Visitante</label>
-                                        <input type="text" ng-model="vm.dataset.nomeConvidado" ng-disabled="true">
+                                        <input type="text" ng-model="vm.dataset.nome_Convidado" ng-disabled="true">
                         </md-input-container>
                     </div>
                         
             
                         <md-input-container class="md-block">
                             <label>Obeservação</label>
-                                <textarea ng-model="vm.dataset.condominoObservacao" ng-disabled="true"></textarea>
+                                <textarea ng-model="vm.dataset.condomino_Observacao" ng-disabled="true"></textarea>
                         </md-input-container>
 
                             <div>
@@ -62,7 +62,7 @@
 
                                 <md-input-container class="md-block">
                                     <label>Obeservação Portaria</label>
-                                        <textarea ng-model="vm.dataset.portariaObservacao" ng-required="vm.dataset.situacao == '5'"></textarea>
+                                        <textarea ng-model="vm.dataset.portaria_Observacao" ng-required="vm.dataset.situacao == '5'"></textarea>
                                 </md-input-container>
 
                                     <div layout="row" layout-align="center center">

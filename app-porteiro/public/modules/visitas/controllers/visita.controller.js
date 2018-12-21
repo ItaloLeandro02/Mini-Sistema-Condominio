@@ -17,7 +17,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
 
         vm.usuarioLogado    = $localStorage.usuarioLogado
         vm.dataset          = visitaRecord
-        vm.nomeConvidado    = vm.dataset.nomeConvidado
+        vm.nome_Convidado   = vm.dataset.nome_Convidado
 
 	}
 
@@ -100,8 +100,8 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             //Salvando dados Convidado
              var convidadoModel = {},
                  convidado = {
-                     pessoaId       : resposta.data.id,
-                     condominoId    : vm.dataset.condominoId
+                     pessoa_Id       : resposta.data.id,
+                     condomino_Id    : vm.dataset.condominoId
                  }
              
 

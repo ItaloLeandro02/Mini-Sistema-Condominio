@@ -98,13 +98,13 @@
             </div>
             
             <div layout="column" layout-align="start start">
-              <span class="font-size-18 texto-marcador negrito">Convidado: {{visita.nomeConvidado}}</span>
-              <span class="font-size-16 texto-branco">Agendamento: {{visita.dataHoraReserva | date : 'dd/MM/yyyy'}}</span>
-              <span class="font-size-16 texto-branco">Horário: {{visita.dataHoraReserva | date : 'HH:mm'}}</span>
-              <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'dd/MM/yyyy'}}</span>
-              <span class="font-size-16 texto-branco">Validade: {{visita.dataHoraExpiracao | date : 'HH:mm'}}</span>
-              <span class="font-size-16 texto-branco">Observação: {{visita.condominoObservacao ? visita.condominoObservacao : 'Nenhuma'}}</span>
-              <span class="font-size-16 texto-branco" ng-if="visita.portariaObservacao">Observação Portaria: {{visita.portariaObservacao}}</span>
+              <span class="font-size-18 texto-marcador negrito">Convidado: {{visita.nome_Convidado}}</span>
+              <span class="font-size-16 texto-branco">Agendamento: {{visita.data_Hora_Reserva | date : 'dd/MM/yyyy'}}</span>
+              <span class="font-size-16 texto-branco">Horário: {{visita.data_Hora_Reserva | date : 'HH:mm'}}</span>
+              <span class="font-size-16 texto-branco">Validade: {{visita.data_Hora_Expiracao | date : 'dd/MM/yyyy'}}</span>
+              <span class="font-size-16 texto-branco">Validade: {{visita.data_Hora_Expiracao | date : 'HH:mm'}}</span>
+              <span class="font-size-16 texto-branco">Observação: {{visita.condomino_Observacao ? visita.condomino_Observacao : 'Nenhuma'}}</span>
+              <span class="font-size-16 texto-branco" ng-if="visita.portariaObservacao">Observação Portaria: {{visita.portaria_Observacao}}</span>
               <span class="font-size-16 texto-branco">Situação: {{visita.situacao}}</span>
             </div>
           </div>

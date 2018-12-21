@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using api.Models;
 using api.Repository;
 using Microsoft.AspNetCore.Authorization;
@@ -18,8 +20,18 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Visita>> GetAll() {
-                var resultado = new RetornoView<Visita>() {data = _visitaRepository.GetAll(), sucesso = true};
-                    return resultado;
+                
+                string condominoId = HttpContext.Request.Query["condomino"];
+                int id = Convert.ToInt32(condominoId);
+
+                    if (!string.IsNullOrWhiteSpace(condominoId)) {
+                        var resultado = new RetornoView<Visita>() {data = _visitaRepository.GetAll().Where(x => x.Condomino_Id == id).ToList(), sucesso = true};
+                        return resultado;
+                    }
+                    else {
+                        var resultado = new RetornoView<Visita>() {data = _visitaRepository.GetAll(), sucesso = true};
+                            return resultado;
+                    }
             }
 
             [HttpGet("{id}", Name = "GetVisita")]
@@ -36,11 +48,15 @@ namespace api.Controllers
                         });
             }
 
-            [HttpPost]
+            [HttpPost("nova-visita")]
             public ActionResult<RetornoView<Visita>> Create([FromBody] Visita visita) {
                 if (visita == null) {
                     return BadRequest();
                 }
+
+                    visita.Portaria_Data_Hora_Chegada   = null;
+                    visita.Portaria_Observacao          = null;
+                    visita.Situacao                     = 1;
 
                     _visitaRepository.Add(visita);
 
@@ -53,7 +69,7 @@ namespace api.Controllers
 
             [HttpPut("{id}")]
             public ActionResult<RetornoView<Visita>> Update(int id, [FromBody] Visita visita) {
-                if (visita == null /* || visita.Id != id*/) {
+                if (visita == null  || visita.Id != id) {
                     return BadRequest();
                 }
 
@@ -68,13 +84,6 @@ namespace api.Controllers
                         _visita.Condomino_Observacao                    = visita.Condomino_Observacao;
                         _visita.Data_Hora_Expiracao                     = visita.Data_Hora_Expiracao;
                         _visita.Nome_Convidado                          = visita.Nome_Convidado;
-
-                        _visita.Situacao                                = visita.Situacao;
-
-                        _visita.Portaria_Data_Hora_Chegada              = visita.Portaria_Data_Hora_Chegada;
-                        _visita.Porteiro_Id                             = visita.Porteiro_Id;
-                        _visita.Portaria_Observacao                     = visita.Portaria_Observacao;
-
                  
                             _visitaRepository.Update(_visita);
 

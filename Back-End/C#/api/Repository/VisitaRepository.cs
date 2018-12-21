@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -13,23 +14,27 @@ namespace api.Repository
         public void Add(Visita visita)
         {
 
-            visita.Portaria_Data_Hora_Chegada   = null;
-            visita.Portaria_Observacao          = null;
-            visita.Situacao                     = 1;
-
-                _context.Visita.Add(visita);
-            
-                    _context.SaveChanges();
+            _context.Visita.Add(visita);
+        
+                _context.SaveChanges();
         }
 
         public Visita Find(int id)
         {
-            return _context.Visita.FirstOrDefault(u => u.Id == id);
+            return _context.Visita
+            .Include(p => p.pessoa)
+            .Include(c => c.condomino)
+            .ThenInclude(p => p.pessoa)
+            .FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<Visita> GetAll()
         {
-            return _context.Visita.ToList();
+            return _context.Visita
+            .Include(p => p.pessoa)
+            .Include(c => c.condomino)
+            .ThenInclude(p => p.pessoa)
+            .ToList();
         }
 
         public void Remove(int id)

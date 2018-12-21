@@ -22,7 +22,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
                         vm.query.item = vm.dataset;
                     }
                     else {
-                        vm.query.text = vm.dataset.nomeConvidado;
+                        vm.query.text = vm.dataset.nome_Convidado;
                     }
                 
             })
@@ -49,34 +49,34 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
 
         vm.dataHora                 = new Date(vm.dataHora)
 
-        vm.dataset.dataHoraReserva  = new Date(vm.dataset.dataHoraReserva)
-    	vm.dataset.dataHoraReserva.setHours(vm.dataHora.getHours())
-    	vm.dataset.dataHoraReserva.setMinutes(vm.dataHora.getMinutes())
+        vm.dataset.data_Hora_Reserva  = new Date(vm.dataset.data_Hora_Reserva)
+    	vm.dataset.data_Hora_Reserva.setHours(vm.dataHora.getHours())
+    	vm.dataset.data_Hora_Reserva.setMinutes(vm.dataHora.getMinutes())
 
 
-        validade                    = new Date(vm.dataset.dataHoraReserva)
-        vm.dataset.nomeConvidado    = vm.query.text;
+        validade                    = new Date(vm.dataset.data_Hora_Reserva)
+        vm.dataset.nome_Convidado    = vm.query.text;
         
 
         if (vm.query.item) {
             
-            vm.dataset.pessoaId     = vm.query.item.pessoa ? vm.query.item.pessoa.id : null;
+            vm.dataset.pessoa_Id     = vm.query.item.pessoa ? vm.query.item.pessoa.id : null;
         } 
         else {
-            vm.dataset.pessoaId = null
+            vm.dataset.pessoa_Id = null
         }
         
-		validade.setHours(vm.dataset.dataHoraReserva.getHours() + 4)
-        validade.setMinutes(vm.dataset.dataHoraReserva.getMinutes())
+		validade.setHours(vm.dataset.data_Hora_Reserva.getHours() + 4)
+        validade.setMinutes(vm.dataset.data_Hora_Reserva.getMinutes())
         
         var visitaModel = {},
                 visita = {
-                    condominoId 			: $localStorage.usuarioLogado.condomino.id,
-                    pessoaId    			: vm.dataset.pessoaId,
-                    dataHoraReserva			: vm.dataset.dataHoraReserva,
-                    dataHoraExpiracao		: validade, 			
-                    nomeConvidado			: vm.dataset.nomeConvidado,
-                    condominoObservacao		: vm.dataset.condominoObservacao
+                    condomino_Id 			: $localStorage.usuarioLogado.condomino.id,
+                    pessoa_Id    			: vm.dataset.pessoa_Id,
+                    data_Hora_Reserva	    : vm.dataset.data_Hora_Reserva,
+                    data_Hora_Expiracao		: validade, 			
+                    nome_Convidado			: vm.dataset.nome_Convidado,
+                    condomino_Observacao	: vm.dataset.condomino_Observacao
                 }
 
         
@@ -117,7 +117,6 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     }
 
     function dados(convidado) {
-        console.log(convidado)
         vm.query.item               = angular.copy(convidado),
         vm.query.text               = convidado.pessoa.nome;
     }

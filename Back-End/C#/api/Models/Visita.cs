@@ -12,7 +12,7 @@ namespace api.Models
         public virtual Condomino condomino { get; set; }
 
         [ForeignKey("pessoa")]
-        public int Pessoa_Id { get; set; }
+        public int? Pessoa_Id { get; set; }
         public virtual Pessoa pessoa { get; set; }
         public DateTime? Data_Hora_Reserva { get; set; }
         public string Nome_Convidado { get; set; }

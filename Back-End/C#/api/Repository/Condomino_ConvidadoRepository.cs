@@ -14,20 +14,24 @@ namespace api.Repository
         }
         public void Add(Condomino_Convidado convidado)
         {
-
-            convidado.Favorito = 0;
-                _context.Condomino_Convidado.Add(convidado);
-                    _context.SaveChanges();
+            _context.Condomino_Convidado.Add(convidado);
+                _context.SaveChanges();
         }
 
         public Condomino_Convidado Find(int id)
         {
-            return _context.Condomino_Convidado.Include(p => p.pessoa).ThenInclude(e => e.endereco).FirstOrDefault(u =>u.Id == id);
+            return _context.Condomino_Convidado
+            .Include(p => p.pessoa)
+            .ThenInclude(e => e.endereco)
+            .FirstOrDefault(u =>u.Id == id);
         }
 
         public IEnumerable<Condomino_Convidado> GetAll()
         {
-            return _context.Condomino_Convidado.Include(p => p.pessoa).ThenInclude(e => e.endereco).ToList() ?? Enumerable.Empty<Condomino_Convidado>();
+            return _context.Condomino_Convidado
+            .Include(p => p.pessoa)
+            .ThenInclude(e => e.endereco)
+            .ToList() ?? Enumerable.Empty<Condomino_Convidado>();
         }
 
         public void Remove(int id)

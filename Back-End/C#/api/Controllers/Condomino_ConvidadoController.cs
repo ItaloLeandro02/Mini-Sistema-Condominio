@@ -21,15 +21,23 @@ namespace api.Controllers
             [HttpGet]
             public ActionResult<RetornoView<Condomino_Convidado>> GetAll() {
                string condominoId   = HttpContext.Request.Query["condomino"];
+               int id               = Convert.ToInt32(condominoId); 
                string nomeConvidado = HttpContext.Request.Query["convidado"];
 
                     if (!string.IsNullOrWhiteSpace(condominoId) && !string.IsNullOrWhiteSpace(nomeConvidado)) {
-                        var resultado = new RetornoView<Condomino_Convidado>() {data = _convidadoRepository.GetAll().Where(x => x.pessoa.Nome.Contains(nomeConvidado, StringComparison.OrdinalIgnoreCase)).ToList(), sucesso = true};
+                        var resultado = new RetornoView<Condomino_Convidado>() {data = _convidadoRepository
+                        .GetAll()
+                        .Where(x => x.pessoa.Nome
+                        .Contains(nomeConvidado, StringComparison.OrdinalIgnoreCase))
+                        .Where(c => c.Condomino_Id == id)
+                        .ToList(), sucesso = true};
                         return resultado;
                     }
 
                         else if (!string.IsNullOrWhiteSpace(condominoId)) {
-                            var resultado = new RetornoView<Condomino_Convidado>() {data = _convidadoRepository.GetAll().Where(x => x.pessoa.Nome.Contains(nomeConvidado, StringComparison.OrdinalIgnoreCase)).ToList(), sucesso = true};
+                            var resultado = new RetornoView<Condomino_Convidado>() {data = _convidadoRepository.GetAll()
+                            .Where(c => c.Condomino_Id == id)
+                            .ToList(), sucesso = true};
                             return resultado;
                         }
                             else {
@@ -58,13 +66,15 @@ namespace api.Controllers
                     return BadRequest();
                 }
 
-                    _convidadoRepository.Add(convidado);
+                    convidado.Favorito = 0;
 
-                        IEnumerable<Condomino_Convidado> data = new []{ convidado };
+                        _convidadoRepository.Add(convidado);
 
-                            var resultado  = new RetornoView<Condomino_Convidado>() {data = data, sucesso = true};
+                            IEnumerable<Condomino_Convidado> data = new []{ convidado };
 
-                                return CreatedAtRoute("GetCondomino", new {id = convidado.Id}, resultado);
+                                var resultado  = new RetornoView<Condomino_Convidado>() {data = data, sucesso = true};
+
+                                    return CreatedAtRoute("GetCondomino", new {id = convidado.Id}, resultado);
             }
 
             [HttpPut("{id}")]
