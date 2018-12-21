@@ -24,12 +24,20 @@ namespace api.Controllers
                 string nome = HttpContext.Request.Query["search"];
 
                     if (!string.IsNullOrWhiteSpace(nome)) {
-                        var resultado = new RetornoView<Condomino>() {data = _condominoRepository.GetAll().Where(x => x.pessoa.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)).ToList(), sucesso = true};
-                        return resultado;
+                       return Ok(
+                           new {
+                               data = _condominoRepository
+                               .GetAll()
+                               .Where(x => x.pessoa.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase))
+                               .ToList(),
+                               sucesso = true
+                            });
                     }
                     else {
-                        var resultado = new RetornoView<Condomino>() {data = _condominoRepository.GetAll(), sucesso = true};
-                        return resultado;
+                        return Ok(
+                            new {
+                                data = _condominoRepository.GetAll(), sucesso = true
+                            });
                     }
             }
 
@@ -54,11 +62,9 @@ namespace api.Controllers
                 }
                     _condominoRepository.Add(condomino);
 
-                        IEnumerable<Condomino> data = new []{ condomino };
+                        var resultado  = new RetornoView<Condomino>() {data = condomino, sucesso = true};
 
-                            var resultado  = new RetornoView<Condomino>() {data = data, sucesso = true};
-
-                                return CreatedAtRoute("GetCondomino", new {id = condomino.Id}, resultado);
+                            return CreatedAtRoute("GetCondomino", new {id = condomino.Id}, resultado);
             }
 
             [HttpPut("{id}")]
@@ -81,11 +87,9 @@ namespace api.Controllers
 
                                 _condominoRepository.Update(_condomino);
 
-                                    IEnumerable<Condomino> data = new []{ _condomino };
+                                    var resultado = new RetornoView<Condomino>() {data = _condomino, sucesso = true};
 
-                                        var resultado = new RetornoView<Condomino>() {data = data, sucesso = true};
-
-                                            return resultado;
+                                        return resultado;
             }
 
             [HttpDelete("{id}")]

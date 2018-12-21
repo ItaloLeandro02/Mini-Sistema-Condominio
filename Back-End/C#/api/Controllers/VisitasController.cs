@@ -25,12 +25,21 @@ namespace api.Controllers
                 int id = Convert.ToInt32(condominoId);
 
                     if (!string.IsNullOrWhiteSpace(condominoId)) {
-                        var resultado = new RetornoView<Visita>() {data = _visitaRepository.GetAll().Where(x => x.Condomino_Id == id).ToList(), sucesso = true};
-                        return resultado;
+                       return Ok(
+                           new { 
+                               data = _visitaRepository
+                               .GetAll()
+                               .Where(x => x.Condomino_Id == id)
+                               .ToList(),
+                               sucesso = true
+                            });
                     }
                     else {
-                        var resultado = new RetornoView<Visita>() {data = _visitaRepository.GetAll(), sucesso = true};
-                            return resultado;
+                        return Ok(
+                            new {
+                                data = _visitaRepository.GetAll(),
+                                sucesso = true
+                            });
                     }
             }
 
@@ -60,11 +69,9 @@ namespace api.Controllers
 
                     _visitaRepository.Add(visita);
 
-                        IEnumerable<Visita> data = new []{ visita };
+                        var resultado  = new RetornoView<Visita>() {data = visita, sucesso = true};
 
-                            var resultado  = new RetornoView<Visita>() {data = data, sucesso = true};
-
-                                return CreatedAtRoute("GetVisita", new {id = visita.Id}, resultado);
+                            return CreatedAtRoute("GetVisita", new {id = visita.Id}, resultado);
             }
 
             [HttpPut("{id}")]
@@ -87,9 +94,76 @@ namespace api.Controllers
                  
                             _visitaRepository.Update(_visita);
 
-                                IEnumerable<Visita> data = new []{ _visita };
+                                var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
 
-                                        var resultado = new RetornoView<Visita>() {data = data, sucesso = true};
+                                    return resultado;
+            }
+
+            [HttpPut("{id}/pessoa")]
+            public ActionResult<RetornoView<Visita>> UpdatePessoa(int id, [FromBody] Visita visita) {
+                
+                    if (visita == null  || visita.Id != id) {
+                        return BadRequest();
+                    }
+                    
+                        var _visita = _visitaRepository.Find(id);
+                          
+                            if (_visita == null) {
+                                return NotFound();
+                            }
+
+                                _visita.Pessoa_Id                               = visita.Pessoa_Id;
+                                _visita.Nome_Convidado                          = visita.Nome_Convidado;
+                        
+                                    _visitaRepository.Update(_visita);
+
+                                        var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
+
+                                            return resultado;
+            }
+
+            [HttpPut("{id}/portaria")]
+            public ActionResult<RetornoView<Visita>> UpdatePortaria(int id, [FromBody] Visita visita) {
+                
+                    if (visita == null  || visita.Id != id) {
+                        return BadRequest();
+                    }
+                    
+                        var _visita = _visitaRepository.Find(id);
+                          
+                            if (_visita == null) {
+                                return NotFound();
+                            }
+
+                                _visita.Portaria_Data_Hora_Chegada        = visita.Portaria_Data_Hora_Chegada;
+                                _visita.Portaria_Observacao               = visita.Portaria_Observacao;
+                                _visita.Porteiro_Id                       = visita.Porteiro_Id;
+                                _visita.Situacao                          = visita.Situacao;
+                        
+                                    _visitaRepository.Update(_visita);
+
+                                        var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
+
+                                            return resultado;
+            }
+
+            [HttpPut("{id}/situacao")]
+            public ActionResult<RetornoView<Visita>> UpdateSituacao(int id, [FromBody] Visita visita) {
+                
+                    if (visita == null  || visita.Id != id) {
+                        return BadRequest();
+                    }
+                    
+                        var _visita = _visitaRepository.Find(id);
+                          
+                            if (_visita == null) {
+                                return NotFound();
+                            }
+                                _visita.Situacao                          = visita.Situacao;
+                        
+                                    _visitaRepository.Update(_visita);
+
+                                        var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
 
                                             return resultado;
             }

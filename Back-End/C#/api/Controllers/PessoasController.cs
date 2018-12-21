@@ -18,8 +18,10 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Pessoa>> GetAll() {
-                var resultado = new RetornoView<Pessoa>() {data = _pessoaRepository.GetAll(), sucesso = true};
-                    return resultado;
+                return Ok( new {
+                   data = _pessoaRepository.GetAll(), 
+                   sucesso = true
+                });
             }
 
             [HttpGet("{id}", Name = "GetPessoa")]
@@ -44,9 +46,7 @@ namespace api.Controllers
 
                     _pessoaRepository.Add(pessoa);
 
-                        IEnumerable<Pessoa> data = new []{ pessoa };
-
-                            var resultado  = new RetornoView<Pessoa>() {data = data, sucesso = true};
+                            var resultado  = new RetornoView<Pessoa>() {data = pessoa, sucesso = true};
 
                                 return CreatedAtRoute("GetCondomino", new {id = pessoa.Id}, resultado);
             }
@@ -74,11 +74,9 @@ namespace api.Controllers
                  
                         _pessoaRepository.Update(_pessoa);
 
-                            IEnumerable<Pessoa> data = new []{ _pessoa };
+                            var resultado = new RetornoView<Pessoa>() {data = _pessoa, sucesso = true};
 
-                                    var resultado = new RetornoView<Pessoa>() {data = data, sucesso = true};
-
-                                        return resultado;
+                                return resultado;
             }
 
             [HttpDelete("{id}")]

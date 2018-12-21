@@ -18,8 +18,10 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Endereco>> GetAll() {
-                var resultado = new RetornoView<Endereco>() {data = _enderecoRepository.GetAll(), sucesso = true};
-                    return resultado;
+                return Ok(
+                    new {
+                        data = _enderecoRepository.GetAll(), sucesso = true
+                    });
             }
 
             [HttpGet("{id}", Name = "GetEndereco")]
@@ -44,11 +46,9 @@ namespace api.Controllers
 
                     _enderecoRepository.Add(endereco);
 
-                        IEnumerable<Endereco> data = new []{ endereco };
+                        var resultado  = new RetornoView<Endereco>() {data = endereco, sucesso = true};
 
-                            var resultado  = new RetornoView<Endereco>() {data = data, sucesso = true};
-
-                                    return CreatedAtRoute("GetEndereco", new {id = endereco.Id}, resultado);
+                                return CreatedAtRoute("GetEndereco", new {id = endereco.Id}, resultado);
             }
 
             [HttpPut("{id}")]
@@ -71,11 +71,9 @@ namespace api.Controllers
                  
                             _enderecoRepository.Update(_endereco);
 
-                                IEnumerable<Endereco> data = new []{ _endereco };
+                                var resultado = new RetornoView<Endereco>() {data = _endereco, sucesso = true};
 
-                                    var resultado = new RetornoView<Endereco>() {data = data, sucesso = true};
-
-                                        return resultado;
+                                    return resultado;
             }
 
             [HttpDelete("{id}")]

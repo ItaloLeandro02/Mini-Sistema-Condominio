@@ -36,12 +36,12 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             return
         } 
         
-       vm.dataset.dataHoraChegada  = new Date()
+       vm.dataset.portaria_Data_Hora_Chegada  = new Date()
         var visitaModel = {
                 situacao 			        : vm.dataset.situacao,
-                porteiroId    			    : $localStorage.usuarioLogado.porteiro.id,
-                portariaDataHoraChegada	    : vm.dataset.dataHoraChegada,
-                portariaObservacao		    : vm.dataset.portariaObservacao		
+                porteiro_Id    			    : $localStorage.usuarioLogado.porteiro.id,
+                portaria_Data_Hora_Chegada	: vm.dataset.portaria_Data_Hora_Chegada,
+                portaria_Observacao		    : vm.dataset.portaria_Observacao		
             }
 
         visitaModel.id  = visitaRecord.id
@@ -89,7 +89,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
                     uf                      : vm.dataset.endereco.uf
                 }
 
-        nomeVisitante           = vm.dataset.pessoa.nome;
+        nome_Visitante           = vm.dataset.pessoa.nome;
         pessoaModel             = pessoa;
         pessoaModel.endereco    = endereco;
        
@@ -101,7 +101,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
              var convidadoModel = {},
                  convidado = {
                      pessoa_Id       : resposta.data.id,
-                     condomino_Id    : vm.dataset.condominoId
+                     condomino_Id    : vm.dataset.condomino_Id
                  }
              
 
@@ -112,8 +112,8 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
              .then(function(pessoaModel) {
                  var visitaModel = {},
                      visita = {
-                         pessoaId       : pessoaModel.data.pessoaId,
-                         nomeConvidado  : nomeVisitante
+                         pessoa_Id       : pessoaModel.data.pessoa_Id,
+                         nome_Convidado  : nome_Visitante
                      }
 
                   visitaModel       = visita;

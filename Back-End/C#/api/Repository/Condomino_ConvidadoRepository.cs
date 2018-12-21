@@ -21,6 +21,8 @@ namespace api.Repository
         public Condomino_Convidado Find(int id)
         {
             return _context.Condomino_Convidado
+            .Include(c => c.condomino)
+            .ThenInclude(f => f.pessoa)
             .Include(p => p.pessoa)
             .ThenInclude(e => e.endereco)
             .FirstOrDefault(u =>u.Id == id);
@@ -29,6 +31,8 @@ namespace api.Repository
         public IEnumerable<Condomino_Convidado> GetAll()
         {
             return _context.Condomino_Convidado
+            .Include(c => c.condomino)
+            .ThenInclude(f => f.pessoa)
             .Include(p => p.pessoa)
             .ThenInclude(e => e.endereco)
             .ToList() ?? Enumerable.Empty<Condomino_Convidado>();

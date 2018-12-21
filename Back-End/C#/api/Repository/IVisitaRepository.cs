@@ -10,5 +10,6 @@ namespace api.Repository
          Visita Find(int id);
          void Remove(int id);
          void Update(Visita visita);
+         
     }
 }

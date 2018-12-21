@@ -23,12 +23,21 @@ namespace api.Controllers
                string nome = HttpContext.Request.Query["nomePorteiro"];
 
                     if (!string.IsNullOrWhiteSpace(nome)) {
-                        var resultado = new RetornoView<Porteiro>() {data = _porteiroRepository.GetAll().Where(x => x.pessoa.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase)).ToList(), sucesso = true};
-                        return resultado;
+                        return Ok(
+                            new {
+                                data = _porteiroRepository
+                                .GetAll()
+                                .Where(x => x.pessoa.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase))
+                                .ToList(),
+                                sucesso = true
+                            });
                     }
                     else {
-                        var resultado = new RetornoView<Porteiro>() {data = _porteiroRepository.GetAll(), sucesso = true};
-                            return resultado;
+                        return Ok(
+                            new {
+                                data = _porteiroRepository.GetAll(),
+                                sucesso = true
+                            });
                     }
             }
 
@@ -54,11 +63,9 @@ namespace api.Controllers
 
                 _porteiroRepository.Add(porteiro);
 
-                    IEnumerable<Porteiro> data = new []{ porteiro };
+                    var resultado  = new RetornoView<Porteiro>() {data = porteiro, sucesso = true};
 
-                        var resultado  = new RetornoView<Porteiro>() {data = data, sucesso = true};
-
-                            return CreatedAtRoute("GetPorteiro", new {id = porteiro.Id}, resultado);
+                        return CreatedAtRoute("GetPorteiro", new {id = porteiro.Id}, resultado);
             }
 
             [HttpPut("{id}")]
@@ -86,9 +93,7 @@ namespace api.Controllers
 
                                 _porteiroRepository.Update(_porteiro);
 
-                                    IEnumerable<Porteiro> data = new []{ _porteiro };
-
-                                        var resultado = new RetornoView<Porteiro>() {data = data, sucesso = true};
+                                        var resultado = new RetornoView<Porteiro>() {data = _porteiro, sucesso = true};
 
                                             return resultado;
             }

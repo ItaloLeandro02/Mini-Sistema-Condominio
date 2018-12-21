@@ -3,7 +3,7 @@
         <div class="md-toolbar-tools">
             <h2 class="texto-branco">Dados Visita</h2>
                 <span flex></span>
-                    <div class="texto-erro"  ng-show="!vm.dataset.pessoaId">
+                    <div class="texto-erro"  ng-show="!vm.dataset.pessoa_Id">
                         <md-button ng-click="vm.novoVisitante(vm.dataset)">
                             <md-icon md-svg-src="assets/img/warning.svg"></md-icon></md-icon>
                         </md-button>
@@ -66,7 +66,7 @@
                                 </md-input-container>
 
                                     <div layout="row" layout-align="center center">
-                                        <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary"  ng-disabled="!vm.dataset.pessoaId">
+                                        <md-button type="submit" ng-click="vm.form.$valid && vm.salvaVisita()" class="md-fab md-primary"  ng-disabled="!vm.dataset.pessoa_Id">
                                             <md-tooltip>Salvar</md-tooltip>
                                                 <md-icon md-svg-src="assets/img/save.svg"></md-icon>
                                         </md-button>

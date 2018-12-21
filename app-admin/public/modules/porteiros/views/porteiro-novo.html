@@ -101,15 +101,13 @@
 
       </md-content>
 
-        <div>
-          <center>
-            <md-button type="reset" class="md-warn">Limpar</md-button>
-              <span flex></span>
-                <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPorteiro()" class="md-fab md-primary" aria-label="Salvar Dados">
-                  <md-tooltip>Salvar</md-tooltip>
-                    <md-icon md-svg-src="assets/img/save.svg"></md-icon>
-                 </md-button>
-          </center>
+        <div layout="row" layout-align="center center">
+          <md-button type="reset" class="md-warn">Limpar</md-button>
+            <span flex></span>
+              <md-button type="submit" ng-click="vm.form.$valid && vm.salvaPorteiro()" class="md-fab md-primary" aria-label="Salvar Dados">
+                <md-tooltip>Salvar</md-tooltip>
+                  <md-icon md-svg-src="assets/img/save.svg"></md-icon>
+                </md-button>
         </div>
         
   </form>

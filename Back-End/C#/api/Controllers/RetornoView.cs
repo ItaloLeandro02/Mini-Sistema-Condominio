@@ -7,7 +7,7 @@ namespace api.Controllers
 
         public bool sucesso { get; set; }
 
-        public IEnumerable<T> data { get; set; }
+        public T data { get; set; }
 
     }
 }

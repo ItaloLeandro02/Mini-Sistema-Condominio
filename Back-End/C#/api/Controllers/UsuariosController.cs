@@ -18,8 +18,10 @@ namespace api.Controllers
 
             [HttpGet]
             public ActionResult<RetornoView<Usuario>> GetAll() {
-                var resultado = new RetornoView<Usuario>() {data = _usuarioRepository.GetAll(), sucesso = true};
-                    return Ok(resultado);
+                return Ok( 
+                    new {
+                        data = _usuarioRepository.GetAll(),
+                        sucesso = true});
             }
 
             [HttpGet("{id}", Name = "GetUsuario")]
@@ -44,11 +46,9 @@ namespace api.Controllers
 
                     _usuarioRepository.Add(usuario);
 
-                        IEnumerable<Usuario> data = new []{ usuario };
+                        var resultado  = new RetornoView<Usuario>() {data = usuario, sucesso = true};
 
-                            var resultado  = new RetornoView<Usuario>() {data = data, sucesso = true};
-
-                                return CreatedAtRoute("GetCondomino", new {id = usuario.Id}, resultado);
+                            return CreatedAtRoute("GetCondomino", new {id = usuario.Id}, resultado);
             }
 
             [HttpPut("{id}")]
@@ -68,11 +68,9 @@ namespace api.Controllers
                  
                                 _usuarioRepository.Update(_usuario);
 
-                                    IEnumerable<Usuario> data = new []{ _usuario };
+                                    var resultado = new RetornoView<Usuario>() {data = _usuario, sucesso = true};
 
-                                        var resultado = new RetornoView<Usuario>() {data = data, sucesso = true};
-
-                                            return resultado;            }
+                                        return resultado;            }
 
             [HttpDelete("{id}")]
             public ActionResult<RetornoView<Usuario>> Delete(int id) {

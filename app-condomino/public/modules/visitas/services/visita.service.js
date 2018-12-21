@@ -52,16 +52,17 @@ angular.module('app.visita')
 
     visitaFactory.favorita = function(convidadoModel) {
         var ds         = new api.convidado();
-        ds.id          = convidadoModel.id,
-        ds.convidado   = convidadoModel
-        return ds.$update();
+        ds.id          = convidadoModel.id;
+        ds.favorito    = convidadoModel.favorito;
+            return ds.$update();
     }
 
     visitaFactory.updateVisitaSituacao = function(visitaModel) {
-        var ds      = new api.atualizaVisitaSituacao();
-        ds.id       = visitaModel.id;
-        ds.visita   = visitaModel;
-        return ds.$update();
+        var ds          = new api.atualizaVisitaSituacao();
+        ds.id           = visitaModel.id;
+        ds.situacao     = visitaModel.situacao;
+        
+            return ds.$update();
     }
 
 

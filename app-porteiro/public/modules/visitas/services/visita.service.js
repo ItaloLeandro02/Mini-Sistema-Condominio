@@ -47,30 +47,37 @@ angular.module('app.visita')
     }
 
     visitaFactory.updateVisita = function(visitaModel) {
-        var ds      = new api.atualizaVisitaPessoa();
-        ds.id       = visitaModel.id;
-        ds.visita   = visitaModel;
-        return ds.$update();
+        var ds                  = new api.atualizaVisitaPessoa();
+        ds.nome_Convidado       = visitaModel.nome_Convidado;
+        ds.pessoa_Id            = visitaModel.pessoa_Id;
+        ds.id                   = visitaModel.id;
+    
+            return ds.$update();
     }
 
     visitaFactory.updateVisitaPortaria = function(visitaModel) {
-        var ds      = new api.atualizaVisitaPortaria();
-        ds.id       = visitaModel.id;
-        ds.visita   = visitaModel;
-        return ds.$update();
+        var ds                          = new api.atualizaVisitaPortaria();
+        ds.id                           = visitaModel.id;
+        ds.situacao                     = visitaModel.situacao;
+        ds.porteiro_Id                  = visitaModel.porteiro_Id;
+        ds.portaria_Data_Hora_Chegada   = visitaModel.portaria_Data_Hora_Chegada;
+        ds.portaria_Observacao          = visitaModel.portaria_Observacao;
+        
+            return ds.$update();
     }
 
     visitaFactory.updateVisitaSituacao = function(visitaModel) {
-        var ds      = new api.atualizaVisitaSituacao();
-        ds.id       = visitaModel.id;
-        ds.visita   = visitaModel;
-        return ds.$update();
+         var ds         = new api.atualizaVisitaSituacao();
+         ds.id          = visitaModel.id;
+         ds.situacao    = visitaModel.situacao;
+            
+            return ds.$update();
     }
 
     visitaFactory.getVisitasCondomino = function(condominoId) {
         /// Modelo de consumo da api
         var ds = new api.visita();
-        return ds.$get({condomino : condominoId});
+            return ds.$get({condomino : condominoId});
     }
 
     visitaFactory.login = function(email, senha) {

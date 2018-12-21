@@ -11,9 +11,11 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
     
     function init(){
 
-        vm.dataset.dataHoraReserva  = new Date();
-        vm.dataHora                 = new Date();
-        
+        vm.dataset.data_Hora_Reserva  = new Date();
+        vm.dataHora                   = new Date();
+        //vm.dataHora.setTime(vm.dataHora.getTime() + vm.dataHora.getTimezoneOffset() * 60 * 1000)
+        vm.dataHora.setHours(vm.dataHora.getHours() -1)
+
         if (visitaId) {
             visitaService.getById(visitaId).then(function(visitaModel){
                 vm.dataset = visitaModel.data
@@ -24,7 +26,6 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
                     else {
                         vm.query.text = vm.dataset.nome_Convidado;
                     }
-                
             })
         }
         
@@ -127,7 +128,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
                 return
         }
 
-        convidado.favorito = true;
+        convidado.favorito = 1;
 
         visitaService.favorita(convidado)
         .then(function(resposta){
@@ -146,7 +147,7 @@ function VisitaController(visitaService, visitaId, $localStorage, $state) {
                 return
         }
 
-        convidado.favorito = false;
+        convidado.favorito = 0;
 
         visitaService.favorita(convidado)
         .then(function(resposta){

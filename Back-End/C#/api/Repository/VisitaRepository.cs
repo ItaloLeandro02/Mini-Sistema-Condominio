@@ -49,5 +49,6 @@ namespace api.Repository
             _context.Visita.Update(visita);
             _context.SaveChanges();
         }
+        
     }
 }
