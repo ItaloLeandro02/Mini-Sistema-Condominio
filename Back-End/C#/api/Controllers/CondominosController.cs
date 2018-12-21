@@ -36,7 +36,8 @@ namespace api.Controllers
                     else {
                         return Ok(
                             new {
-                                data = _condominoRepository.GetAll(), sucesso = true
+                                data = _condominoRepository.GetAll(), 
+                                sucesso = true
                             });
                     }
             }
@@ -48,28 +49,42 @@ namespace api.Controllers
                     if (condomino == null) {
                         return NotFound();
                     }
-
-                        return Ok( new {
-                            data    = condomino,
-                            sucesso = true
-                        });
+                    
+                        return condomino;
             }
 
             [HttpPost]
             public ActionResult<RetornoView<Condomino>> Create([FromBody] Condomino condomino) {
                 if (condomino == null) {
                     return BadRequest();
-                }
+                }            
+
+                    condomino.pessoa.Criacao        = DateTime.Now;
+                    condomino.pessoa.Digital        = Util.Util.geraDigital();
+
+                    condomino.usuario.Criacao       = DateTime.Now;
+                    condomino.usuario.Tipo          = 2;
+                    condomino.usuario.Desativado    = 0;
+
                     _condominoRepository.Add(condomino);
 
-                        var resultado  = new RetornoView<Condomino>() {data = condomino, sucesso = true};
+                        if (condomino.Id > 0) {
 
-                            return CreatedAtRoute("GetCondomino", new {id = condomino.Id}, resultado);
+                            var resultado  = new RetornoView<Condomino>() {data = condomino, sucesso = true};
+
+                                return CreatedAtRoute("GetCondomino", new {id = condomino.Id}, resultado);
+                        }
+
+                        else {
+
+                            var resultado  = new RetornoView<Condomino>() {data = {}, sucesso = false};
+                                return BadRequest(resultado);
+                        }
             }
 
             [HttpPut("{id}")]
             public ActionResult<RetornoView<Condomino>> Update(int id, [FromBody] Condomino condomino) {
-                if (condomino == null || condomino.Id != id) {
+                if (condomino == null) {
                     return BadRequest();
                 }
 
@@ -82,12 +97,12 @@ namespace api.Controllers
                             _condomino.pessoa.Nome          = condomino.pessoa.Nome;
                             _condomino.pessoa.Nascimento    = condomino.pessoa.Nascimento;
 
-                            _condomino.usuario.Email        = condomino.usuario.Email;
-                            _condomino.Endereco             = condomino.Endereco;
+                            // _condomino.usuario.Email        = condomino.usuario.Email;
+                            // _condomino.Endereco             = condomino.Endereco;
 
                                 _condominoRepository.Update(_condomino);
 
-                                    var resultado = new RetornoView<Condomino>() {data = _condomino, sucesso = true};
+                                    var resultado = new RetornoView<Condomino>() { sucesso = true};
 
                                         return resultado;
             }

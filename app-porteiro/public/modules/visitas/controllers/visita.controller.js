@@ -37,6 +37,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
         } 
         
        vm.dataset.portaria_Data_Hora_Chegada  = new Date()
+       
         var visitaModel = {
                 situacao 			        : vm.dataset.situacao,
                 porteiro_Id    			    : $localStorage.usuarioLogado.porteiro.id,
@@ -65,10 +66,11 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
     }
 
     function salvaVisitante() {
+        
         if (vm.query.item) {
             vm.dataset.condominoId = vm.query.item.id;
         }
-        console.log(vm.query)
+
         if (vm.form.$invalid) {
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
             return
@@ -76,7 +78,6 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
 
         var pessoaModel = {},
                 pessoa = {
-                    //condominoId 			: $localStorage.condomino.id,
                     nome                    : vm.dataset.pessoa.nome,
                     cpf                     : vm.dataset.pessoa.cpf,
                     nascimento              : vm.dataset.pessoa.nascimento,
@@ -95,37 +96,36 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
        
 		visitaService.save(pessoaModel)
 		.then(function(resposta){
-          if (resposta.sucesso) {
+            if (resposta.sucesso) {
               
-            //Salvando dados Convidado
-             var convidadoModel = {},
-                 convidado = {
-                     pessoa_Id       : resposta.data.id,
-                     condomino_Id    : vm.dataset.condomino_Id
-                 }
-             
+                //Salvando dados Convidado
+                var convidadoModel = {},
+                    convidado = {
+                        pessoa_Id       : resposta.data.id,
+                        condomino_Id    : vm.dataset.condomino_Id
+                }
 
-             convidadoModel = convidado;
-              visitaService.saveVisitante(convidadoModel)
+                    convidadoModel = convidado;
+                    return visitaService.saveVisitante(convidadoModel)
+            }
+        })
+        //Atualizando Visita
+        .then(function(pessoaModel) {
+            var visitaModel = {},
+                visita = {
+                    pessoa_Id       : pessoaModel.data.pessoa_Id,
+                    nome_Convidado  : nome_Visitante
+                }
 
-             //Atualizando Visita
-             .then(function(pessoaModel) {
-                 var visitaModel = {},
-                     visita = {
-                         pessoa_Id       : pessoaModel.data.pessoa_Id,
-                         nome_Convidado  : nome_Visitante
-                     }
-
-                  visitaModel       = visita;
-                  visitaModel.id    = visitaRecord.id
-                  
-                  visitaService.updateVisita(visitaModel)
-             })
+            visitaModel       = visita;
+            visitaModel.id    = visitaRecord.id
+            
+            visitaService.updateVisita(visitaModel)
 
             toastr.success("Visitante incluído com êxito :)","SUCESSO")
-              $state.go('visita')
-            }
-		})
+            $state.go('visita')
+        })
+
 		.catch(function(error){
             console.log(error)
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")

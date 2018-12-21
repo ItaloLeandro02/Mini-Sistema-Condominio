@@ -17,16 +17,27 @@ namespace api.Repository
         public void Add(Condomino condomino)
         {
 
-            condomino.pessoa.Criacao        = DateTime.Now;
-            condomino.pessoa.Digital        = Util.Util.geraDigital();
+            var transaction = _context.Database.BeginTransaction();
 
-            condomino.usuario.Criacao       = DateTime.Now;
-            condomino.usuario.Tipo          = 2;
-            condomino.usuario.Desativado    = 0;
-
-                _context.Condomino.Add(condomino);
-
+                try{
+                    
+                    _context.Usuario.Add(condomino.usuario);
                     _context.SaveChanges();
+                    _context.Pessoa.Add(condomino.pessoa);
+                    _context.SaveChanges();
+                    _context.Condomino.Add(condomino);
+
+                        _context.SaveChanges();
+
+                            transaction.Commit();      
+                 }
+                 catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
+            
         }
 
         public Condomino Find(int id)
@@ -41,31 +52,59 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-           var condomino = _context.Condomino
-           .Where(c => c.Id == id)
-           .First();
 
-           var pessoa = _context.Pessoa
-           .Where(p => p.Id == condomino.Pessoa_Id)
-           .First();
+           var transaction = _context.Database.BeginTransaction();
 
-           var usuario = _context.Usuario
-           .Where(u => u.Id == condomino.Usuario_Id)
-           .First();
+            try {
+                var condomino = _context.Condomino
+                .Where(c => c.Id == id)
+                .First();
+
+                var pessoa = _context.Pessoa
+                .Where(p => p.Id == condomino.Pessoa_Id)
+                .First();
+
+                var usuario = _context.Usuario
+                .Where(u => u.Id == condomino.Usuario_Id)
+                .First();
 
 
-                _context.Remove(condomino);
-                _context.Remove(pessoa);
-                _context.Remove(usuario);
+                    _context.Remove(condomino);
+                    _context.Remove(pessoa);
+                    _context.Remove(usuario);
 
-                _context.SaveChanges();
+                        _context.SaveChanges();
+
+                            transaction.Commit();
+            }
+
+            catch (Exception e) {
+                Console.WriteLine("Erro:");
+                Console.WriteLine(e);
+                    transaction.Rollback();
+            }
+           
         }
 
         public void Update(Condomino condomino)
         {
+
+             var transaction = _context.Database.BeginTransaction();
+
+                try{
             
-            _context.Condomino.Update(condomino);
-            _context.SaveChanges();
+                    _context.Pessoa.Update(condomino.pessoa);
+                    _context.Usuario.Update(condomino.usuario);
+                    _context.Condomino.Update(condomino);
+                        
+                        _context.SaveChanges();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
         }
     }
 }

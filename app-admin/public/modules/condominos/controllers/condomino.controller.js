@@ -15,7 +15,7 @@ function condominoController(condominoService, condominoId, $state) {
 
         if (condominoId) {
             condominoService.getById(condominoId).then(function(condominoModel){
-                vm.dataset = condominoModel.data
+                vm.dataset = condominoModel
                     return vm.dataset
             })
         }

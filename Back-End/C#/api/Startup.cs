@@ -60,7 +60,8 @@ namespace C_
                     OnAuthenticationFailed = context => {
                         //Console.WriteLine("Token Inválido..." + context.Exception.Message);
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException)) {
-                            context.Response.Headers.Add("Token-Expired", "true");
+                            context.Response.Headers.Add("Token-Expirado", "true");
+                            Console.WriteLine("Token Expirado..." + context.Exception.Message);
                         }
                         return Task.CompletedTask;
                     },
