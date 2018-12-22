@@ -9,6 +9,6 @@ namespace api.Repository
          IEnumerable<Porteiro> GetAll();
          Porteiro Find(int id);
          void Remove(int id);
-         void Update (Porteiro porteiro);
+         void Update (Porteiro form, Porteiro banco);
     }
 }

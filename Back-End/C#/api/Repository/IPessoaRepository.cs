@@ -9,6 +9,6 @@ namespace api.Repository
          IEnumerable<Pessoa> GetAll();
          Pessoa Find(int id);
          void Remove(int id);
-         void Update(Pessoa pessoa);
+         void Update(Pessoa form, Pessoa banco);
     }
 }

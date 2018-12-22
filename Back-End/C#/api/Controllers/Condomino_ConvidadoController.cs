@@ -32,7 +32,7 @@ namespace api.Controllers
                                     .Where(x => x.pessoa.Nome
                                     .Contains(nomeConvidado, StringComparison.OrdinalIgnoreCase))
                                     .Where(c => c.Condomino_Id == id)
-                                    .ToList(), sucesso = true
+                                    .ToList()
                             });
                     }
 
@@ -42,14 +42,13 @@ namespace api.Controllers
                                     data = _convidadoRepository
                                         .GetAll()
                                         .Where(c => c.Condomino_Id == id)
-                                        .ToList(), sucesso = true
+                                        .ToList()
                                     });
                         }
                             else {
                                 return Ok( 
                                     new {
-                                        data = _convidadoRepository.GetAll(),
-                                        sucesso = true
+                                        data = _convidadoRepository.GetAll()
                                     });
                             }
             }
@@ -63,8 +62,7 @@ namespace api.Controllers
                     }
 
                         return Ok( new {
-                            data    = convidado,
-                            sucesso = true
+                            data    = convidado
                         });
             }
 
@@ -74,13 +72,19 @@ namespace api.Controllers
                     return BadRequest();
                 }
 
-                    convidado.Favorito = 0;
+                    _convidadoRepository.Add(convidado);
 
-                        _convidadoRepository.Add(convidado);
+                        if (convidado.Id > 0) {
 
                             var resultado  = new RetornoView<Condomino_Convidado>() {data = convidado, sucesso = true};
 
-                                return CreatedAtRoute("GetCondomino", new {id = convidado.Id}, resultado);
+                                return CreatedAtRoute("GetConvidado", new {id = convidado.Id}, resultado);
+                        }
+                        else {
+
+                            var resultado  = new RetornoView<Condomino_Convidado>() {data = {}, sucesso = false};
+                                return BadRequest(resultado);
+                        }
             }
 
             [HttpPut("{id}")]
@@ -96,13 +100,16 @@ namespace api.Controllers
                             return NotFound();
                         }
 
-                        _convidado.Favorito = convidado.Favorito;
+                            _convidadoRepository.Update(convidado, _convidado);
 
-                            _convidadoRepository.Update(_convidado);
-
-                                var resultado = new RetornoView<Condomino_Convidado>() {data = _convidado, sucesso = true};
-
-                                    return resultado;
+                                if (_convidadoRepository.Find(id).Equals(_convidado)) {
+                                    var resultado = new RetornoView<Condomino_Convidado>() {data = _convidado, sucesso = true};
+                                        return resultado;
+                                }
+                                else {
+                                    var resultado = new RetornoView<Condomino_Convidado>() {sucesso = false};
+                                        return BadRequest(resultado);
+                                }
             }
 
             [HttpDelete("{id}")]
@@ -112,12 +119,16 @@ namespace api.Controllers
                     if (condomino == null) {
                         return NotFound();
                     }
-
-                     var resultado = new RetornoView<Condomino_Convidado>() {data = {}, sucesso = true};
-
-                            _convidadoRepository.Remove(id);
-
-                                return resultado;
+                        _convidadoRepository.Remove(id);
+                        
+                            if (_convidadoRepository.Find(id) == null) {
+                                var resultado = new RetornoView<Condomino_Convidado>() {data = {}, sucesso = true};
+                                    return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Condomino_Convidado>() {data = {}, sucesso = false};
+                                    return BadRequest(resultado);
+                            }
             }
     }
 }

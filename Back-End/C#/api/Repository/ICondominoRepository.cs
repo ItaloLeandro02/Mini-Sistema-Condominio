@@ -9,6 +9,6 @@ namespace api.Repository
         IEnumerable<Condomino> GetAll();
         Condomino Find(int id);
         void Remove(int id);
-        void Update(Condomino condomino);
+        void Update(Condomino form, Condomino banco);
     }
 }

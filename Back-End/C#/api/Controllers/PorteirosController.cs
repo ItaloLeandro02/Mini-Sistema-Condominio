@@ -28,15 +28,13 @@ namespace api.Controllers
                                 data = _porteiroRepository
                                 .GetAll()
                                 .Where(x => x.pessoa.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase))
-                                .ToList(),
-                                sucesso = true
+                                .ToList()
                             });
                     }
                     else {
                         return Ok(
                             new {
-                                data = _porteiroRepository.GetAll(),
-                                sucesso = true
+                                data = _porteiroRepository.GetAll()
                             });
                     }
             }
@@ -50,8 +48,7 @@ namespace api.Controllers
                     }
 
                         return Ok( new {
-                            data    = porteiro,
-                            sucesso = true
+                            data    = porteiro
                         });
             }
 
@@ -61,11 +58,17 @@ namespace api.Controllers
                     return BadRequest();
                 }
 
-                _porteiroRepository.Add(porteiro);
+                    _porteiroRepository.Add(porteiro);
 
-                    var resultado  = new RetornoView<Porteiro>() {data = porteiro, sucesso = true};
+                        if (porteiro.Id > 0) {
 
-                        return CreatedAtRoute("GetPorteiro", new {id = porteiro.Id}, resultado);
+                            var resultado  = new RetornoView<Porteiro>() {data = porteiro, sucesso = true};
+                                return CreatedAtRoute("GetPorteiro", new {id = porteiro.Id}, resultado);
+                        }
+                        else {
+                            var resultado  = new RetornoView<Porteiro>() {sucesso = false};
+                                return BadRequest(resultado);
+                        }
             }
 
             [HttpPut("{id}")]
@@ -79,23 +82,16 @@ namespace api.Controllers
                         if (_porteiro == null) {
                             return NotFound();
                         }
+                            _porteiroRepository.Update(porteiro, _porteiro);
 
-                            _porteiro.pessoa.Nome                   = porteiro.pessoa.Nome;
-                            _porteiro.pessoa.Nascimento             = porteiro.pessoa.Nascimento;
-
-                            _porteiro.pessoa.endereco.Logradouro    = porteiro.pessoa.endereco.Logradouro;
-                            _porteiro.pessoa.endereco.Numero        = porteiro.pessoa.endereco.Numero;
-                            _porteiro.pessoa.endereco.Bairro        = porteiro.pessoa.endereco.Bairro;
-                            _porteiro.pessoa.endereco.Cidade        = porteiro.pessoa.endereco.Cidade;
-                            _porteiro.pessoa.endereco.Uf            = porteiro.pessoa.endereco.Uf;
-
-                            _porteiro.usuario.Email                 = porteiro.usuario.Email;
-
-                                _porteiroRepository.Update(_porteiro);
-
-                                        var resultado = new RetornoView<Porteiro>() {data = _porteiro, sucesso = true};
-
-                                            return resultado;
+                                if (_porteiroRepository.Find(id).Equals(_porteiro)) {
+                                    var resultado = new RetornoView<Porteiro>() {data = _porteiro, sucesso = true};
+                                        return resultado;
+                                }
+                                else {
+                                    var resultado = new RetornoView<Porteiro>() {sucesso = false};
+                                        return resultado;
+                                }
             }
 
             [HttpDelete("{id}")]
@@ -108,9 +104,14 @@ namespace api.Controllers
 
                         _porteiroRepository.Remove(id);
 
-                            var resultado = new RetornoView<Porteiro>() {data = {}, sucesso = true};
-
-                                return resultado;
+                            if (_porteiroRepository.Find(id) == null) {
+                                var resultado = new RetornoView<Porteiro>() {sucesso = true};
+                                    return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Porteiro>() {sucesso = false};
+                                    return BadRequest(resultado);
+                            }
             }
     }
 }

@@ -20,7 +20,7 @@ namespace api.Controllers
             public ActionResult<RetornoView<Endereco>> GetAll() {
                 return Ok(
                     new {
-                        data = _enderecoRepository.GetAll(), sucesso = true
+                        data = _enderecoRepository.GetAll()
                     });
             }
 
@@ -34,7 +34,6 @@ namespace api.Controllers
 
                         return Ok( new {
                             data    = endereco,
-                            sucesso = true
                         });
             }
 
@@ -43,12 +42,16 @@ namespace api.Controllers
                 if (endereco == null) {
                     return BadRequest();
                 }
-
                     _enderecoRepository.Add(endereco);
-
-                        var resultado  = new RetornoView<Endereco>() {data = endereco, sucesso = true};
-
+                        
+                        if (endereco.Id > 0) {
+                            var resultado  = new RetornoView<Endereco>() {data = endereco, sucesso = true};
                                 return CreatedAtRoute("GetEndereco", new {id = endereco.Id}, resultado);
+                        }
+                        else {
+                            var resultado  = new RetornoView<Condomino>() {sucesso = false};
+                                return BadRequest(resultado);
+                        }
             }
 
             [HttpPut("{id}")]
@@ -63,17 +66,16 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                        _endereco.Logradouro        = endereco.Logradouro;
-                        _endereco.Numero            = endereco.Numero;
-                        _endereco.Bairro            = endereco.Bairro;
-                        _endereco.Cidade            = endereco.Cidade;
-                        _endereco.Uf                = endereco.Uf;
-                 
-                            _enderecoRepository.Update(_endereco);
-
+                        _enderecoRepository.Update(endereco, _endereco);
+                            
+                            if (_enderecoRepository.Find(id).Equals(_endereco)) {
                                 var resultado = new RetornoView<Endereco>() {data = _endereco, sucesso = true};
-
                                     return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Endereco>() {sucesso = false};
+                                    return BadRequest(resultado);
+                            }
             }
 
             [HttpDelete("{id}")]
@@ -84,13 +86,16 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                    _enderecoRepository.Remove(id);
+                        _enderecoRepository.Remove(id);
 
-                        var resultado = new RetornoView<Endereco>() {data = {}, sucesso = true};
-
-                            _enderecoRepository.Remove(id);
-
-                                return resultado;
+                            if (_enderecoRepository.Find(id) == null) {
+                                var resultado = new RetornoView<Endereco>() {sucesso = true};
+                                    return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Endereco>() {sucesso = false};
+                                    return resultado;
+                            }
             }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
@@ -12,8 +13,19 @@ namespace api.Repository
         } 
         public void Add(Endereco endereco)
         {
-            _context.Endereco.Add(endereco);
-            _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+
+                try{
+                    _context.Endereco.Add(endereco);
+                        _context.SaveChanges();
+                            transaction.Commit();      
+                 }
+                 catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
         }
 
         public Endereco Find(int id)
@@ -28,15 +40,45 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-            var entity = _context.Endereco.First(u => u.Id == id);
-                _context.Endereco.Remove(entity);
-                _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+
+                try {
+                    var endereco = _context.Endereco
+                    .Where(e => e.Id == id)
+                    .First();
+
+                        _context.Remove(endereco);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+
+                catch (Exception e) {
+                    Console.WriteLine("Erro:");
+                        Console.WriteLine(e);
+                            transaction.Rollback();
+                }
         }
 
-        public void Update(Endereco endereco)
+        public void Update(Endereco form, Endereco banco)
         {
-            _context.Endereco.Update(endereco);
-            _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+                try{
+                    banco.Logradouro        = form.Logradouro;
+                    banco.Numero            = form.Numero;
+                    banco.Bairro            = form.Bairro;
+                    banco.Cidade            = form.Cidade;
+                    banco.Uf                = form.Uf;
+    
+                        _context.Endereco.Update(banco);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
         }
     }
 }

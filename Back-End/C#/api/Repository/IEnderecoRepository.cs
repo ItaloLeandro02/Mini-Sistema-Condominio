@@ -9,6 +9,6 @@ namespace api.Repository
         IEnumerable<Endereco> GetAll();
         Endereco Find(int id);
         void Remove(int id);
-        void Update(Endereco id);
+        void Update(Endereco form, Endereco banco);
     }
 }

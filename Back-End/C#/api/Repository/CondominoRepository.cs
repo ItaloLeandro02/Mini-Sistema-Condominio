@@ -16,19 +16,20 @@ namespace api.Repository
         }
         public void Add(Condomino condomino)
         {
-
             var transaction = _context.Database.BeginTransaction();
 
                 try{
+                    condomino.pessoa.Criacao        = DateTime.Now;
+                    condomino.pessoa.Digital        = Util.Util.geraDigital();
+
+                    condomino.usuario.Criacao       = DateTime.Now;
+                    condomino.usuario.Tipo          = 2;
+                    condomino.usuario.Desativado    = 0;
                     
                     _context.Usuario.Add(condomino.usuario);
-                    _context.SaveChanges();
                     _context.Pessoa.Add(condomino.pessoa);
-                    _context.SaveChanges();
                     _context.Condomino.Add(condomino);
-
                         _context.SaveChanges();
-
                             transaction.Commit();      
                  }
                  catch (Exception e) {
@@ -55,49 +56,49 @@ namespace api.Repository
 
            var transaction = _context.Database.BeginTransaction();
 
-            try {
-                var condomino = _context.Condomino
-                .Where(c => c.Id == id)
-                .First();
+                try {
+                    var condomino = _context.Condomino
+                    .Where(c => c.Id == id)
+                    .First();
 
-                var pessoa = _context.Pessoa
-                .Where(p => p.Id == condomino.Pessoa_Id)
-                .First();
+                    var pessoa = _context.Pessoa
+                    .Where(p => p.Id == condomino.Pessoa_Id)
+                    .First();
 
-                var usuario = _context.Usuario
-                .Where(u => u.Id == condomino.Usuario_Id)
-                .First();
+                    var usuario = _context.Usuario
+                    .Where(u => u.Id == condomino.Usuario_Id)
+                    .First();
 
 
-                    _context.Remove(condomino);
-                    _context.Remove(pessoa);
-                    _context.Remove(usuario);
-
-                        _context.SaveChanges();
-
-                            transaction.Commit();
-            }
-
-            catch (Exception e) {
-                Console.WriteLine("Erro:");
-                Console.WriteLine(e);
-                    transaction.Rollback();
-            }
-           
+                        _context.Remove(condomino);
+                        _context.Remove(pessoa);
+                        _context.Remove(usuario);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Erro:");
+                        Console.WriteLine(e);
+                            transaction.Rollback();
+                }
         }
 
-        public void Update(Condomino condomino)
+        public void Update(Condomino form, Condomino banco)
         {
-
-             var transaction = _context.Database.BeginTransaction();
-
+            var transaction = _context.Database.BeginTransaction();
                 try{
+
+                    banco.pessoa.Nome          = form.pessoa.Nome;
+                    banco.pessoa.Nascimento    = form.pessoa.Nascimento;
+
+                    banco.usuario.Email        = form.usuario.Email;
+                    banco.Endereco             = form.Endereco;
             
-                    _context.Pessoa.Update(condomino.pessoa);
-                    _context.Usuario.Update(condomino.usuario);
-                    _context.Condomino.Update(condomino);
-                        
+                    _context.Pessoa.Update(banco.pessoa);
+                    _context.Usuario.Update(banco.usuario);
+                    _context.Condomino.Update(banco);
                         _context.SaveChanges();
+                            transaction.Commit();
                 }
                 catch (Exception e) {
                      Console.WriteLine("Erro");

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
@@ -14,11 +15,24 @@ namespace api.Repository
         public void Add(Visita visita)
         {
 
-            _context.Visita.Add(visita);
-        
-                _context.SaveChanges();
-        }
+            var transaction = _context.Database.BeginTransaction();
+                try {
+                    visita.Portaria_Data_Hora_Chegada   = null;
+                    visita.Portaria_Observacao          = null;
+                    visita.Situacao                     = 1;
 
+                        _context.Visita.Add(visita);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Erro");
+                        Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
+        }
+    
         public Visita Find(int id)
         {
             return _context.Visita
@@ -39,16 +53,34 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-            var entity = _context.Visita.First(u => u.Id == id);
-                _context.Visita.Remove(entity);
-                _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+                try {
+                    var entity = _context.Visita.First(u => u.Id == id);
+                        _context.Visita.Remove(entity);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Erro");
+                        Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
 
         public void Update(Visita visita)
         {
-            _context.Visita.Update(visita);
-            _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+                try {
+                    _context.Visita.Update(visita);
+                    _context.SaveChanges();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Erro");
+                        Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
-        
     }
 }

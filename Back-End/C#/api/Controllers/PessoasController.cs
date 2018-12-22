@@ -19,8 +19,7 @@ namespace api.Controllers
             [HttpGet]
             public ActionResult<RetornoView<Pessoa>> GetAll() {
                 return Ok( new {
-                   data = _pessoaRepository.GetAll(), 
-                   sucesso = true
+                   data = _pessoaRepository.GetAll()
                 });
             }
 
@@ -32,10 +31,9 @@ namespace api.Controllers
                         return NotFound();
                     }
 
-                    return Ok( new {
-                        data    = pessoa,
-                        sucesso = true
-                    });
+                        return Ok( new {
+                            data    = pessoa
+                        });
             }
 
             [HttpPost]
@@ -46,9 +44,15 @@ namespace api.Controllers
 
                     _pessoaRepository.Add(pessoa);
 
-                            var resultado  = new RetornoView<Pessoa>() {data = pessoa, sucesso = true};
+                        if (pessoa.Id > 0) {
 
+                            var resultado  = new RetornoView<Pessoa>() {data = pessoa, sucesso = true};
                                 return CreatedAtRoute("GetCondomino", new {id = pessoa.Id}, resultado);
+                        }
+                        else {
+                            var resultado = new RetornoView<Pessoa>() {sucesso = false};
+                                return BadRequest(resultado);
+                        }
             }
 
             [HttpPut("{id}")]
@@ -57,26 +61,22 @@ namespace api.Controllers
                     return BadRequest();
                 }
 
-                var _pessoa = _pessoaRepository.Find(id);
+                    var _pessoa = _pessoaRepository.Find(id);
 
-                    if (_pessoa == null) {
-                        return NotFound();
-                    }
+                        if (_pessoa == null) {
+                            return NotFound();
+                        }
 
-                    _pessoa.Nome                    = pessoa.Nome;
-                    _pessoa.Nascimento              = pessoa.Nascimento;
+                            _pessoaRepository.Update(pessoa, _pessoa);
 
-                    _pessoa.endereco.Logradouro     = pessoa.endereco.Logradouro;
-                    _pessoa.endereco.Numero         = pessoa.endereco.Numero;
-                    _pessoa.endereco.Bairro         = pessoa.endereco.Bairro;
-                    _pessoa.endereco.Cidade         = pessoa.endereco.Cidade;
-                    _pessoa.endereco.Uf             = pessoa.endereco.Uf;
-                 
-                        _pessoaRepository.Update(_pessoa);
-
-                            var resultado = new RetornoView<Pessoa>() {data = _pessoa, sucesso = true};
-
-                                return resultado;
+                                if (_pessoaRepository.Find(id).Equals(_pessoa)) {
+                                    var resultado = new RetornoView<Pessoa>() {data = _pessoa, sucesso = true};
+                                        return resultado;
+                                }
+                                else {
+                                    var resultado = new RetornoView<Pessoa>() {data = {}, sucesso = false};
+                                        return BadRequest(resultado);
+                                }
             }
 
             [HttpDelete("{id}")]
@@ -89,11 +89,14 @@ namespace api.Controllers
 
                         _pessoaRepository.Remove(id);
 
-                            var resultado = new RetornoView<Pessoa>() {data = {}, sucesso = true};
-
-                                _pessoaRepository.Remove(id);
-
+                            if (_pessoaRepository.Find(id) == null) {
+                                var resultado = new RetornoView<Pessoa>() {sucesso = true};
                                     return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Pessoa>() {sucesso = false};
+                                    return BadRequest(resultado);
+                            }
             }
     }
 }

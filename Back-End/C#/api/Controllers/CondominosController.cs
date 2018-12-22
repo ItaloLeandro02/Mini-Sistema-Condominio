@@ -29,15 +29,13 @@ namespace api.Controllers
                                data = _condominoRepository
                                .GetAll()
                                .Where(x => x.pessoa.Nome.Contains(nome, StringComparison.OrdinalIgnoreCase))
-                               .ToList(),
-                               sucesso = true
+                               .ToList()
                             });
                     }
                     else {
                         return Ok(
                             new {
-                                data = _condominoRepository.GetAll(), 
-                                sucesso = true
+                                data = _condominoRepository.GetAll()
                             });
                     }
             }
@@ -57,14 +55,7 @@ namespace api.Controllers
             public ActionResult<RetornoView<Condomino>> Create([FromBody] Condomino condomino) {
                 if (condomino == null) {
                     return BadRequest();
-                }            
-
-                    condomino.pessoa.Criacao        = DateTime.Now;
-                    condomino.pessoa.Digital        = Util.Util.geraDigital();
-
-                    condomino.usuario.Criacao       = DateTime.Now;
-                    condomino.usuario.Tipo          = 2;
-                    condomino.usuario.Desativado    = 0;
+                }
 
                     _condominoRepository.Add(condomino);
 
@@ -94,17 +85,16 @@ namespace api.Controllers
                             return NotFound();
                         }
 
-                            _condomino.pessoa.Nome          = condomino.pessoa.Nome;
-                            _condomino.pessoa.Nascimento    = condomino.pessoa.Nascimento;
+                            _condominoRepository.Update(condomino, _condomino);
 
-                            // _condomino.usuario.Email        = condomino.usuario.Email;
-                            // _condomino.Endereco             = condomino.Endereco;
-
-                                _condominoRepository.Update(_condomino);
-
-                                    var resultado = new RetornoView<Condomino>() { sucesso = true};
-
+                                 if (_condominoRepository.Find(id).Equals(_condomino)) {
+                                    var resultado = new RetornoView<Condomino>() {data = _condomino, sucesso = true};
                                         return resultado;
+                                 }
+                                 else {
+                                    var resultado = new RetornoView<Condomino>() {sucesso = false};
+                                        return BadRequest(resultado);
+                                 }
             }
 
             [HttpDelete("{id}")]
@@ -114,12 +104,17 @@ namespace api.Controllers
                     if (condomino == null) {
                         return NotFound();
                     }
-
-                        var resultado = new RetornoView<Condomino>() {data = {}, sucesso = true};
-
-                            _condominoRepository.Remove(id);
-
-                                return resultado;
+                        _condominoRepository.Remove(id);
+                        
+                            if (_condominoRepository.Find(id) == null) {
+                                var resultado = new RetornoView<Condomino>() {sucesso = true};
+                                    return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Condomino>() {sucesso = false};
+                                    return resultado;
+                            }
+                            
             }
     }
 }

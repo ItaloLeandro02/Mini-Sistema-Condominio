@@ -14,17 +14,25 @@ namespace api.Repository
         }
         public void Add(Porteiro porteiro)
         {
+            var transaction = _context.Database.BeginTransaction();
+                try{
+                    porteiro.pessoa.Criacao        = DateTime.Now;
+                    porteiro.pessoa.Digital        = Util.Util.geraDigital();
 
-            porteiro.pessoa.Criacao        = DateTime.Now;
-            porteiro.pessoa.Digital        = Util.Util.geraDigital();
+                    porteiro.usuario.Criacao       = DateTime.Now;
+                    porteiro.usuario.Tipo          = 1;
+                    porteiro.usuario.Desativado    = 0;
 
-            porteiro.usuario.Criacao       = DateTime.Now;
-            porteiro.usuario.Tipo          = 1;
-            porteiro.usuario.Desativado    = 0;
-
-                _context.Porteiro.Add(porteiro);
-            
-                    _context.SaveChanges();
+                        _context.Porteiro.Add(porteiro);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
 
         public Porteiro Find(int id)
@@ -39,35 +47,61 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-           var porteiro = _context.Porteiro
-           .Where(p => p.Id == id)
-           .First();
+            var transaction = _context.Database.BeginTransaction();
+                try{
+                    var porteiro = _context.Porteiro
+                    .Where(p => p.Id == id)
+                    .First();
 
-           var pessoa = _context.Pessoa
-           .Where(pe => pe.Id == porteiro.Pessoa_Id)
-           .First();
+                    var pessoa = _context.Pessoa
+                    .Where(pe => pe.Id == porteiro.Pessoa_Id)
+                    .First();
 
-           var endereco = _context.Endereco
-           .Where(e => e.Id == pessoa.Endereco_Id)
-           .First();
+                    var endereco = _context.Endereco
+                    .Where(e => e.Id == pessoa.Endereco_Id)
+                    .First();
 
-           var usuario = _context.Usuario
-           .Where(u => u.Id == porteiro.Usuario_Id)
-           .First();
+                    var usuario = _context.Usuario
+                    .Where(u => u.Id == porteiro.Usuario_Id)
+                    .First();
 
-
-                _context.Remove(porteiro);
-                _context.Remove(pessoa);
-                _context.Remove(endereco);
-                _context.Remove(usuario);
-
-                _context.SaveChanges();
+                        _context.Remove(porteiro);
+                        _context.Remove(pessoa);
+                        _context.Remove(endereco);
+                        _context.Remove(usuario);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
 
-        public void Update(Porteiro porteiro)
+        public void Update(Porteiro form, Porteiro banco)
         {
-            _context.Porteiro.Update(porteiro);
-            _context.SaveChanges();
+           var transaction = _context.Database.BeginTransaction();
+                try{
+
+                    banco.pessoa.Nome          = form.pessoa.Nome;
+                    banco.pessoa.Nascimento    = form.pessoa.Nascimento;
+
+                    banco.usuario.Email        = form.usuario.Email;
+            
+                        _context.Pessoa.Update(banco.pessoa);
+                        _context.Usuario.Update(banco.usuario);
+                        _context.Porteiro.Update(banco);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
     }
 }

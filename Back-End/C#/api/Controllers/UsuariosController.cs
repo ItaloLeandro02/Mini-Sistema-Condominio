@@ -20,8 +20,8 @@ namespace api.Controllers
             public ActionResult<RetornoView<Usuario>> GetAll() {
                 return Ok( 
                     new {
-                        data = _usuarioRepository.GetAll(),
-                        sucesso = true});
+                        data = _usuarioRepository.GetAll()
+                    });
             }
 
             [HttpGet("{id}", Name = "GetUsuario")]
@@ -33,8 +33,7 @@ namespace api.Controllers
                     }
 
                         return Ok( new {
-                            data    = usuario,
-                            sucesso = true
+                            data    = usuario
                         });
             }
 
@@ -46,9 +45,14 @@ namespace api.Controllers
 
                     _usuarioRepository.Add(usuario);
 
-                        var resultado  = new RetornoView<Usuario>() {data = usuario, sucesso = true};
-
-                            return CreatedAtRoute("GetCondomino", new {id = usuario.Id}, resultado);
+                        if (usuario.Id > 0) {
+                            var resultado  = new RetornoView<Usuario>() {data = usuario, sucesso = true};
+                                return CreatedAtRoute("GetUsuario", new {id = usuario.Id}, resultado);
+                        }
+                        else {
+                            var resultado  = new RetornoView<Usuario>() {sucesso = false};
+                                return BadRequest(resultado);
+                        }
             }
 
             [HttpPut("{id}")]
@@ -63,14 +67,17 @@ namespace api.Controllers
                             return NotFound();
                         }
 
-                            _usuario.Email              = usuario.Email;
-                            _usuario.Senha              = usuario.Senha;
-                 
-                                _usuarioRepository.Update(_usuario);
+                            _usuarioRepository.Update(usuario, _usuario);
 
+                                if (_usuarioRepository.Find(id).Equals(_usuario)) {
                                     var resultado = new RetornoView<Usuario>() {data = _usuario, sucesso = true};
-
-                                        return resultado;            }
+                                        return resultado;
+                                }
+                                else {
+                                    var resultado = new RetornoView<Usuario>() {sucesso = false};
+                                        return BadRequest(resultado);
+                                }            
+            }
 
             [HttpDelete("{id}")]
             public ActionResult<RetornoView<Usuario>> Delete(int id) {
@@ -82,9 +89,14 @@ namespace api.Controllers
 
                         _usuarioRepository.Remove(id);
 
-                            var resultado = new RetornoView<Usuario>() {data = {}, sucesso = true};
-
+                            if (_usuarioRepository.Find(id) == null) {
+                                var resultado = new RetornoView<Usuario>() {sucesso = true};
                                     return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Usuario>() {sucesso = false};
+                                    return BadRequest(resultado);
+                            }
             }
     }
 }

@@ -15,13 +15,22 @@ namespace api.Repository
         }
         public void Add(Pessoa pessoa)
         {
+            var transaction = _context.Database.BeginTransaction();
 
-            pessoa.Criacao        = DateTime.Now;
-            pessoa.Digital        = Util.Util.geraDigital();
-
-                _context.Pessoa.Add(pessoa);
-                
-                    _context.SaveChanges();
+                try{
+                    pessoa.Criacao        = DateTime.Now;
+                    pessoa.Digital        = Util.Util.geraDigital();
+                    
+                        _context.Pessoa.Add(pessoa);
+                            _context.SaveChanges();
+                                transaction.Commit();      
+                 }
+                 catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
         }
 
         public Pessoa Find(int id)
@@ -36,26 +45,55 @@ namespace api.Repository
 
         public void Remove(int id)
         {
+            var transaction = _context.Database.BeginTransaction();
 
-           var pessoa = _context.Pessoa
-           .Where(p => p.Id == id)
-           .First();
+                try {
+                    var pessoa = _context.Pessoa
+                    .Where(p => p.Id == id)
+                    .First();
 
-           var endereco = _context.Endereco
-           .Where(e => e.Id == pessoa.Endereco_Id)
-           .First();
+                    var endereco = _context.Endereco
+                    .Where(e => e.Id == pessoa.Endereco_Id)
+                    .First();
 
 
-                _context.Remove(pessoa);
-                _context.Remove(endereco);
-
-                _context.SaveChanges();
+                        _context.Remove(pessoa);
+                        _context.Remove(endereco);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Erro:");
+                        Console.WriteLine(e);
+                            transaction.Rollback();
+                }
         }
 
-        public void Update(Pessoa pessoa)
+        public void Update(Pessoa form, Pessoa banco)
         {
-            _context.Pessoa.Update(pessoa);
-            _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+                try{
+
+                    banco.Nome                    = form.Nome;
+                    banco.Nascimento              = form.Nascimento;
+
+                    banco.endereco.Logradouro     = form.endereco.Logradouro;
+                    banco.endereco.Numero         = form.endereco.Numero;
+                    banco.endereco.Bairro         = form.endereco.Bairro;
+                    banco.endereco.Cidade         = form.endereco.Cidade;
+                    banco.endereco.Uf             = form.endereco.Uf;
+            
+                        _context.Endereco.Update(banco.endereco);
+                        _context.Pessoa.Update(banco);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
         }
     }
 }

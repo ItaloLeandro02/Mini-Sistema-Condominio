@@ -30,15 +30,13 @@ namespace api.Controllers
                                data = _visitaRepository
                                .GetAll()
                                .Where(x => x.Condomino_Id == id)
-                               .ToList(),
-                               sucesso = true
+                               .ToList()
                             });
                     }
                     else {
                         return Ok(
                             new {
-                                data = _visitaRepository.GetAll(),
-                                sucesso = true
+                                data = _visitaRepository.GetAll()
                             });
                     }
             }
@@ -52,8 +50,7 @@ namespace api.Controllers
                     }
 
                         return Ok( new {
-                            data    = visita,
-                            sucesso = true
+                            data    = visita
                         });
             }
 
@@ -62,16 +59,17 @@ namespace api.Controllers
                 if (visita == null) {
                     return BadRequest();
                 }
-
-                    visita.Portaria_Data_Hora_Chegada   = null;
-                    visita.Portaria_Observacao          = null;
-                    visita.Situacao                     = 1;
-
                     _visitaRepository.Add(visita);
 
-                        var resultado  = new RetornoView<Visita>() {data = visita, sucesso = true};
-
-                            return CreatedAtRoute("GetVisita", new {id = visita.Id}, resultado);
+                        if (visita.Id > 0) {
+                            
+                            var resultado  = new RetornoView<Visita>() {data = visita, sucesso = true};
+                                return CreatedAtRoute("GetVisita", new {id = visita.Id}, resultado);
+                        }
+                        else {
+                            var resultado  = new RetornoView<Visita>() {sucesso = false};
+                                return BadRequest(resultado);
+                        }
             }
 
             [HttpPut("{id}")]
@@ -94,9 +92,15 @@ namespace api.Controllers
                  
                             _visitaRepository.Update(_visita);
 
-                                var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
-
-                                    return resultado;
+                                if (_visitaRepository.Find(id).Equals(_visita)) {
+                                    
+                                    var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
+                                        return resultado;
+                                }
+                                else {
+                                    var resultado = new RetornoView<Visita>() {sucesso = false};
+                                        return BadRequest(resultado);
+                                }
             }
 
             [HttpPut("{id}/pessoa")]
@@ -117,9 +121,14 @@ namespace api.Controllers
                         
                                     _visitaRepository.Update(_visita);
 
-                                        var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
-
-                                            return resultado;
+                                        if (_visitaRepository.Find(id).Equals(_visita)) {
+                                            var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
+                                                return resultado;
+                                        }
+                                        else {
+                                            var resultado = new RetornoView<Visita>() {sucesso = false};
+                                                return BadRequest(resultado);
+                                        }
             }
 
             [HttpPut("{id}/portaria")]
@@ -142,9 +151,14 @@ namespace api.Controllers
                         
                                     _visitaRepository.Update(_visita);
 
-                                        var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
-
-                                            return resultado;
+                                        if (visita == _visita) {
+                                            var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
+                                                return resultado;
+                                        }
+                                        else {
+                                            var resultado = new RetornoView<Visita>() {sucesso = false};
+                                                return BadRequest(resultado);
+                                        }
             }
 
             [HttpPut("{id}/situacao")]
@@ -159,13 +173,16 @@ namespace api.Controllers
                             if (_visita == null) {
                                 return NotFound();
                             }
-                                _visita.Situacao                          = visita.Situacao;
+                                _visita.Situacao    = visita.Situacao;
                         
-                                    _visitaRepository.Update(_visita);
-
+                                    if (_visitaRepository.Find(id).Equals(_visita)) {
                                         var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
-
                                             return resultado;
+                                    }
+                                    else {
+                                        var resultado = new RetornoView<Visita>() {sucesso = false};
+                                            return BadRequest(resultado);
+                                    }
             }
 
             [HttpDelete("{id}")]
@@ -178,11 +195,14 @@ namespace api.Controllers
 
                         _visitaRepository.Remove(id);
 
-                            var resultado = new RetornoView<Visita>() {data = {}, sucesso = true};
-
-                                _visitaRepository.Remove(id);
-
+                            if (_visitaRepository.Find(id) == null) {
+                                var resultado = new RetornoView<Visita>() {sucesso = true};
                                     return resultado;
+                            }
+                            else {
+                                var resultado = new RetornoView<Visita>() {sucesso = false};
+                                    return BadRequest(resultado);
+                            }
             }
     }
 }

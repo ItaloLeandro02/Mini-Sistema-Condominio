@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
@@ -14,8 +15,23 @@ namespace api.Repository
         }
         public void Add(Condomino_Convidado convidado)
         {
-            _context.Condomino_Convidado.Add(convidado);
-                _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+
+                try{
+
+                    convidado.Favorito = 0;
+                        _context.Pessoa.Add(convidado.pessoa);
+                            _context.Condomino.Add(convidado.condomino);
+                                _context.Condomino_Convidado.Add(convidado);
+                                    _context.SaveChanges();
+                                        transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
         }
 
         public Condomino_Convidado Find(int id)
@@ -40,16 +56,48 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-              var entity = _context.Condomino_Convidado.Include(p => p.pessoa).ThenInclude(e => e.endereco).First(c => c.Id == id);
+             var transaction = _context.Database.BeginTransaction();
 
-                _context.Remove(entity);
-                _context.SaveChanges();
+                try {
+
+                    var convidado = _context.Condomino_Convidado
+                    .Where(c => c.Id == id)
+                    .First();
+
+                    var pessoa = _context.Pessoa
+                    .Where(p => p.Id == convidado.Pessoa_Id)
+                    .Include(e => e.endereco)
+                    .First();
+
+                        _context.Remove(pessoa);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+
+                catch (Exception e) {
+                    Console.WriteLine("Erro:");
+                    Console.WriteLine(e);
+                        transaction.Rollback();
+                }
         }
 
-        public void Update(Condomino_Convidado convidado)
+        public void Update(Condomino_Convidado form, Condomino_Convidado banco)
         {
-            _context.Condomino_Convidado.Update(convidado);
-            _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+
+                try{
+
+                    banco.Favorito = form.Favorito;
+                        _context.Condomino_Convidado.Update(banco);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                 }
         }
     }
 }

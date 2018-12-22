@@ -13,13 +13,21 @@ namespace api.Repository
         }
         public void Add(Usuario usuario)
         {
-
-            usuario.Criacao       = DateTime.Now;
-            usuario.Desativado    = 0;
-     
-                _context.Usuario.Add(usuario);
+            var transaction = _context.Database.BeginTransaction();
+                try{
+                    usuario.Criacao       = DateTime.Now;
+                    usuario.Desativado    = 0;
             
-                    _context.SaveChanges();
+                        _context.Usuario.Add(usuario);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
 
         public Usuario Find(int id)
@@ -34,15 +42,38 @@ namespace api.Repository
 
         public void Remove(int id)
         {
-            var entity = _context.Usuario.First(u => u.Id == id);
-                _context.Usuario.Remove(entity);
-                _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+                try{
+                    var entity = _context.Usuario.First(u => u.Id == id);
+                        _context.Usuario.Remove(entity);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Erro");
+                        Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
 
-        public void Update(Usuario usuario)
+        public void Update(Usuario form, Usuario banco)
         {
-            _context.Usuario.Update(usuario);
-            _context.SaveChanges();
+            var transaction = _context.Database.BeginTransaction();
+                try{
+                    banco.Email        = form.Email;
+                    banco.Senha         = form.Senha;
+            
+                        _context.Usuario.Update(banco);
+                            _context.SaveChanges();
+                                transaction.Commit();
+                }
+                catch (Exception e) {
+                     Console.WriteLine("Erro");
+                         Console.WriteLine(e);
+                            transaction.Rollback();
+                                return;
+                }
         }
     }
 }

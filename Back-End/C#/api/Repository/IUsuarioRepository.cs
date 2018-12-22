@@ -9,6 +9,6 @@ namespace api.Repository
         IEnumerable<Usuario> GetAll();
         Usuario Find(int id);
         void Remove(int id);
-        void Update(Usuario user);
+        void Update(Usuario form, Usuario banco);
     }
 }
