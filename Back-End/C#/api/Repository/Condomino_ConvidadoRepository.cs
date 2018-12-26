@@ -20,8 +20,8 @@ namespace api.Repository
                 try{
 
                     convidado.Favorito = 0;
-                        _context.Pessoa.Add(convidado.pessoa);
-                            _context.Condomino.Add(convidado.condomino);
+                        // _context.Pessoa.Add(convidado.pessoa);
+                        //     _context.Condomino.Add(convidado.condomino);
                                 _context.Condomino_Convidado.Add(convidado);
                                     _context.SaveChanges();
                                         transaction.Commit();
@@ -51,6 +51,7 @@ namespace api.Repository
             .ThenInclude(f => f.pessoa)
             .Include(p => p.pessoa)
             .ThenInclude(e => e.endereco)
+            .AsNoTracking()
             .ToList() ?? Enumerable.Empty<Condomino_Convidado>();
         }
 
@@ -69,7 +70,7 @@ namespace api.Repository
                     .Include(e => e.endereco)
                     .First();
 
-                        _context.Remove(pessoa);
+                        _context.Pessoa.Remove(pessoa);
                             _context.SaveChanges();
                                 transaction.Commit();
                 }
@@ -88,6 +89,7 @@ namespace api.Repository
                 try{
 
                     banco.Favorito = form.Favorito;
+                    
                         _context.Condomino_Convidado.Update(banco);
                             _context.SaveChanges();
                                 transaction.Commit();

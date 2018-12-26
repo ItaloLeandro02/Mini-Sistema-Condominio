@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -35,7 +36,7 @@ namespace api.Repository
 
         public IEnumerable<Endereco> GetAll()
         {
-            return _context.Endereco.ToList();
+            return _context.Endereco.AsNoTracking().ToList();
         }
 
         public void Remove(int id)
@@ -47,7 +48,7 @@ namespace api.Repository
                     .Where(e => e.Id == id)
                     .First();
 
-                        _context.Remove(endereco);
+                        _context.Endereco.Remove(endereco);
                             _context.SaveChanges();
                                 transaction.Commit();
                 }

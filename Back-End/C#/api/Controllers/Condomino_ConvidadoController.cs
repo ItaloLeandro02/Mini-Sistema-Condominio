@@ -73,6 +73,7 @@ namespace api.Controllers
                 }
 
                     _convidadoRepository.Add(convidado);
+                    
 
                         if (convidado.Id > 0) {
 

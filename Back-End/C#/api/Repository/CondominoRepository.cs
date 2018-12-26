@@ -48,7 +48,7 @@ namespace api.Repository
 
         public IEnumerable<Condomino> GetAll()
         {
-            return _context.Condomino.Include(p => p.pessoa).Include(u => u.usuario).ToList() ?? Enumerable.Empty<Condomino>();
+            return _context.Condomino.Include(p => p.pessoa).Include(u => u.usuario).AsNoTracking().ToList() ?? Enumerable.Empty<Condomino>();
         }
 
         public void Remove(int id)
@@ -65,14 +65,19 @@ namespace api.Repository
                     .Where(p => p.Id == condomino.Pessoa_Id)
                     .First();
 
+                    var endereco = _context.Endereco
+                    .Where(e => e.Id == pessoa.Endereco_Id)
+                    .First();
+
                     var usuario = _context.Usuario
                     .Where(u => u.Id == condomino.Usuario_Id)
                     .First();
 
 
-                        _context.Remove(condomino);
-                        _context.Remove(pessoa);
-                        _context.Remove(usuario);
+                        _context.Condomino.Remove(condomino);
+                        _context.Pessoa.Remove(pessoa);
+                        _context.Endereco.Remove(endereco);
+                        _context.Usuario.Remove(usuario);
                             _context.SaveChanges();
                                 transaction.Commit();
                 }

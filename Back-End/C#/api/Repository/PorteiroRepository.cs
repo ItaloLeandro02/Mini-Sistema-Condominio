@@ -42,7 +42,7 @@ namespace api.Repository
 
         public IEnumerable<Porteiro> GetAll()
         {
-            return _context.Porteiro.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).ToList();
+            return _context.Porteiro.Include(p => p.pessoa).ThenInclude(e => e.endereco).Include(u => u.usuario).AsNoTracking().ToList();
         }
 
         public void Remove(int id)
@@ -65,10 +65,10 @@ namespace api.Repository
                     .Where(u => u.Id == porteiro.Usuario_Id)
                     .First();
 
-                        _context.Remove(porteiro);
-                        _context.Remove(pessoa);
-                        _context.Remove(endereco);
-                        _context.Remove(usuario);
+                        _context.Porteiro.Remove(porteiro);
+                        _context.Pessoa.Remove(pessoa);
+                        _context.Endereco.Remove(endereco);
+                        _context.Usuario.Remove(usuario);
                             _context.SaveChanges();
                                 transaction.Commit();
                 }

@@ -26,7 +26,7 @@ namespace api.Repository
                                 transaction.Commit();
                 }
                 catch (Exception e) {
-                    Console.WriteLine("Erro");
+                    Console.WriteLine("Erro Adicionar");
                         Console.WriteLine(e);
                             transaction.Rollback();
                                 return;
@@ -48,6 +48,7 @@ namespace api.Repository
             .Include(p => p.pessoa)
             .Include(c => c.condomino)
             .ThenInclude(p => p.pessoa)
+            .AsNoTracking()
             .ToList();
         }
 
@@ -61,7 +62,7 @@ namespace api.Repository
                                 transaction.Commit();
                 }
                 catch (Exception e) {
-                    Console.WriteLine("Erro");
+                    Console.WriteLine("Erro Remover");
                         Console.WriteLine(e);
                             transaction.Rollback();
                                 return;
@@ -73,10 +74,11 @@ namespace api.Repository
             var transaction = _context.Database.BeginTransaction();
                 try {
                     _context.Visita.Update(visita);
-                    _context.SaveChanges();
+                        _context.SaveChanges();
+                            transaction.Commit();
                 }
                 catch (Exception e) {
-                    Console.WriteLine("Erro");
+                    Console.WriteLine("Erro Atualizar");
                         Console.WriteLine(e);
                             transaction.Rollback();
                                 return;

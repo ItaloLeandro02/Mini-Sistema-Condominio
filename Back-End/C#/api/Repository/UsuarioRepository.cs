@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using api.Models;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -37,7 +38,7 @@ namespace api.Repository
 
         public IEnumerable<Usuario> GetAll()
         {
-            return _context.Usuario.ToList();
+            return _context.Usuario.AsNoTracking().ToList();
         }
 
         public void Remove(int id)

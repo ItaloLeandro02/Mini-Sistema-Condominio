@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace C_
 {
@@ -77,11 +79,23 @@ namespace C_
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddResponseCompression();
+
             services.AddCors(o => o.AddPolicy("CorsApi", builder => {
                 builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
-            }));   
+            })); 
+
+            services.AddSwaggerGen( x => {
+                x.SwaggerDoc("api", new Info {
+                    Version = "v1",
+                    Title = "Mini Sistema Condomino",
+                    Description = "Mini sistema desenvolvido para suprir as necessidades mais primitivas em um condominio.",
+                    TermsOfService = "None",
+                    Contact = new Contact() { Name = "Italo Leandro", Email = "italo_leandro@outlook.com", Url = "https://127.0.0.1:5001/api" }
+                });
+            }); 
         }
         
 
@@ -102,6 +116,11 @@ namespace C_
             app.UseCors("CorsApi");
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseResponseCompression();  
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/api/swagger.json", "Mini Sistema Condomino");
+            });
         }
     }
 }

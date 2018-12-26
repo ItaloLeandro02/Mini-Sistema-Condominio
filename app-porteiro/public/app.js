@@ -45,6 +45,7 @@ var materialApp = angular
               case 401:
                 var stateService = $injector.get('$state');
                 stateService.go('login');
+                toastr.error("Token Expirado! Entre Novamente. ","ERRO")
                 break;                
 
               default :

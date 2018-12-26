@@ -43,7 +43,7 @@
         <md-input-container class="md-block">
           <md-tooltip>Senha</md-tooltip>      
             <md-icon md-svg-src="assets/img/lock.svg" class="email"></md-icon>
-              <input name="senha" ng-model="vm.dataset.usuario.senha" type="password" placeholder="Senha" ng-required="true">
+              <input name="senha" ng-model="vm.dataset.usuario.senha" type="{{vm.tipo}}" placeholder="Senha" ng-required="true">
         </md-input-container>
 
         <span flex></span>
@@ -51,11 +51,15 @@
         <md-input-container class="md-block">
           <md-tooltip>Confirme a Senha</md-tooltip> 
             <md-icon md-svg-src="assets/img/lock.svg" class="email"></md-icon>
-              <input name="confirmaSenha" ng-model="vm.confirmaSenha" type="password" placeholder="Repita a Senha" ng-pattern="vm.dataset.usuario.senha" ng-required="true">
+              <input name="confirmaSenha" ng-model="vm.confirmaSenha" type="{{vm.tipo}}" placeholder="Repita a Senha" ng-pattern="vm.dataset.usuario.senha" ng-required="true">
                 <div ng-messages="vm.form.confirmaSenha.$error">
                   <div ng-message="pattern" class="my-message">As senhas devem ser iguais</div>
                 </div>
-        </md-input-container>    
+        </md-input-container>
+        
+        <md-button ng-click="vm.mudarStatus(vm.status)">
+          <md-icon md-svg-src="assets/img/{{vm.status}}.svg" class="email"></md-icon>
+        </md-button>
             
             </div>
           </div>

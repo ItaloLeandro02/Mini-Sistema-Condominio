@@ -26,7 +26,7 @@ namespace api.Repository
                                 transaction.Commit();      
                  }
                  catch (Exception e) {
-                     Console.WriteLine("Erro");
+                     Console.WriteLine("Erro Salvar");
                          Console.WriteLine(e);
                             transaction.Rollback();
                                 return;
@@ -35,7 +35,7 @@ namespace api.Repository
 
         public Pessoa Find(int id)
         {
-            return _context.Pessoa.Include(p => p.endereco).FirstOrDefault(u => u.Id == id);
+            return _context.Pessoa.Include(p => p.endereco).AsNoTracking().FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<Pessoa> GetAll()
@@ -57,13 +57,13 @@ namespace api.Repository
                     .First();
 
 
-                        _context.Remove(pessoa);
-                        _context.Remove(endereco);
+                        _context.Pessoa.Remove(pessoa);
+                        _context.Endereco.Remove(endereco);
                             _context.SaveChanges();
                                 transaction.Commit();
                 }
                 catch (Exception e) {
-                    Console.WriteLine("Erro:");
+                    Console.WriteLine("Erro Remover");
                         Console.WriteLine(e);
                             transaction.Rollback();
                 }
@@ -89,7 +89,7 @@ namespace api.Repository
                                 transaction.Commit();
                 }
                 catch (Exception e) {
-                     Console.WriteLine("Erro");
+                     Console.WriteLine("Erro Atualizar");
                          Console.WriteLine(e);
                             transaction.Rollback();
                                 return;

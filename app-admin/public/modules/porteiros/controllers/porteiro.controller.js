@@ -3,9 +3,13 @@ angular.module('app.porteiro')
 
 function porteiroController(porteiroService, porteiroId, $state) {
 	
-	vm = this;
+    vm = this;
+    vm.mudarStatus      = mudarStatus; 
 
     vm.dataset = {}
+
+    vm.tipo             = 'password';
+    vm.status           = 'show-close';
     
     function init(){
 
@@ -87,5 +91,16 @@ function porteiroController(porteiroService, porteiroId, $state) {
             console.log(error)
             toastr.error("Erro! Revise seus dados e tente novamente.","ERRO")
 		})
+    }
+
+    function mudarStatus(status) {
+        if (status == 'show-close') {
+            vm.tipo    = 'text';
+            vm.status  = 'show-open';
+        }
+        else {
+            vm.tipo    = 'password';
+            vm.status  = 'show-close';
+        }
     }
 }

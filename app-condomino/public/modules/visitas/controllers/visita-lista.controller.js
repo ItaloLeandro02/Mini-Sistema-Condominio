@@ -34,7 +34,7 @@ function visitaListaController(visitaService, $state, $localStorage, $mdDialog) 
 	function carregaVisitas(){	
 		visitaService.getAll($localStorage.usuarioLogado.condomino.id).then(function(visitas){
 			vm.dataset = visitas.data.map(function(resp){
-                if (new Date() >= new Date(resp.dataHoraExpiracao) && resp.situacao == 1){
+                if (new Date() >= new Date(resp.data_Hora_Reserva) && resp.situacao == 1){
 					var visitaUpdate = {
 						situacao : 3
 					}

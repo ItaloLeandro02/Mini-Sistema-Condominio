@@ -68,7 +68,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
     function salvaVisitante() {
         
         if (vm.query.item) {
-            vm.dataset.condominoId = vm.query.item.id;
+            vm.dataset.condomino_Id = vm.query.item.id;
         }
 
         if (vm.form.$invalid) {
@@ -76,8 +76,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             return
         } 
 
-        var pessoaModel = {},
-                pessoa = {
+        var pessoaModel = {
                     nome                    : vm.dataset.pessoa.nome,
                     cpf                     : vm.dataset.pessoa.cpf,
                     nascimento              : vm.dataset.pessoa.nascimento,
@@ -90,8 +89,7 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
                     uf                      : vm.dataset.endereco.uf
                 }
 
-        nome_Visitante           = vm.dataset.pessoa.nome;
-        pessoaModel             = pessoa;
+        nome_Visitante          = vm.dataset.pessoa.nome;
         pessoaModel.endereco    = endereco;
        
 		visitaService.save(pessoaModel)
@@ -99,13 +97,12 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             if (resposta.sucesso) {
               
                 //Salvando dados Convidado
-                var convidadoModel = {},
-                    convidado = {
+                var convidadoModel = {
                         pessoa_Id       : resposta.data.id,
                         condomino_Id    : vm.dataset.condomino_Id
                 }
 
-                    convidadoModel = convidado;
+
                     return visitaService.saveVisitante(convidadoModel)
             }
         })
@@ -122,8 +119,8 @@ function VisitaController(visitaService, $localStorage, $state, $stateParams, vi
             
             visitaService.updateVisita(visitaModel)
 
-            toastr.success("Visitante incluído com êxito :)","SUCESSO")
             $state.go('visita')
+            toastr.success("Visitante incluído com êxito :)","SUCESSO")
         })
 
 		.catch(function(error){

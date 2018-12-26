@@ -121,7 +121,7 @@ namespace api.Controllers
                         
                                     _visitaRepository.Update(_visita);
 
-                                        if (_visitaRepository.Find(id).Equals(_visita)) {
+                                        if (_visitaRepository.Find(id).Nome_Convidado == _visita.Nome_Convidado) {
                                             var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
                                                 return resultado;
                                         }
@@ -151,7 +151,7 @@ namespace api.Controllers
                         
                                     _visitaRepository.Update(_visita);
 
-                                        if (visita == _visita) {
+                                        if (_visitaRepository.Find(id).Porteiro_Id == _visita.Porteiro_Id) {
                                             var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
                                                 return resultado;
                                         }
@@ -175,7 +175,7 @@ namespace api.Controllers
                             }
                                 _visita.Situacao    = visita.Situacao;
                         
-                                    if (_visitaRepository.Find(id).Equals(_visita)) {
+                                    if (_visitaRepository.Find(id).Situacao == _visita.Situacao) {
                                         var resultado = new RetornoView<Visita>() {data = _visita, sucesso = true};
                                             return resultado;
                                     }

@@ -41,9 +41,9 @@ var materialApp = angular
           'responseError': function(response) {
             switch (response.status) {
               case 401:
-                toastr.error("Token Expirado!","ERRO")
                 var stateService = $injector.get('$state');
                 stateService.go('login');
+                toastr.error("Token Expirado! Entre Novamente. ","ERRO")
                 break;                
 
               default :
