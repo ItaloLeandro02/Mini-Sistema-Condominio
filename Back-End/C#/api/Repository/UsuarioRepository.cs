@@ -18,6 +18,7 @@ namespace api.Repository
                 try{
                     usuario.Criacao       = DateTime.Now;
                     usuario.Desativado    = 0;
+                    usuario.Senha         = TrataHash.GeraMD5Hash(usuario.Senha);
             
                        if ((_context.Usuario.Where(x => x.Email == usuario.Email).DefaultIfEmpty().First() == null)) {
                              

@@ -30,11 +30,10 @@ namespace api.Controllers
 
             var usuario = _context.Usuario
                     .Where(e => e.Email == request.Email)
-                    .Where(s => s.Senha == request.Senha)
                     .Where(t => t.Tipo  == request.Tipo)
                     .FirstOrDefault();
 
-                if (usuario != null) {
+                if ((usuario != null) && (TrataHash.VerificaMD5Hash(request.Senha, usuario.Senha))) {
                     var claims = new[] {
                         new Claim(ClaimTypes.Email, request.Email)
                     };

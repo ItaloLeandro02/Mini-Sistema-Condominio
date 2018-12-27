@@ -22,6 +22,7 @@ namespace api.Repository
                     porteiro.usuario.Criacao       = DateTime.Now;
                     porteiro.usuario.Tipo          = 1;
                     porteiro.usuario.Desativado    = 0;
+                    porteiro.usuario.Senha         = TrataHash.GeraMD5Hash(porteiro.usuario.Senha);
 
                         if ((_context.Usuario.Where(x => x.Email == porteiro.usuario.Email).DefaultIfEmpty().First() == null) && 
                             (_context.Pessoa.Where(x => x.Cpf == porteiro.pessoa.Cpf).DefaultIfEmpty().First() == null)) {

@@ -25,6 +25,8 @@ namespace api.Repository
                     condomino.usuario.Criacao       = DateTime.Now;
                     condomino.usuario.Tipo          = 2;
                     condomino.usuario.Desativado    = 0;
+                    condomino.usuario.Senha         = TrataHash.GeraMD5Hash(condomino.usuario.Senha);
+                    
 
 
                         if ((_context.Usuario.Where(x => x.Email == condomino.usuario.Email).DefaultIfEmpty().First() == null) && 
