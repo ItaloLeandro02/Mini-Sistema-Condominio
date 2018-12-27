@@ -21,9 +21,15 @@ namespace api.Repository
                     pessoa.Criacao        = DateTime.Now;
                     pessoa.Digital        = Util.Util.geraDigital();
                     
-                        _context.Pessoa.Add(pessoa);
-                            _context.SaveChanges();
-                                transaction.Commit();      
+                        if ((_context.Pessoa.Where(x => x.Cpf == pessoa.Cpf).DefaultIfEmpty().First() == null)) {
+                             
+                                _context.Pessoa.Add(pessoa);
+                                    _context.SaveChanges();
+                                        transaction.Commit();     
+                        }
+                        else {
+                            transaction.Rollback();
+                        }     
                  }
                  catch (Exception e) {
                      Console.WriteLine("Erro Salvar");

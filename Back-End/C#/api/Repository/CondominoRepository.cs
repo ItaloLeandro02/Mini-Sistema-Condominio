@@ -25,19 +25,28 @@ namespace api.Repository
                     condomino.usuario.Criacao       = DateTime.Now;
                     condomino.usuario.Tipo          = 2;
                     condomino.usuario.Desativado    = 0;
-                    
-                    _context.Usuario.Add(condomino.usuario);
-                    _context.Pessoa.Add(condomino.pessoa);
-                    _context.Condomino.Add(condomino);
-                        _context.SaveChanges();
-                            transaction.Commit();      
-                 }
-                 catch (Exception e) {
-                     Console.WriteLine("Erro");
-                         Console.WriteLine(e);
+
+
+                        if ((_context.Usuario.Where(x => x.Email == condomino.usuario.Email).DefaultIfEmpty().First() == null) && 
+                            (_context.Pessoa.Where(x => x.Cpf == condomino.pessoa.Cpf).DefaultIfEmpty().First() == null)) {
+                                 
+                                _context.Usuario.Add(condomino.usuario);
+                                _context.Pessoa.Add(condomino.pessoa);
+                                _context.Condomino.Add(condomino);
+                                    _context.SaveChanges();
+                                        transaction.Commit();
+                        }
+                        else {
+                            transaction.Rollback();
+                        }
+                
+                }
+                catch (Exception e) {
+                    Console.WriteLine("Erro");
+                        Console.WriteLine(e);
                             transaction.Rollback();
                                 return;
-                 }
+                }
             
         }
 

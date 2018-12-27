@@ -19,9 +19,15 @@ namespace api.Repository
                     usuario.Criacao       = DateTime.Now;
                     usuario.Desativado    = 0;
             
-                        _context.Usuario.Add(usuario);
-                            _context.SaveChanges();
-                                transaction.Commit();
+                       if ((_context.Usuario.Where(x => x.Email == usuario.Email).DefaultIfEmpty().First() == null)) {
+                             
+                                _context.Usuario.Add(usuario);
+                                    _context.SaveChanges();
+                                        transaction.Commit();     
+                        }
+                        else {
+                            transaction.Rollback();
+                        }  
                 }
                 catch (Exception e) {
                      Console.WriteLine("Erro");

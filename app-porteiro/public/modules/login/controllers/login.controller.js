@@ -3,7 +3,10 @@ angular.module('app.login')
 
 function LoginController($localStorage, loginService, $state) {
 	
-    vm = this;  
+    vm                  = this;
+    vm.mudarStatus      = mudarStatus; 
+    vm.tipo             = 'password';
+    vm.status           = 'show-close';  
      
     
     if ($localStorage.usuarioLogado)  {
@@ -35,5 +38,15 @@ function LoginController($localStorage, loginService, $state) {
 
         loginService.signUp(vm.email,vm.senha).then(sucesso, erro)    
     }
-    
+
+    function mudarStatus(status) {
+        if (status == 'show-close') {
+            vm.tipo    = 'text';
+            vm.status  = 'show-open';
+        }
+        else {
+            vm.tipo    = 'password';
+            vm.status  = 'show-close';
+        }
+    }
 }

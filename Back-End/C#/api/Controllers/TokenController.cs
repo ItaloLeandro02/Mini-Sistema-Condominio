@@ -58,7 +58,8 @@ namespace api.Controllers
 
                         //Atualiza o Token do usuário
                         usuario.Token = new JwtSecurityTokenHandler().WriteToken(token);
-                        _context.Usuario.Update(usuario);
+                            _context.Usuario.Update(usuario);
+                                _context.SaveChanges();
 
                         var resposta = new Object();
 

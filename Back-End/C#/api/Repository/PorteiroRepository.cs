@@ -23,9 +23,18 @@ namespace api.Repository
                     porteiro.usuario.Tipo          = 1;
                     porteiro.usuario.Desativado    = 0;
 
-                        _context.Porteiro.Add(porteiro);
-                            _context.SaveChanges();
-                                transaction.Commit();
+                        if ((_context.Usuario.Where(x => x.Email == porteiro.usuario.Email).DefaultIfEmpty().First() == null) && 
+                            (_context.Pessoa.Where(x => x.Cpf == porteiro.pessoa.Cpf).DefaultIfEmpty().First() == null)) {
+                                
+                                _context.Usuario.Add(porteiro.usuario);
+                                _context.Pessoa.Add(porteiro.pessoa);
+                                _context.Porteiro.Add(porteiro);
+                                    _context.SaveChanges();
+                                        transaction.Commit();
+                        }
+                        else {
+                            transaction.Rollback();
+                        }
                 }
                 catch (Exception e) {
                      Console.WriteLine("Erro");

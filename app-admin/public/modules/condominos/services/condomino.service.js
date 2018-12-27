@@ -35,7 +35,7 @@ angular.module('app.condomino')
 
     condominoFactory.getCondomino = function(nomeCondomino) {
         var ds          = new api.condomino;
-            return ds.$get({search: nomeCondomino})
+            return ds.$get({search : nomeCondomino})
     }
 
     return condominoFactory;
